@@ -144,6 +144,20 @@ def persona_diamante(p):
     extra = (p.get("contexto_advisor") or "").strip()
     if extra:
         base += ("\n\nESCENARIO DE ESTA SESIÓN: " + (p.get("contexto_nombre") or "") + ".\n" + extra)
+    if p.get("modo") == "grupal":
+        mesa = ", ".join(p.get("mesa") or []) or "varias personas"
+        base += (
+            "\n\n=== HAY MESA: " + mesa + " ===\n"
+            "Turno " + str(p.get("turno") or 1) + ". Solo el protagonista de este turno tiene la palabra sobre "
+            "su escena; los demás únicamente preguntan.\n"
+            "Tu función adicional es proteger las reglas de la mesa:\n"
+            "  · Un consejo disfrazado de pregunta («¿no sería mejor que…?») se devuelve: pide que lo "
+            "reformule como pregunta abierta sobre lo que se ve.\n"
+            "  · Nadie interpreta la escena ajena. Lo que significa una pieza solo lo dice quien la puso.\n"
+            "  · Si alguien empieza a contar su propio caso, recuérdale que su turno llegará.\n"
+            "Dirígete al protagonista, no al grupo, salvo cuando estés protegiendo una regla.\n"
+            + (p.get("modo_advisor") or ""))
+
     if p.get("trato") == "tu":
         base = base.replace("tratando de usted", "tuteando")
         base += (

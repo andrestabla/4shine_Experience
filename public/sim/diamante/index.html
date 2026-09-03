@@ -19,15 +19,29 @@
   <div class="escenarios" id="escenarios"></div>
 </div></section>
 
-<!-- ===== PASO 2 · SITUACIÓN ===== -->
-<section class="screen hidden" id="scr-setup"><div class="wrap narrow">
+<!-- ===== PASO 2 · MODO ===== -->
+<section class="screen hidden" id="scr-modo"><div class="wrap narrow">
   <button class="volver" onclick="DV.volverEscenario()">‹ Cambiar de escenario</button>
+  <span class="eyebrow" id="m-eyebrow"></span>
+  <h1 class="setup-h1">¿Se juega <em>solo</em> o en <em>mesa</em>?</h1>
+  <p class="lead" id="m-lead"></p>
+  <div class="modos" id="modos"></div>
+</div></section>
+
+<!-- ===== PASO 3 · SITUACIÓN ===== -->
+<section class="screen hidden" id="scr-setup"><div class="wrap narrow">
+  <button class="volver" onclick="DV.volverModo()">‹ Cambiar de modo</button>
   <span class="eyebrow" id="s2-eyebrow"></span>
   <h1 class="setup-h1" id="s2-titulo"></h1>
   <p class="lead" id="s2-lead"></p>
 
   <div class="field"><label id="lbl-quien">¿Quién construye?</label>
     <input type="text" id="in-quien" maxlength="90"></div>
+
+  <div class="field hidden" id="campo-mesa"><label id="lbl-mesa">¿Quiénes más están en la mesa?</label>
+    <div class="participantes" id="participantes"></div>
+    <button class="mini" onclick="DV.agregarParticipante()">+ Añadir participante</button>
+    <p class="hint" id="hint-mesa"></p></div>
 
   <div class="field"><label id="lbl-sit">Elija la situación que va sobre la mesa</label>
     <div class="situaciones" id="situaciones"></div>
@@ -90,6 +104,8 @@
 
       <div class="panel fase-panel" id="fase-panel"></div>
 
+      <div class="ruta-mesa hidden" id="ruta-mesa"></div>
+
       <div class="hilo hidden" id="hilo-box"></div>
 
       <div class="log" id="log-box"><h3>Bitácora</h3><div id="log-list"><p class="hint" style="margin:0">La sesión comienza.</p></div></div>
@@ -103,6 +119,7 @@
 <script src="../vendor/konva.min.js"></script>
 <script src="../../data/contextos.js"></script>
 <script src="../../data/ayudas.js"></script>
+<script src="../../data/modos.js"></script>
 <script src="../../data/conductas.js"></script>
 <script src="board.js"></script>
 <script src="app.js"></script>

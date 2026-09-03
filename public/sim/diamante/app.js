@@ -81,7 +81,7 @@ const DV = (() => {
   // T(textoUsted, textoTú) — elige según el escenario
   const T = (u, t) => tuteo() ? t : u;
   function esc2(s){ return esc(s); }
-  const st = {ctx:null, quien:"", situacion:"", fase:0, reto:null, huellaAntes:"", conducta:null,
+  const st = {ctx:null, modo:"individual", mesa:[], turno:0, paso:0, quien:"", situacion:"", fase:0, reto:null, huellaAntes:"", conducta:null,
               narracion:"", explicacion:"", log:[], offline:false,
               hilo:[], listoParaAvanzar:false, hallazgo:"",
               pngAntes:"", escenaAntesTexto:"", pendiente:""};
@@ -102,15 +102,68 @@ const DV = (() => {
   function elegirEscenario(id){
     st.ctx = CTX(id); CTX_ACTUAL = st.ctx.id;
     document.body.style.setProperty("--ctx", st.ctx.color);
-    pintarPaso2();
-    pantalla("scr-setup");
+    pintarModos();
+    pantalla("scr-modo");
   }
   function volverEscenario(){ pantalla("scr-escenario"); }
+  function volverModo(){ pintarModos(); pantalla("scr-modo"); }
+
+  /* ---------- paso 2 · modo de juego ---------- */
+  function pintarModos(){
+    const c = st.ctx, ext = (typeof MODO_CTX !== "undefined" ? MODO_CTX[c.id] : null);
+    $("m-eyebrow").textContent = `Paso 2 de 3 · ${c.nombre}`;
+    $("m-eyebrow").style.color = c.color;
+    $("m-lead").textContent = "El tablero es el mismo. Lo que cambia es quién mira mientras alguien mueve sus piezas, y con qué reglas.";
+    $("modos").innerHTML = Object.values(MODOS).map(m => {
+      const x = m.id === "grupal" && ext ? ext.grupal : null;
+      return `<button class="modo" style="--mo:${c.color}" onclick="DV.elegirModo('${m.id}')">
+        <span class="modo-ic">${m.icono}</span>
+        <h3>${esc(m.nombre)}</h3>
+        <p class="modo-res">${esc(m.resumen)}</p>
+        <p class="modo-desc">${esc(m.desc)}</p>
+        <ul class="modo-bueno">${m.bueno.map(b=>`<li>${esc(b)}</li>`).join("")}</ul>
+        <span class="modo-meta"><b>${esc(m.personas)}</b> ${m.personas === "1" ? "persona" : "personas"} · ${esc(m.duracion)}</span>
+        ${x ? `<span class="modo-nota">${esc(x.mesa)} · ideal ${esc(x.ideal)}</span>` : ""}
+        <span class="modo-go">${m.id==="grupal" ? "Ver las reglas de la mesa →" : T("Jugar en individual →","Jugar solo →")}</span>
+      </button>`;
+    }).join("");
+  }
+
+  function elegirModo(id){
+    st.modo = id;
+    if(id === "grupal" && !st.mesa.length) st.mesa = ["", ""];
+    pintarPaso2();
+    pantalla("scr-setup");
+    if(id === "grupal") setTimeout(() => abrirReglasMesa(), 320);
+  }
+
+  /* ---------- participantes de la mesa ---------- */
+  function pintarParticipantes(){
+    const box = $("campo-mesa"); if(!box) return;
+    box.classList.toggle("hidden", st.modo !== "grupal");
+    if(st.modo !== "grupal") return;
+    const ext = (typeof MODO_CTX !== "undefined" ? MODO_CTX[st.ctx.id]?.grupal : null);
+    $("participantes").innerHTML = st.mesa.map((p,i) => `
+      <div class="part"><input type="text" value="${esc(p)}" maxlength="40"
+        placeholder="${T("Nombre y rol","Nombre")}" oninput="DV.setParticipante(${i}, this.value)">
+        <button class="mini danger" onclick="DV.quitarParticipante(${i})" title="Quitar">✕</button></div>`).join("");
+    actualizarHintMesa();
+  }
+  function actualizarHintMesa(){
+    if(st.modo !== "grupal" || !$("hint-mesa")) return;
+    const ext = (typeof MODO_CTX !== "undefined" ? MODO_CTX[st.ctx.id]?.grupal : null);
+    const n = st.mesa.filter(x=>x.trim()).length + 1;
+    $("hint-mesa").innerHTML = `${T("Con usted serán","Contigo serán")} <b>${n}</b> en la mesa · turno de ${
+      st.ctx.id==="escolar" ? "10" : "15"} min por persona.${ext ? ` <span style="color:#7f8ea6">${esc(ext.nota)}</span>` : ""}`;
+  }
+  function agregarParticipante(){ if(st.mesa.length < 5){ st.mesa.push(""); pintarParticipantes(); revisar(); } }
+  function quitarParticipante(i){ st.mesa.splice(i,1); pintarParticipantes(); revisar(); }
+  function setParticipante(i,v){ st.mesa[i] = v; actualizarHintMesa(); revisar(); }
 
   /* ---------- paso 2 · situación ---------- */
   function pintarPaso2(){
     const c = st.ctx;
-    $("s2-eyebrow").textContent = `Paso 2 de 2 · ${c.nombre}`;
+    $("s2-eyebrow").textContent = `Paso 3 de 3 · ${c.nombre} · ${MODOS[st.modo].nombre}`;
     $("s2-eyebrow").style.color = c.color;
     $("s2-titulo").innerHTML = T("¿Qué pone <em>sobre la mesa</em>?", "¿Qué pones <em>sobre la mesa</em>?");
     $("s2-lead").textContent = T(
@@ -130,7 +183,9 @@ const DV = (() => {
       <li><b>Crea · ${T("Reconfiguro","Muevo")}</b> — ${T("una carta perturba la escena: hay que mover el tablero.","una carta mueve la escena: hay que cambiar el tablero.")}</li>
       <li><b>Consolida · ${T("Actúo","Actúo")}</b> — ${T("elija una conducta observable con fecha.","eliges algo concreto que vas a hacer, con fecha.")}</li>
     </ol>`;
-    $("btn-start").textContent = T("Abrir el tablero →", "Abrir el tablero →");
+    $("btn-start").textContent = st.modo === "grupal"
+      ? T("Abrir la mesa →","Abrir la mesa →") : T("Abrir el tablero →","Abrir el tablero →");
+    pintarParticipantes();
     revisar();
   }
   function elegirSituacion(i){
@@ -155,7 +210,7 @@ const DV = (() => {
     if(!BOARD._listo){ BOARD.init("tablero", onCambioTablero, onSeleccion); BOARD._listo = true; pintarBandeja(); }
     montarFase();
   }
-  const pantalla = id => ["scr-escenario","scr-setup","scr-mesa","scr-cierre"].forEach(s=>$(s).classList.toggle("hidden", s!==id));
+  const pantalla = id => ["scr-escenario","scr-modo","scr-setup","scr-mesa","scr-cierre"].forEach(s=>$(s).classList.toggle("hidden", s!==id));
 
   /* ---------- bandeja + arrastre ---------- */
   let ghost = null, arrastrando = null;
@@ -240,7 +295,7 @@ const DV = (() => {
   function quitarVinc(i){ BOARD.quitarVinculo(i); pintarVinculos(); }
   let guardarPendiente = null;
   function onCambioTablero(){
-    pintarVinculos(); actualizarBotonFase();
+    pintarVinculos(); actualizarBotonFase(); pintarRutaMesa();
     clearTimeout(guardarPendiente);
     guardarPendiente = setTimeout(guardar, 700);   // autoguardado tras cada movimiento
   }
@@ -261,6 +316,7 @@ const DV = (() => {
     $("av-extra").innerHTML = "";
     const paneles = {conecta:panelConecta, comprende:panelComprende, crea:panelCrea, consolida:panelConsolida};
     paneles[f.id]();
+    pintarRutaMesa();
     setTimeout(() => abrirAyudaFase(false), 260);
     $("av-msg").textContent = tuteo() ? {
       conecta:"Arma primero. No me cuentes todavía qué significa: ponlo en el tablero y deja que se vea.",
@@ -470,6 +526,12 @@ const DV = (() => {
   async function pedir(payload){
     if(st.ctx) payload.contexto_id = st.ctx.id, payload.contexto_nombre = st.ctx.nombre,
                payload.contexto_advisor = st.ctx.advisor, payload.trato = st.ctx.trato;
+    payload.modo = st.modo;
+    if(st.modo === "grupal"){
+      const nombres = [st.quien.split(",")[0], ...st.mesa.filter(x=>x.trim()).map(x=>x.split(",")[0])];
+      payload.mesa = nombres; payload.turno = st.turno + 1;
+      payload.modo_advisor = MODOS.grupal.advisor;
+    }
     try{
       const r = await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
       return await r.json();
@@ -526,6 +588,50 @@ const DV = (() => {
        ${o.hallazgo ? `<p class="hint" style="margin-top:10px;color:#d5dce7"><b style="color:#f0d488">Hizo visible:</b> ${esc(o.hallazgo)}</p>` : ""}`, off);
     log("Intercambio con el Advisor");
     panelComprende(); $("btn-fase") && ($("btn-fase").disabled = false);
+  }
+
+  function pintarRutaMesa(){
+    const box = $("ruta-mesa"); if(!box) return;
+    if(st.modo !== "grupal"){ box.classList.add("hidden"); return; }
+    box.classList.remove("hidden");
+    const g = MODOS.grupal;
+    const nombres = [st.quien.split(",")[0] || "Usted", ...st.mesa.filter(x=>x.trim()).map(x=>x.split(",")[0])];
+    const n = nombres.length;
+    const prot = st.turno % n;
+    // roles rotativos: el escriba es el siguiente, el guardián el posterior
+    const rol = i => i === prot ? "protagonista"
+                   : i === (prot+1) % n ? "escriba"
+                   : i === (prot+2) % n ? "tiempo" : "indagadores";
+    const colores = Object.fromEntries(g.roles.map(r => [r.id, r.color]));
+    const nomRol  = Object.fromEntries(g.roles.map(r => [r.id, r.nombre]));
+    const pasoAct = g.turno.find(p => p.fase === FASES[st.fase].id) || g.turno[0];
+    box.innerHTML = `<h3>La mesa · turno ${st.turno+1} de ${n}</h3>
+      <div class="mesa-personas">${nombres.map((nm,i)=>{
+        const r = rol(i);
+        return `<div class="persona ${r==="protagonista"?"es-prot":""}" style="--rc:${colores[r]}">
+          <b>${esc(nm)}</b><span>${nomRol[r]}</span></div>`;}).join("")}</div>
+      <div class="paso-actual">
+        <b>Paso ${pasoAct.n} · ${esc(pasoAct.paso)}</b>
+        <p><i>Protagonista:</i> ${esc(pasoAct.protagonista)}</p>
+        <p><i>La mesa:</i> ${esc(pasoAct.mesa)}</p>
+      </div>
+      <div class="mesa-acciones">
+        <button class="mini" onclick="DV.abrirReglasMesa()">Reglas de la mesa</button>
+        ${st.fase === FASES.length-1 && st.turno < n-1
+          ? `<button class="mini fuerte" onclick="DV.avanzarTurno()">Turno de ${esc(nombres[(prot+1)%n])} →</button>` : ""}
+      </div>`;
+  }
+
+  function avanzarTurno(){
+    const n = 1 + st.mesa.filter(x=>x.trim()).length;
+    if(st.turno >= n-1) return;
+    st.turno++;
+    // nueva escena para el siguiente protagonista
+    BOARD.limpiar();
+    Object.assign(st, {fase:0, reto:null, carta:null, conducta:null, hilo:[], hallazgo:"",
+                       narracion:"", explicacion:"", listoParaAvanzar:false, pendiente:"", pngAntes:""});
+    $("hilo-box")?.classList.add("hidden");
+    montarFase(); guardar();
   }
 
   function pintarHilo(){
@@ -649,7 +755,7 @@ const DV = (() => {
   function guardar(){
     try{
       localStorage.setItem(CLAVE, JSON.stringify({
-        ctxId:st.ctx?.id, quien:st.quien, situacion:st.situacion, fase:st.fase, narracion:st.narracion,
+        ctxId:st.ctx?.id, modo:st.modo, mesa:st.mesa, turno:st.turno, quien:st.quien, situacion:st.situacion, fase:st.fase, narracion:st.narracion,
         explicacion:st.explicacion, hilo:st.hilo, hallazgo:st.hallazgo, patron:st.patron,
         reto:st.reto, conducta:st.conducta, log:st.log, tablero:BOARD.serializar(), ts:Date.now()
       }));
@@ -663,7 +769,7 @@ const DV = (() => {
     const d = haySesion(); if(!d) return;
     st.ctx = CTX(d.ctxId || "gerencial"); CTX_ACTUAL = st.ctx.id;
     document.body.style.setProperty("--ctx", st.ctx.color);
-    Object.assign(st, {quien:d.quien, situacion:d.situacion, fase:d.fase, narracion:d.narracion||"",
+    Object.assign(st, {modo:d.modo||"individual", mesa:d.mesa||[], turno:d.turno||0, quien:d.quien, situacion:d.situacion, fase:d.fase, narracion:d.narracion||"",
       explicacion:d.explicacion||"", hilo:d.hilo||[], hallazgo:d.hallazgo||"", patron:d.patron||"",
       reto:d.reto||null, conducta:d.conducta, log:d.log||[]});
     pintarPaso2();
@@ -741,6 +847,49 @@ const DV = (() => {
     });
   }
 
+  function abrirReglasMesa(){
+    const g = MODOS.grupal, ext = (typeof MODO_CTX !== "undefined" ? MODO_CTX[st.ctx?.id]?.grupal : null);
+    cerrarModal();
+    const m = document.createElement("div");
+    m.className = "modal modal-ayuda";
+    m.innerHTML = `<div class="modal-caja ancha" style="--mc:${st.ctx?.color || "#d9b54a"}">
+      <span class="m-tag">Mesa de trabajo · ${esc(st.ctx?.nombre || "")}</span>
+      <h3>Cómo participa cada quien</h3>
+      <p class="m-idea">Cada participante construye <b>su propia</b> situación, pero la mesa trabaja
+        <b>una escena a la vez</b>. Estos roles rotan en cada turno: todos pasan por todos.</p>
+
+      <div class="roles-grid">${g.roles.map(r=>`
+        <div class="rol" style="--rc:${r.color}">
+          <b>${esc(r.nombre)}</b>
+          <p class="rol-que">${esc(r.que)}</p>
+          <ul class="rol-si">${r.hace.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+          <ul class="rol-no">${r.evita.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+        </div>`).join("")}</div>
+
+      <h4 class="m-sub">La ruta de un turno${st.ctx?.id==="escolar" ? " · 10 min" : " · 15 min"}</h4>
+      <div class="turno-lista">${g.turno.map(p=>`
+        <div class="turno-paso">
+          <span class="tp-n">${p.n}</span>
+          <div class="tp-cuerpo">
+            <b>${esc(p.paso)} <i>${st.ctx?.id==="escolar" ? Math.max(1, p.min-1) : p.min} min</i></b>
+            <p><span class="tp-rol">Protagonista</span>${esc(p.protagonista)}</p>
+            <p><span class="tp-rol">La mesa</span>${esc(p.mesa)}</p>
+            <p class="tp-porque">${esc(p.porque)}</p>
+          </div>
+        </div>`).join("")}</div>
+
+      <h4 class="m-sub">Las seis reglas</h4>
+      <ol class="reglas-lista">${g.reglas.map(r=>`<li><b>${esc(r.t)}</b>${esc(r.d)}</li>`).join("")}</ol>
+
+      ${ext ? `<p class="m-nota">${esc(ext.nota)}</p>` : ""}
+      <p class="m-advisor"><b>El Advisor en la mesa</b>${esc(g.advisor)}</p>
+      <div class="btn-row" style="margin-top:20px"><button class="btn" id="m-ok">Entendido →</button></div>
+    </div>`;
+    document.body.appendChild(m);
+    m.querySelector("#m-ok").onclick = cerrarModal;
+    m.onclick = e => { if(e.target === m) cerrarModal(); };
+  }
+
   function abrirAyudaAdvisor(){
     cerrarModal();
     const m = document.createElement("div");
@@ -809,7 +958,9 @@ const DV = (() => {
     $("in-situacion").addEventListener("input", revisar);
   });
 
-  return {abrirAyudaFase, abrirAyudaAdvisor, cerrarModal, elegirEscenario, volverEscenario, elegirSituacion,
+  return {abrirAyudaFase, abrirAyudaAdvisor, cerrarModal, elegirEscenario, volverEscenario, volverModo,
+          elegirModo, elegirSituacion, agregarParticipante, quitarParticipante, setParticipante,
+          abrirReglasMesa, avanzarTurno,
           iniciar, avanzar, robarReto, enviarNarracion, responderAdvisor,
           enviarReconfiguracion, cerrar, renombrarSel, eliminarSel,
           elegirPilarConducta, pasarConducta, barajarConductas, tomarConducta, tomarJugada, voltearJugada,
