@@ -183,24 +183,6 @@ const MAZO = (() => {
     $("elegida").scrollIntoView({block:"nearest", behavior:"smooth"});
   }
 
-  /* ---------- índice completo ---------- */
-  function pintarIndice(){
-    $("indice-completo").innerHTML = PILARES.map(p => {
-      const cs = CONDUCTAS.filter(c => c.pilar === p.id);
-      const porComp = {};
-      cs.forEach(c => (porComp[c.competencia] = porComp[c.competencia] || []).push(c));
-      return `<div class="grupo" style="--gc:${p.color}">
-        <h3>${esc(p.nombre)} · ${esc(p.verbo)}</h3>
-        <p class="sub">${cs.length} conductas en ${Object.keys(porComp).length} competencias</p>
-        <div class="mini-cartas">${cs.map(c => `<div class="mini">
-          <b>${esc(c.reto?.t || c.competencia)}</b>
-          <p><i style="color:#8c6e15">Reto:</i> ${esc(c.reto?.c || "—")}</p>
-          <p style="margin-top:7px;padding-top:7px;border-top:1px dashed var(--line)"><i style="color:#8c6e15">Conducta:</i> ${esc(c.conducta)}</p>
-          <span>${c.id} · ${esc(c.competencia)}</span></div>`).join("")}</div>
-      </div>`;
-    }).join("");
-  }
-
   document.addEventListener("keydown", e => {
     if(/INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
     if(e.key === "ArrowRight"){ e.preventDefault(); siguiente(); }
@@ -210,7 +192,7 @@ const MAZO = (() => {
   });
 
   document.addEventListener("DOMContentLoaded", () => {
-    pintarDiamante(); elegirPilar("within"); pintarIndice();
+    pintarDiamante(); elegirPilar("within");
   });
 
   return {elegirPilar, siguiente, anterior, barajar, robar, elegir, voltear, clicCarta};
