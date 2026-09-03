@@ -359,3 +359,6 @@
 .persona div em{display:block;font-style:normal;font-size:.72rem;color:#8494ab;margin-top:1px}
 .regla-avatar{margin:12px 0 0;padding:11px 13px;border-left:3px solid var(--gold);background:#d9b54a10;
   border-radius:0 9px 9px 0;font-size:.78rem;color:#cbd3df;line-height:1.45}
+.nota-paquete{margin:26px 0 0;padding:16px 20px;border-left:3px solid var(--gold);background:#d9b54a0d;
+  border-radius:0 10px 10px 0;font-size:.87rem;color:#cbd3df;line-height:1.6;max-width:76ch}
+.nota-paquete b{color:var(--gold-b)}
