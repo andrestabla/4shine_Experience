@@ -32,6 +32,11 @@
 .gap-note b{color:var(--gold)}
 
 .campos{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.dos-lecturas{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+.dos-lecturas div{border-left:3px solid var(--gold);padding:14px 18px;background:white;border-radius:0 10px 10px 0}
+.dos-lecturas b{display:block;font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:#8c6e15;margin-bottom:6px}
+.dos-lecturas p{margin:0;font-size:.88rem;color:var(--muted);line-height:1.55}
+@media(max-width:900px){.dos-lecturas{grid-template-columns:1fr}}
 .campo{border-radius:14px;padding:28px 24px;background:white;border:1px solid var(--line);border-top:4px solid var(--cc)}
 .campo b{display:block;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cc);margin-bottom:8px}
 .campo h3{font-size:1.3rem;margin-bottom:10px}
@@ -80,6 +85,13 @@
 .obj-card p{margin:0;color:var(--muted);font-size:.93rem}
 
 .formatos{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.modos-sitio{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}
+.modo-s{background:var(--ink);color:white;border-top:4px solid var(--ms);border-radius:14px;padding:26px}
+.modo-s b{display:block;font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ms);margin-bottom:8px}
+.modo-s h3{font-size:1.3rem;margin-bottom:10px}
+.modo-s p{margin:0;color:#cbd3df;font-size:.9rem;line-height:1.55}
+.modo-s span{display:block;margin-top:12px;padding-top:11px;border-top:1px solid #ffffff1f;font-size:.78rem;color:#8494ab}
+@media(max-width:900px){.modos-sitio{grid-template-columns:1fr}}
 .fmt{background:white;border:1px solid var(--line);border-radius:12px;padding:24px}
 .fmt b{display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:#8c6e15;margin-bottom:8px}
 .fmt h3{font-size:1.12rem;margin-bottom:8px}
@@ -95,13 +107,7 @@
 @media(max-width:620px){.campos,.evid,.formatos,.obj{grid-template-columns:1fr}}
 </style></head><body>
 
-<nav><div class="wrap">
-  <a class="brand" href="#inicio">4SHINE EXPERIENCE®</a>
-  <a class="navlink" href="#que-es">Qué es</a>
-  <a class="navlink" href="opcion-a.html">La sesión</a>
-  <a class="navlink" href="cartas.html">Tarjetas de Reto</a><a class="navlink" href="mazo.html">El mazo</a>
-  <a class="navlink" href="sim/diamante/" style="color:#d9b54a;border:1px solid #d9b54a66;border-radius:999px;padding:5px 13px">▶ Simulador</a>
-</div></nav>
+<nav><div class="wrap"><a class="brand" href="index.html">4SHINE EXPERIENCE®</a><a class="navlink active" href="index.html">Inicio</a><a class="navlink" href="opcion-a.html">La sesión</a><a class="navlink" href="mazo.html">El mazo</a><a class="navlink" href="sim/diamante/" style="color:#d9b54a;border:1px solid #d9b54a66;border-radius:999px;padding:5px 13px">▶ Simulador</a></div></nav>
 
 <header class="hero-claim" id="inicio"><div class="wrap claim-grid">
   <div class="claim-copy">
@@ -137,21 +143,26 @@
 <!-- ===== QUÉ ES ===== -->
 <section id="que-es"><div class="wrap">
   <div class="intro"><span class="eyebrow">Qué es</span>
-    <h2>Un tablero de cuatro campos y un facilitador que solo pregunta.</h2>
-    <p>El tablero es el framework 4Shine hecho territorio. Cada campo abre un modo distinto de mirar la misma situación, y la sesión los recorre en orden.</p></div>
+    <h2>El framework 4Shine, hecho territorio.</h2>
+    <p>Los cuatro cuadrantes del diamante <b>son</b> los cuatro pilares del framework. Dónde se coloca una pieza dice desde qué dimensión se está mirando la situación; los anillos, del centro al borde, van del pilar a la conducta observable.</p></div>
   <div class="campos">
-    <div class="campo" style="--cc:#c13a68"><b>Campo 01</b><h3>Conecta</h3>
-      <p>Quién está, quién falta y cómo son de verdad los vínculos: sólidos, tensos, en revisión o rotos.</p>
-      <span class="verbo">construyo</span></div>
-    <div class="campo" style="--cc:#8b59b2"><b>Campo 02</b><h3>Comprende</h3>
-      <p>Qué muestra la escena que no se había dicho. Aquí aparecen las creencias y los detonantes.</p>
-      <span class="verbo">narro y exploro</span></div>
-    <div class="campo" style="--cc:#ed8124"><b>Campo 03</b><h3>Crea</h3>
-      <p>Una tarjeta perturba la situación y obliga a mover el tablero. No se comenta: se reconfigura.</p>
-      <span class="verbo">reconfiguro</span></div>
-    <div class="campo" style="--cc:#3988ca"><b>Campo 04</b><h3>Consolida</h3>
-      <p>Una sola conducta observable, con nombre, fecha y evidencia. El puente a la vida real.</p>
-      <span class="verbo">actúo y evidencio</span></div>
+    <div class="campo" style="--cc:#8b59b2"><b>Shine Within</b><h3>Comprende</h3>
+      <p>Identidad, creencias, regulación emocional y propósito. La base que sostiene todo lo demás.</p>
+      <span class="verbo">el centro · 32 conductas</span></div>
+    <div class="campo" style="--cc:#c13a68"><b>Shine Out</b><h3>Conecta</h3>
+      <p>Presencia, comunicación, escucha, confianza e influencia: cómo la interioridad se vuelve visible.</p>
+      <span class="verbo">el vínculo · 16 conductas</span></div>
+    <div class="campo" style="--cc:#ed8124"><b>Shine Up</b><h3>Crea</h3>
+      <p>Lectura del entorno, red de relaciones, pensamiento estratégico y decisión bajo incertidumbre.</p>
+      <span class="verbo">el ecosistema · 26 conductas</span></div>
+    <div class="campo" style="--cc:#3988ca"><b>Shine Beyond</b><h3>Consolida</h3>
+      <p>Desarrollo de otros, cultura e impacto que permanece cuando el líder ya no está.</p>
+      <span class="verbo">la huella · 22 conductas</span></div>
+  </div>
+  <div class="dos-lecturas">
+    <div><b>Los cuadrantes son el espacio</b><p>Cada triángulo es un pilar. Colocar una pieza en Shine Out y no en Shine Within ya es una decisión sobre dónde está el asunto.</p></div>
+    <div><b>Los anillos son la profundidad</b><p>Del centro al borde: pilar → componente → competencia → <b>conducta observable</b>. El borde es lo único que otra persona puede ver.</p></div>
+    <div><b>La sesión es el tiempo</b><p>Comprende → Conecta → Crea → Consolida no es un recorrido por el tablero: es la secuencia de la conversación. Se puede trabajar cualquier pilar en cualquier fase.</p></div>
   </div>
 </div></section>
 
@@ -187,7 +198,7 @@
     <h2>Cada pieza significa algo, y todos lo saben.</h2>
     <p>El kit no es material de apoyo: es el vocabulario de la sesión. Forma, color y distancia comunican antes que las palabras.</p></div>
   <div class="kit">
-    <article class="kit-card"><img src="img/a-tablero.jpg" alt="Tablero Diamante"><div><h3>Tablero Diamante</h3><p>Los cuatro campos y los anillos concéntricos que van del componente a la conducta.</p></div></article>
+    <article class="kit-card"><img src="img/a-tablero.jpg" alt="Tablero Diamante"><div><h3>Tablero Diamante</h3><p>Los cuatro cuadrantes son los pilares 4Shine; los anillos van del pilar a la conducta observable.</p></div></article>
     <article class="kit-card"><img src="img/kit-avatares.jpg" alt="Avatares"><div><h3>Avatares</h3><p>Uno para la persona; los demás para quienes habitan su situación.</p></div></article>
     <article class="kit-card"><img src="img/kit-piezas.jpg" alt="Piezas símbolo"><div><h3>Piezas símbolo</h3><p>Base, foco, puente, energía y barrera: metas, obstáculos y estructuras.</p></div></article>
     <article class="kit-card"><img src="img/kit-conectores.jpg" alt="Conectores"><div><h3>Conectores</h3><p>Cualifican el vínculo: activo, acuerdo claro, tenso, en revisión o roto.</p></div></article>
@@ -274,7 +285,7 @@
   <div class="intro"><span class="eyebrow">Lo que suelen preguntarnos</span><h2>Las dudas razonables, respondidas.</h2></div>
   <div class="obj">
     <div class="obj-card"><h3>¿Esto no es LEGO® SERIOUS PLAY®?</h3>
-      <p>No. Comparte la premisa de pensar con las manos, pero 4Shine tiene tablero propio con cuatro campos, un sistema de conectores que cualifica vínculos, tarjetas que perturban la escena y trazabilidad a un mapa de 47 competencias. Lenguaje, artefactos y certificación son propios.</p></div>
+      <p>No. Comparte la premisa de pensar con las manos, pero 4Shine tiene tablero propio cuyos cuadrantes son los cuatro pilares del framework, un sistema de conectores que cualifica vínculos, tarjetas que perturban la escena y trazabilidad a un mapa de 47 competencias. Lenguaje, artefactos y certificación son propios.</p></div>
     <div class="obj-card"><h3>¿Y si a mi equipo le parece infantil?</h3>
       <p>Es el riesgo real de cualquier dinámica mal facilitada. Se mitiga con tres decisiones: una situación que el propio participante trae (no un caso de fantasía), un Advisor que nunca interpreta por nadie, y un cierre que exige un compromiso verificable. La estética premium del kit hace el resto.</p></div>
     <div class="obj-card"><h3>¿Cómo se mide el resultado?</h3>
@@ -286,11 +297,19 @@
 
 <!-- ===== FORMATOS ===== -->
 <section><div class="wrap">
-  <div class="intro"><span class="eyebrow">Aplicaciones</span><h2>Una arquitectura, tres escenarios.</h2></div>
+  <div class="intro"><span class="eyebrow">Aplicaciones</span><h2>Tres escenarios, dos modos.</h2></div>
   <div class="formatos">
     <div class="fmt" style="border-top:3px solid #ed8124"><b style="color:#c26a1f">Escenario 01</b><h3>Área comercial</h3><p>La cuota contra la relación. Situaciones de cliente que se enfría, precio que sube y promesas que operaciones no puede sostener.</p><span>45–60 min · ejecutivos y jefes comerciales</span></div>
     <div class="fmt" style="border-top:3px solid #3988ca"><b style="color:#2c6ea8">Escenario 02</b><h3>Área gerencial</h3><p>Sostener criterio cuando la presión viene de arriba, de abajo y del lado. Decisiones postergadas, talento que se va, pares que no colaboran.</p><span>60–90 min · directivos y mandos medios</span></div>
     <div class="fmt" style="border-top:3px solid #c13a68"><b style="color:#a02d55">Escenario 03</b><h3>Último grado de secundaria</h3><p>Elección de carrera, presión del grupo, el amigo que se alejó. Mazo, instrucciones y Advisor íntegramente adaptados: tuteo y su mundo, no el de la oficina.</p><span>45–60 min · estudiantes de 16 a 18 años</span></div>
+  </div>
+  <div class="modos-sitio">
+    <div class="modo-s" style="--ms:#d9b54a"><b>Modo individual</b><h3>Una persona, su tablero</h3>
+      <p>El formato de mentoría. Toda la sesión gira alrededor de una sola escena y el Advisor acompaña sin testigos.</p>
+      <span>30–60 min · profundidad máxima</span></div>
+    <div class="modo-s" style="--ms:#8b59b2"><b>Modo mesa</b><h3>Hasta seis, por turnos</h3>
+      <p>Cada quien construye su propia situación, pero la mesa trabaja una escena a la vez con <b>cuatro roles que rotan</b>: protagonista, indagadores, escriba y guardián del tiempo. Solo el protagonista toca sus piezas; los demás únicamente preguntan.</p>
+      <span>15 min por participante · se aprende dos veces</span></div>
   </div>
   <p style="margin-top:24px;color:var(--muted);font-size:.94rem;max-width:74ch">El tablero, las piezas y los cuatro pilares no cambian entre escenarios. Cambian las situaciones que se ofrecen, el registro del lenguaje y la forma en que el Advisor media. Es la modularidad del framework llevada al producto.</p>
 </div></section>

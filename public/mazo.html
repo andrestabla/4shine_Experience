@@ -10,6 +10,34 @@
 .conteo span{border:1px solid #ffffff33;border-radius:999px;padding:8px 15px;font-size:.82rem;color:#cbd3df}
 .conteo b{color:var(--gold)}
 
+/* ===== anatomía ===== */
+.anatomy-demo{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center}
+.anatomy-demo .giro{font-size:1.6rem;color:var(--gold);text-align:center}
+.tcard.rev{background:var(--ink);color:white;border-color:#d9b54a55}
+.tcard.rev .tcard-head b{color:var(--cc)}
+.tcard.rev .tcard-head{background:#ffffff10;border-bottom:1px solid #ffffff1a}
+.tcard.rev .consigna{color:#d5dce7}
+.tcard.rev h3{color:white}
+.tcard.rev .rombo{display:block;width:14px;height:14px;background:var(--gold);transform:rotate(45deg);margin-bottom:6px}
+.tcard.rev .comp{font-size:.58rem;letter-spacing:.11em;text-transform:uppercase;color:#8fa0bc}
+@media(max-width:700px){.anatomy-demo{grid-template-columns:1fr}.anatomy-demo .giro{transform:rotate(90deg)}}
+.anatomy{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:center}
+.anatomy-notes div{border-left:3px solid var(--gold);padding:10px 0 10px 18px;margin-bottom:14px}
+.anatomy-notes b{display:block;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:#8c6e15}
+.anatomy-notes p{margin:4px 0 0;color:var(--muted);font-size:.94rem}
+.tcard{--cc:#c13a68;background:white;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 10px 26px #0713260f;break-inside:avoid}
+.tcard.conecta{--cc:#c13a68}.tcard.comprende{--cc:#8b59b2}.tcard.crea{--cc:#ed8124}.tcard.consolida{--cc:#3988ca}
+.tcard-head{background:var(--cc);color:white;padding:13px 16px;display:flex;justify-content:space-between;align-items:baseline}
+.tcard-head b{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase}
+.tcard-head span{font-size:.68rem;opacity:.85;font-weight:900}
+.tcard-body{padding:16px;display:flex;flex-direction:column;gap:11px;flex:1}
+.tcard h3{font-size:1.14rem;margin:0}
+.tcard .consigna{font-size:.92rem;color:#38465a;margin:0}
+.tcard .zone{font-size:.8rem;color:#536075;margin:0;padding-top:9px;border-top:1px dashed var(--line)}
+.tcard .zone b{display:block;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cc);margin-bottom:3px}
+.tcard-foot{margin-top:auto;background:var(--ink);color:#cfd7e4;font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;padding:9px 16px;display:flex;justify-content:space-between;gap:8px}
+.tcard-foot b{color:var(--gold);white-space:nowrap}
+
 /* ===== el diamante como selector de pilar ===== */
 .selector{background:var(--ink);color:white;padding:56px 0 70px;border-top:1px solid #ffffff1a}
 .sel-grid{display:grid;grid-template-columns:minmax(0,420px) 1fr;gap:48px;align-items:center}
@@ -102,19 +130,12 @@
 @media print{.mz-hero,.selector,.mesa,nav,footer{display:none}.mini-cartas{grid-template-columns:repeat(3,1fr)}}
 </style></head><body>
 
-<nav><div class="wrap">
-  <a class="brand" href="index.html">4SHINE EXPERIENCE®</a>
-  <a class="navlink" href="index.html">Inicio</a>
-  <a class="navlink" href="opcion-a.html">La sesión</a>
-  <a class="navlink" href="cartas.html">Tarjetas de Reto</a>
-  <a class="navlink active" href="mazo.html">El mazo completo</a>
-  <a class="navlink" href="sim/diamante/" style="color:#d9b54a;border:1px solid #d9b54a66;border-radius:999px;padding:5px 13px">▶ Simulador</a>
-</div></nav>
+<nav><div class="wrap"><a class="brand" href="index.html">4SHINE EXPERIENCE®</a><a class="navlink" href="index.html">Inicio</a><a class="navlink" href="opcion-a.html">La sesión</a><a class="navlink active" href="mazo.html">El mazo</a><a class="navlink" href="sim/diamante/" style="color:#d9b54a;border:1px solid #d9b54a66;border-radius:999px;padding:5px 13px">▶ Simulador</a></div></nav>
 
 <header class="mz-hero"><div class="wrap">
   <span class="eyebrow">El mazo del Diamante Vivo · recto y reverso</span>
   <h1>Un mazo.<br><em>96</em> cartas. Dos caras.</h1>
-  <p class="lead">Cada carta tiene un <b>Reto</b> en el recto —lo que hay que mover sobre el tablero— y su <b>Conducta Observable</b> en el reverso: lo que esa persona podrá sostener fuera de la mesa. El mapa de competencias entero, en un solo mazo repartido por pilar.</p>
+  <p class="lead">Cada carta tiene un <b>Reto</b> en el recto —lo que hay que mover sobre el tablero— y su <b>Conducta Observable</b> en el reverso: lo que esa persona podrá sostener fuera de la mesa. El mapa de competencias entero, en un solo mazo repartido por pilar. Existe además una <b>variante escolar</b> completa: las mismas 96 competencias dichas en el mundo de un estudiante de último grado.</p>
   <div class="conteo">
     <span><b>4</b> pilares</span><span><b>22</b> componentes</span>
     <span><b>47</b> competencias</span><span><b>96</b> cartas de dos caras</span>
@@ -129,6 +150,42 @@
     <div class="sel-info" id="sel-info"></div>
   </div>
 </div></section>
+
+<!-- ===== ANATOMÍA DE LA CARTA ===== -->
+<section class="alt"><div class="wrap"><div class="intro"><span class="eyebrow">Cómo leer una carta</span><h2>Nada en la carta es decorativo.</h2><p>Toda carta 4Shine tiene la misma anatomía: una consigna que provoca, una instrucción física sobre el material, una pregunta de cierre y su ruta de origen en el framework.</p></div>
+<div class="anatomy">
+<div class="anatomy-demo">
+  <article class="tcard" style="--cc:#8b59b2">
+    <div class="tcard-head"><b>Within · Comprende</b><span>W05</span></div>
+    <div class="tcard-body"><h3>La creencia</h3>
+      <p class="consigna">¿Qué frase se repite sobre esta situación? Dígala en voz alta, exactamente como suena en su cabeza.</p>
+      <div class="zone"><b>En el tablero</b>Si esa frase fuera un muro, constrúyalo. Decida dónde está y qué separa.</div>
+      <div class="zone"><b>Para cerrar</b>Reescriba la frase como protagonista: ¿qué puede aprender o aportar aquí?</div></div>
+    <div class="tcard-foot"><span>Recto · el reto</span><b>4SHINE®</b></div></article>
+  <div class="giro">⟲</div>
+  <article class="tcard rev" style="--cc:#8b59b2">
+    <div class="tcard-head"><b>Within</b><span>W05</span></div>
+    <div class="tcard-body">
+      <span class="rombo"></span>
+      <span class="comp">Autoconfianza y autoliderazgo</span>
+      <h3>Gestión de creencias</h3>
+      <p class="consigna">Identifica activamente sus creencias limitantes y las reescribe hacia un lenguaje transformador y empoderante.</p></div>
+    <div class="tcard-foot"><span>Reverso · la conducta</span><b>4SHINE®</b></div></article>
+</div>
+</div>
+<div class="anatomy-notes">
+<div><b>Campo y número</b><p>El color indica en qué campo del tablero (o dimensión 4Shine) trabaja la carta. El número permite referenciarla en la guía del Advisor.</p></div>
+<div><b>La consigna</b><p>Una pregunta o condición que provoca. Nunca da la respuesta: cambia la conversación.</p></div>
+<div><b>En el tablero / la acción</b><p>Toda carta exige un movimiento físico u observable. Lo que no se mueve o no se dice, no ocurrió.</p></div>
+<div><b>Para cerrar</b><p>La pregunta de debrief que el Advisor usa para convertir el movimiento en aprendizaje.</p></div>
+<div><b>La ruta de origen</b><p>Cada carta nace de una competencia del Mapa 4Shine (4 pilares · 22 componentes · 47 competencias · 96 conductas). Trazabilidad total entre el juego y el framework.</p></div>
+<div><b>El reverso: la conducta</b><p>Al otro lado de la misma carta está la conducta observable literal del mapa 4Shine. El reto del recto existe para entrenarla; el reverso se revela al cierre de la sesión, cuando la persona decide si se compromete con ella.</p></div>
+<div><b>Un solo objeto, dos momentos</b><p>La carta se roba en la fase CREA para perturbar la escena, y se voltea en CONSOLIDA para convertirse en compromiso. Lo que se movió sobre el tablero y lo que se sostiene el lunes son las dos caras de la misma pieza.</p></div>
+</div></div></div></section>
+
+<!-- ============ DIAMANTE VIVO: RETOS ============ -->
+
+
 
 <!-- ===== LA MESA ===== -->
 <section class="mesa" id="mesa"><div class="wrap">
