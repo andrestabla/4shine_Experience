@@ -327,3 +327,21 @@
 .paso-actual i{font-style:normal;color:#7f8ea6}
 .mesa-acciones{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 @media(max-width:820px){.modos,.roles-grid{grid-template-columns:1fr}}
+
+/* ===== las tres formas de sacar carta ===== */
+.formas{display:grid;gap:10px}
+.forma{text-align:left;background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--fc);
+  border-radius:11px;padding:15px 17px;color:var(--text);font-family:inherit;cursor:pointer;transition:.16s}
+.forma:hover{border-color:var(--fc);background:#16294a;transform:translateX(3px)}
+.forma b{display:block;font-size:.95rem;margin-bottom:5px}
+.forma span{display:block;font-size:.81rem;color:var(--muted);line-height:1.5}
+.forma i{display:block;margin-top:8px;font-style:normal;font-size:.68rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--fc);font-weight:900}
+.propuesta{margin-top:16px;border:1px solid var(--pc);border-radius:12px;padding:18px;
+  background:linear-gradient(180deg,#16294a,#101f34)}
+.propuesta b{display:block;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--pc);margin-bottom:6px}
+.propuesta h4{font-size:1.1rem;margin:0 0 8px}
+.pr-porque{margin:0;font-size:.87rem;color:#d5dce7;font-style:italic;line-height:1.55}
+.origen-carta{margin:8px 0 0;font-size:.72rem;color:#7f8ea6;text-align:center}
+.tp-cuerpo b i{background:var(--gold);color:#071326;padding:2px 7px;border-radius:4px;font-size:.6rem;
+  letter-spacing:.08em;text-transform:uppercase;margin-left:8px;font-weight:900}

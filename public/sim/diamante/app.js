@@ -386,16 +386,39 @@ const DV = (() => {
 
   function panelCrea(){
     if(!st.reto){
-      $("fase-panel").innerHTML = `<h3>Robe una carta</h3>
-        <p class="hint" style="margin:0 0 12px">El mazo tiene 96 cartas. El recto es un reto que perturba su escena; el reverso, la conducta que entrena. Elija desde qué pilar quiere ser perturbado, o deje que el azar decida.</p>
-        <div class="pilar-tabs">${Object.entries(PIL_META).map(([id,p]) =>
-          `<button class="ptab" style="--pc:${p.color}" onclick="DV.robarReto('${id}')">${esc(p.nombre.replace("Shine ",""))}<small>${mazoCompleto().filter(c=>c.pilar===id).length}</small></button>`).join("")}</div>
-        <div class="btn-row" style="margin-top:14px"><button class="btn" onclick="DV.robarReto()">▲ Robar del mazo completo</button></div>`;
+      $("fase-panel").innerHTML = `<h3>${T("¿Cómo aparece la carta?","¿Cómo aparece la carta?")}</h3>
+        <p class="hint" style="margin:0 0 14px">${T(
+          "El mazo tiene 96 cartas. Hay tres formas de que salga una, y cada una significa algo distinto. Elija con qué criterio quiere ser perturbado.",
+          "El mazo tiene 96 cartas. Hay tres formas de que salga una, y cada una significa algo distinto. Elige con qué criterio quieres que te toque.")}
+          <button class="ayuda-btn" style="margin-top:10px" onclick="DV.abrirComoCartas()"><i>?</i> ${T("Ver las tres formas","Ver las tres formas")}</button></p>
+
+        <div class="formas">
+          <button class="forma" style="--fc:#8b59b2" onclick="DV.pedirCartaAdvisor()">
+            <b>El Advisor la elige</b>
+            <span>${T("Lee su escena y la conversación, y propone la carta que toca lo que quedó a medio nombrar. Dice por qué. Usted puede rechazarla.",
+                      "Lee tu escena y la conversación, y propone la carta que toca lo que quedó a medio nombrar. Dice por qué. Puedes rechazarla.")}</span>
+            <i>Máxima relevancia · el Advisor propone, ${T("usted dispone","tú dispones")}</i></button>
+
+          <button class="forma" style="--fc:#ed8124" onclick="DV.abrirPilares()">
+            <b>${T("Usted elige el pilar, el azar la carta","Eliges el pilar, el azar la carta")}</b>
+            <span>${T("Decide en qué dimensión quiere trabajar y saca a ciegas dentro de ese mazo.",
+                      "Decides en qué dimensión quieres trabajar y sacas a ciegas de ese mazo.")}</span>
+            <i>${T("Recomendado · conserva su decisión y la sorpresa","Recomendado · decides tú y aún así sorprende")}</i></button>
+
+          <button class="forma" style="--fc:#c13a68" onclick="DV.robarReto()">
+            <b>Azar puro</b>
+            <span>${T("Sale una de las 96, sin filtro. Como la vida: la perturbación no la elige uno.",
+                      "Sale una de las 96, sin filtro. Como la vida: lo que te mueve no lo eliges tú.")}</span>
+            <i>${T("Máxima sorpresa · puede tocar algo lejano","Máxima sorpresa · puede tocar algo lejano")}</i></button>
+        </div>
+        <div id="pilares-robo"></div>
+        <div id="propuesta-advisor"></div>`;
       return;
     }
     const r = st.reto;
     $("fase-panel").innerHTML = `<h3>Su carta</h3>
       <div class="carta-mesa">${cartaHTML(st.carta, {entrando:true})}</div>
+      <p class="origen-carta">${{advisor:"◆ La eligió el Advisor", pilar:"● " + T("Pilar elegido, carta al azar","Pilar elegido, carta al azar"), azar:"◇ Azar puro"}[st.origenCarta] || ""} · el reverso se revela al cierre</p>
       <p class="jc-pregunta"><b>Para cerrar</b>${esc(r.p||"")}</p>
       <div class="field" style="margin:14px 0 12px"><label>¿Qué movió y por qué?</label>
         <textarea id="in-explicacion" placeholder="Explique cada movimiento que hizo sobre el tablero.">${esc(st.explicacion||"")}</textarea></div>
@@ -508,11 +531,86 @@ const DV = (() => {
     }
   }
 
-  function robarReto(pilar){
+  function abrirPilares(){
+    const box = $("pilares-robo"); if(!box) return;
+    box.innerHTML = `<p class="hint" style="margin:16px 0 8px">${T("¿En qué dimensión quiere ser perturbado?","¿En qué dimensión quieres que te toque?")}</p>
+      <div class="pilar-tabs">${Object.entries(PIL_META).map(([id,p]) =>
+        `<button class="ptab" style="--pc:${p.color}" onclick="DV.robarReto('${id}')">${esc(p.nombre.replace("Shine ",""))}
+          <small>${mazoCompleto().filter(c=>c.pilar===id).length}</small></button>`).join("")}</div>`;
+  }
+
+  async function pedirCartaAdvisor(){
+    const box = $("propuesta-advisor");
+    box.innerHTML = `<p class="hint" style="margin-top:16px"><span class="av-typing">
+      ${T("El Advisor lee su escena para elegir","El Advisor lee tu escena para elegir")} <i></i><i></i><i></i></span></p>`;
+    const mazo = mazoCompleto();
+    const o = await pedir({fase:"dv_carta", quien:st.quien, situacion:st.situacion,
+      escena:BOARD.describir(), narracion:st.narracion, hilo:st.hilo,
+      candidatas: mazo.map(c => ({id:c.id, pilar:c.pilar, competencia:c.competencia, titulo:c.reto.t}))});
+    const carta = mazo.find(c => c.id === o.carta_id) || mazo[Math.floor(Math.random()*mazo.length)];
+    const p = PIL_META[carta.pilar] || {};
+    box.innerHTML = `<div class="propuesta" style="--pc:${p.color}">
+      <b>${T("El Advisor propone","El Advisor propone")} · ${carta.id}</b>
+      <h4>${esc(carta.reto.t)}</h4>
+      <p class="pr-porque">“${esc(o.porque || "")}”</p>
+      <div class="btn-row" style="margin-top:12px;gap:8px">
+        <button class="ctrl-mini fuerte" onclick="DV.aceptarCarta('${carta.id}')">${T("Acepto esta carta","Acepto esta carta")}</button>
+        <button class="ctrl-mini" onclick="DV.robarReto()">${T("Prefiero el azar","Prefiero el azar")}</button>
+      </div>
+      ${o._modo === "offline" ? `<p class="av-offline">⚠ Advisor no disponible: la carta salió al azar.</p>` : ""}
+    </div>`;
+  }
+  function aceptarCarta(id){ robarReto(null, id); }
+
+  function abrirComoCartas(){
+    cerrarModal();
+    const m = document.createElement("div");
+    m.className = "modal modal-ayuda";
+    m.innerHTML = `<div class="modal-caja ancha" style="--mc:#ed8124">
+      <span class="m-tag">Fase 03 · Crea</span>
+      <h3>¿Cómo aparecen las cartas?</h3>
+      <p class="m-idea">Una carta no es un premio ni un castigo: es una <b>perturbación</b>. Por eso importa
+        de dónde viene. El mazo admite tres formas de sacarla y ${T("la sesión cambia según cuál use","la sesión cambia según cuál uses")}.</p>
+      <div class="turno-lista">
+        <div class="turno-paso"><span class="tp-n" style="background:#8b59b2">1</span><div class="tp-cuerpo">
+          <b>El Advisor elige</b>
+          <p>Lee la escena construida y la conversación, y propone la carta que toca aquello que apareció
+             sin acabar de nombrarse. <b>Siempre dice por qué</b>, citando algo del tablero o de sus palabras.</p>
+          <p class="tp-porque">Máxima relevancia. El riesgo es que el Advisor dirija demasiado: por eso la
+             propuesta se puede rechazar y se ve la justificación. El Advisor propone; ${T("el participante dispone","quien juega dispone")}.</p></div></div>
+        <div class="turno-paso"><span class="tp-n" style="background:#ed8124">2</span><div class="tp-cuerpo">
+          <b>Se elige el pilar, el azar la carta <i>recomendado</i></b>
+          <p>${T("La persona decide en qué dimensión quiere trabajar —Within, Out, Up o Beyond— y saca a ciegas dentro de ese mazo.",
+                 "Decides en qué dimensión quieres trabajar —Within, Out, Up o Beyond— y sacas a ciegas de ese mazo.")}</p>
+          <p class="tp-porque">El equilibrio entre decisión y sorpresa. Conserva la autoría —nadie elige por
+             ${T("la persona","ti")}— y evita que se escoja la carta más cómoda del mazo.</p></div></div>
+        <div class="turno-paso"><span class="tp-n" style="background:#c13a68">3</span><div class="tp-cuerpo">
+          <b>Azar puro</b>
+          <p>Sale una de las 96 sin ningún filtro.</p>
+          <p class="tp-porque">Es el más fiel a la vida: lo que perturba no se escoge. También el más
+             arriesgado, porque puede tocar una dimensión lejana a la situación. Útil cuando la mesa
+             se está poniendo demasiado cómoda.</p></div></div>
+      </div>
+      <p class="m-nota">En la mesa física, quien reparte es el Advisor: ${T("puede ofrecer el mazo boca abajo, dejar elegir el pilar o poner una carta concreta sobre la mesa.","puede ofrecer el mazo boca abajo, dejar elegir el pilar o poner una carta concreta sobre la mesa.")}
+        Lo que nunca cambia es que ${T("el participante","quien juega")} puede pedir otra: la carta perturba, no obliga.</p>
+      <div class="btn-row" style="margin-top:20px"><button class="btn" id="m-ok">Entendido →</button></div>
+    </div>`;
+    document.body.appendChild(m);
+    m.querySelector("#m-ok").onclick = cerrarModal;
+    m.onclick = e => { if(e.target === m) cerrarModal(); };
+  }
+
+  function robarReto(pilar, idFijo){
     const mazo = mazoCompleto().filter(c => !pilar || c.pilar === pilar);
     if(!mazo.length) return;
-    const pool = mazo.filter(c => c.id !== st.carta?.id);
-    st.carta = pool[Math.floor(Math.random() * pool.length)];
+    if(idFijo){
+      st.carta = mazoCompleto().find(c => c.id === idFijo) || mazo[0];
+      st.origenCarta = "advisor";
+    } else {
+      const pool = mazo.filter(c => c.id !== st.carta?.id);
+      st.carta = pool[Math.floor(Math.random() * pool.length)];
+      st.origenCarta = pilar ? "pilar" : "azar";
+    }
     st.reto = {...st.carta.reto, id:st.carta.id, campo:st.carta.pilar, o:`${(PIL_META[st.carta.pilar]||{}).nombre} · ${st.carta.competencia}`};
     st.huellaAntes = BOARD.huella();
     st.pngAntes = BOARD.exportarPNG();
@@ -960,6 +1058,7 @@ const DV = (() => {
 
   return {abrirAyudaFase, abrirAyudaAdvisor, cerrarModal, elegirEscenario, volverEscenario, volverModo,
           elegirModo, elegirSituacion, agregarParticipante, quitarParticipante, setParticipante,
+          abrirPilares, pedirCartaAdvisor, aceptarCarta, abrirComoCartas,
           abrirReglasMesa, avanzarTurno,
           iniciar, avanzar, robarReto, enviarNarracion, responderAdvisor,
           enviarReconfiguracion, cerrar, renombrarSel, eliminarSel,

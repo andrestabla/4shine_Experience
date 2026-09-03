@@ -132,6 +132,9 @@ FALLBACKS = {
     "dv_dialogo": lambda p: {
         "respuesta": "Registro lo que dice.", "siguiente_pregunta": "",
         "listo": True, "hallazgo": "", "_modo": "offline"},
+    "dv_carta": lambda p: {
+        "carta_id": (p.get("candidatas") or [{}])[0].get("id"),
+        "porque": "Sin el Advisor activo, la carta se elige al azar del mazo.", "_modo": "offline"},
     "dv_cierre": lambda p: {
         "sintesis": "La escena quedó construida, perturbada y reconfigurada. El compromiso quedó registrado.",
         "_modo": "offline"},
@@ -305,6 +308,44 @@ Devuelve JSON: {{"respuesta":"2-3 frases en voz de Advisor, citando textualmente
 "hallazgo":"si listo es true, 1 frase con lo que la persona hizo visible, en SUS palabras; si no, cadena vacía"}}"""
         out = call_openai([{"role": "system", "content": persona_diamante(p)}, {"role": "user", "content": user}])
         out.setdefault("listo", False)
+        return out
+
+    if fase == "dv_carta":
+        cand = p.get("candidatas") or []
+        listado = "\n".join(f'{c["id"]} · {c["pilar"]} · {c["competencia"]} — «{c["titulo"]}»' for c in cand)
+        hilo = "\n".join(f"{'ADVISOR' if m['rol']=='advisor' else 'PERSONA'}: {m['texto']}"
+                          for m in (p.get("hilo") or []))
+        user = f"""PARTICIPANTE: {p.get('quien')} · SITUACIÓN: «{p.get('situacion')}»
+
+ESCENA SOBRE EL TABLERO:
+{p.get('escena')}
+
+LO QUE NARRÓ Y CONVERSAMOS:
+{hilo or p.get('narracion') or '(sin conversación previa)'}
+
+CARTAS DISPONIBLES:
+{listado}
+
+Elija UNA carta del mazo para perturbar esta escena. No elija la más cómoda ni la más
+evidente: elija la que toque lo que la persona hizo visible sin nombrarlo del todo.
+
+El campo «porque» son DOS frases con esta estructura exacta:
+  1ª — qué observó, citando textualmente entre comillas algo del tablero o de sus palabras.
+  2ª — qué mueve esa carta en esta escena concreta. Empiécela con «Esta carta» seguido de un
+     verbo, sin puntos suspensivos.
+No interprete el significado de las piezas ni diga qué le pasa a la persona: describa lo
+observable y encadene la elección. Nada de listas de citas sueltas.
+
+Ejemplo de la forma esperada (no del contenido):
+  "Puso «La decisión» lejos del centro y dejó el muro «El costo político» entre ambos.
+   Esta carta trabaja el vínculo que todavía no ha usado."
+
+Devuelve JSON: {{"carta_id":"XX00","porque":"las dos frases"}}"""
+        out = call_openai([{"role": "system", "content": persona_diamante(p)}, {"role": "user", "content": user}])
+        ids = {c["id"] for c in cand}
+        if out.get("carta_id") not in ids and cand:
+            out["carta_id"] = cand[0]["id"]
+            out["porque"] = out.get("porque") or "Elijo esta para mover lo que quedó quieto en la escena."
         return out
 
     if fase == "dv_cierre":
