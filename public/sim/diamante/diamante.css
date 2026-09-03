@@ -262,3 +262,6 @@
 .sit-op b{display:block;font-size:.95rem;margin-bottom:5px}
 .sit-op span{font-size:.8rem;color:var(--muted);line-height:1.5}
 @media(max-width:900px){.escenarios,.situaciones{grid-template-columns:1fr}}
+.m-sit{margin:0 0 16px;padding:12px 15px;border-left:3px solid var(--mc);background:#ffffff0a;
+  border-radius:0 9px 9px 0;font-size:.9rem;color:#d5dce7}
+.m-sit b{display:block;font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:var(--mc);margin-bottom:4px}

@@ -60,52 +60,16 @@ const EJEMPLOS = [
 ];
 
 const FASES = [
-  {id:"conecta",  tag:"FASE 01 · CONECTA",  nombre:"Construyo",   color:"#c13a68", pct:25,
-   instr:"Represente la situación tal como se vive hoy: ubíquese a usted, a los actores, las metas, las barreras y los vínculos. Las manos van adelante del discurso.",
-   ayuda:{
-     titulo:"Construya antes de explicar",
-     idea:"No se responde con palabras: se representa. Ponga sobre el tablero lo que hoy compone su situación y deje que la escena hable antes que usted.",
-     pasos:["Arrastre primero <b>su propio avatar</b> y ubíquelo donde sienta que está: en el centro o desplazado hacia algún pilar.",
-            "Añada a <b>las personas</b> que habitan la situación. La distancia a la que las coloque significa algo.",
-            "Ponga <b>metas, barreras y estructuras</b> con las piezas símbolo: el foco es una prioridad, la barrera lo que bloquea, el puente una transición.",
-            "Una las piezas con <b>conectores</b>: no todos los vínculos son iguales. Hay activos, tensos, en revisión y rotos.",
-            "Marque con <b>fichas</b> dónde duele (tensión) y dónde tiene apoyo (recurso)."],
-     nota:"Necesita al menos tres piezas para que la escena pueda leerse. Nombre cada una con las palabras que usaría fuera de esta mesa.",
-     advisor:"El Advisor no interviene mientras construye. Solo mira."}},
-  {id:"comprende",tag:"FASE 02 · COMPRENDE",nombre:"Narro",       color:"#8b59b2", pct:50,
-   instr:"Cuente lo que construyó. El Advisor solo hará preguntas: nadie interpretará su escena por usted.",
-   ayuda:{
-     titulo:"Cuente lo que ve, no lo que debería ver",
-     idea:"Ahora narra su escena. El Advisor la lee y devuelve preguntas sobre lo <b>visible</b>: distancias, ausencias, qué separa a qué. Usted responde, él insiste.",
-     pasos:["Describa la escena como si la viera por primera vez: quién está, qué separa a quién, dónde puso la tensión.",
-            "El Advisor le hará tres preguntas. <b>Puede mover piezas mientras responde</b>: si algo aparece, colóquelo.",
-            "Responda con lo que ve, no con lo que cree que debería decir.",
-            "Cuando el Advisor considere que apareció algo nuevo, marcará <b>«material suficiente»</b> y podrá avanzar."],
-     nota:"Puede seguir conversando aunque ya pueda avanzar. La conversación es donde ocurre el trabajo.",
-     advisor:"Pregunta por lo visible. Nunca dice qué significa una pieza ni le da consejos."}},
-  {id:"crea",     tag:"FASE 03 · CREA",     nombre:"Reconfiguro", color:"#ed8124", pct:75,
-   instr:"Una Tarjeta de Reto perturba la escena. No basta con comentarla: hay que mover el tablero y explicar cada movimiento.",
-   ayuda:{
-     titulo:"La carta perturba: el tablero se mueve",
-     idea:"Robe una carta del mazo. En el <b>recto</b> trae un reto que altera su escena; el <b>reverso</b> guarda la conducta que ese reto entrena y se revelará al cierre.",
-     pasos:["Elija de qué pilar quiere ser perturbado, o robe del mazo completo.",
-            "Lea la consigna y haga lo que pide el bloque <b>«En el tablero»</b>: mover, retirar, acercar, cambiar un conector.",
-            "Explique cada movimiento que hizo y por qué.",
-            "El sistema <b>comprueba que el tablero cambió</b>. Si nada se movió, la jugada se devuelve."],
-     nota:"No hay respuestas correctas: hay decisiones visibles. Lo que no se mueve, no ocurrió.",
-     advisor:"Compara la escena antes y después, nombra exactamente qué cambió y pregunta por ese cambio."}},
-  {id:"consolida",tag:"FASE 04 · CONSOLIDA",nombre:"Actúo",       color:"#3988ca", pct:100,
-   instr:"Elija una sola conducta observable y conviértala en un compromiso verificable en el Canvas de Acción.",
-   ayuda:{
-     titulo:"Una sola conducta, con fecha",
-     idea:"La sesión termina cuando algo de lo que ocurrió aquí se convierte en una acción que <b>otra persona podrá ver</b> esta semana.",
-     pasos:["Voltee la carta que jugó: al otro lado está la conducta que ese reto entrenaba.",
-            "Comprométase con esa conducta, o busque otra en el mazo de cualquier pilar.",
-            "Diga <b>ante quién y cuándo</b>: sin destinatario ni fecha, no es un compromiso.",
-            "Escriba qué <b>evidencia</b> traerá: cómo sabremos que ocurrió."],
-     nota:"Prefiera una conducta que pueda sostener a cinco que suenen bien.",
-     advisor:"Cierra la sesión recorriendo lo que pasó en la mesa y señalando lo que quedó sin nombrar."}}
+  {id:"conecta",  tag:"FASE 01 · CONECTA",  nombre:"Construyo",   nombreTu:"Armo",   color:"#c13a68", pct:25,
+   instr:"Represente la situación tal como se vive hoy."},
+  {id:"comprende",tag:"FASE 02 · COMPRENDE",nombre:"Narro",       nombreTu:"Cuento", color:"#8b59b2", pct:50,
+   instr:"Cuente lo que construyó. El Advisor solo hará preguntas."},
+  {id:"crea",     tag:"FASE 03 · CREA",     nombre:"Reconfiguro", nombreTu:"Muevo",  color:"#ed8124", pct:75,
+   instr:"Una carta perturba la escena: hay que mover el tablero."},
+  {id:"consolida",tag:"FASE 04 · CONSOLIDA",nombre:"Actúo",       nombreTu:"Actúo",  color:"#3988ca", pct:100,
+   instr:"Una sola conducta observable, con responsable y fecha."}
 ];
+
 
 
 const DV = (() => {
@@ -287,7 +251,7 @@ const DV = (() => {
     $("fase-bar").style.width = f.pct + "%";
     $("hud-fase").innerHTML = `Fase <b>${st.fase+1}</b> de 4 · ${f.nombre}`;
     $("f-tag").textContent = f.tag; $("f-tag").style.color = f.color;
-    $("f-nombre").textContent = f.nombre;
+    $("f-nombre").textContent = tuteo() ? f.nombreTu : f.nombre;
     $("f-instr").innerHTML = `<button class="ayuda-btn" onclick="DV.abrirAyudaFase(true)">
         <i>?</i> ${T("Cómo funciona esta fase","Qué toca hacer aquí")}</button>
       <button class="ayuda-btn" onclick="DV.abrirAyudaAdvisor()"><i>◆</i> ¿Qué hace el Advisor?</button>`;
@@ -747,26 +711,33 @@ const DV = (() => {
   }
   function cerrarModal(){ document.querySelector(".modal-ayuda")?.remove(); }
 
+  function ayudaDe(faseId){
+    const set = (typeof AYUDAS !== "undefined" && AYUDAS[st.ctx?.id]) || (typeof AYUDAS !== "undefined" ? AYUDAS.gerencial : null);
+    return set ? set[faseId] : null;
+  }
   function abrirAyudaFase(forzar){
-    const f = FASES[st.fase], a = f.ayuda;
-    if(!forzar && yaVista(f.id)) return;
+    const f = FASES[st.fase], a = ayudaDe(f.id);
+    if(!a) return;
+    const clave = `${st.ctx?.id || "x"}:${f.id}`;
+    if(!forzar && yaVista(clave)) return;
     cerrarModal();
     const m = document.createElement("div");
     m.className = "modal modal-ayuda";
     m.innerHTML = `<div class="modal-caja ancha" style="--mc:${f.color}">
-      <span class="m-tag">${esc(f.tag)}</span>
+      <span class="m-tag">${esc(f.tag)} · ${esc(st.ctx?.nombre || "")}</span>
       <h3>${esc(a.titulo)}</h3>
+      ${st.situacion ? `<p class="m-sit"><b>${T("Su situación","Tu situación")}</b>${esc(st.situacion)}</p>` : ""}
       <p class="m-idea">${a.idea}</p>
       <ol class="m-pasos">${a.pasos.map(p=>`<li>${p}</li>`).join("")}</ol>
       <p class="m-nota">${esc(a.nota)}</p>
       <p class="m-advisor"><b>El Advisor en esta fase</b>${esc(a.advisor)}</p>
-      <div class="btn-row" style="margin-top:20px"><button class="btn" id="m-ok">Entendido, a la mesa →</button></div>
+      <div class="btn-row" style="margin-top:20px"><button class="btn" id="m-ok">${T("Entendido, a la mesa →","Listo, a la mesa →")}</button></div>
     </div>`;
     document.body.appendChild(m);
-    m.querySelector("#m-ok").onclick = () => { marcarVista(f.id); cerrarModal(); };
-    m.onclick = e => { if(e.target === m){ marcarVista(f.id); cerrarModal(); } };
+    m.querySelector("#m-ok").onclick = () => { marcarVista(clave); cerrarModal(); };
+    m.onclick = e => { if(e.target === m){ marcarVista(clave); cerrarModal(); } };
     document.addEventListener("keydown", function esc_(e){
-      if(e.key === "Escape"){ marcarVista(f.id); cerrarModal(); document.removeEventListener("keydown", esc_); }
+      if(e.key === "Escape"){ marcarVista(clave); cerrarModal(); document.removeEventListener("keydown", esc_); }
     });
   }
 
