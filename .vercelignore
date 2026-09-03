@@ -1,3 +1,4 @@
+# Carpetas de trabajo que no forman parte del despliegue
 Referentes/
 4Shine Personas/
 Manual de marca/
@@ -5,9 +6,6 @@ Sistema de juego/
 entrega-s3-4shine/
 output/
 tmp/
-docs/
-tools/
-.git/
 *.pdf
 *.docx
 *.pptx
