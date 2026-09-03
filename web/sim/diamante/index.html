@@ -1,0 +1,95 @@
+<!doctype html><html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Simulador · El Diamante Vivo · 4Shine Experience</title>
+<link rel="stylesheet" href="../sim.css"><link rel="stylesheet" href="diamante.css">
+</head><body>
+
+<div class="topbar"><div class="wrap">
+  <a class="brand" href="../index.html">4SHINE EXPERIENCE®<span>Simulador · El Diamante Vivo</span></a>
+  <div class="hud"><span class="chip hide-sm" id="hud-quien"></span><span class="chip" id="hud-fase"></span>
+  <a class="linkout" href="../../index.html">Salir</a></div>
+</div></div>
+<div class="pressure"><i id="fase-bar"></i></div>
+
+<!-- ===== SETUP ===== -->
+<section class="screen" id="scr-setup"><div class="wrap narrow">
+  <span class="eyebrow">Experiencia individual · construcción simbólica</span>
+  <h1 class="setup-h1">El Diamante <em>Vivo</em></h1>
+  <p class="lead">Construya sobre el tablero la situación de liderazgo que hoy tiene delante. No se responde con palabras: se representa con piezas. Después una tarjeta la perturbará y usted tendrá que moverla.</p>
+
+  <div class="field"><label for="in-quien">¿Quién construye?</label>
+    <input type="text" id="in-quien" placeholder="Nombre y rol · Ej.: Laura, directora comercial" maxlength="90"></div>
+
+  <div class="field"><label for="in-situacion">¿Qué situación va a poner sobre la mesa?</label>
+    <textarea id="in-situacion" placeholder="Una decisión, una relación difícil, una transición. Real, vigente y suya."></textarea>
+    <div class="ejemplos" id="ejemplos"></div></div>
+
+  <div class="rules-box"><h3>Cómo funciona</h3><ol>
+    <li><b>CONECTA · Construyo</b> — represente la situación con avatares, piezas y vínculos.</li>
+    <li><b>COMPRENDE · Narro</b> — cuente lo que construyó. El Advisor solo pregunta, nunca interpreta.</li>
+    <li><b>CREA · Reconfiguro</b> — una Tarjeta de Reto perturba la escena: <b>hay que mover piezas</b>, no comentar.</li>
+    <li><b>CONSOLIDA · Actúo</b> — elija una conducta observable y regístrela en el Canvas de Acción.</li>
+  </ol></div>
+
+  <div class="btn-row"><button class="btn" id="btn-start" disabled onclick="DV.iniciar()">Abrir el tablero →</button>
+    <span class="hint" id="setup-hint">Complete quién construye y qué situación va a trabajar.</span></div>
+</div></section>
+
+<!-- ===== MESA ===== -->
+<section class="screen hidden" id="scr-mesa"><div class="wrap wide">
+  <div class="steps" id="steps"></div>
+
+  <div class="mesa-head">
+    <div><span class="round-tag" id="f-tag"></span><h2 id="f-nombre"></h2>
+      <p class="f-instr" id="f-instr"></p></div>
+    <div class="sit-recordatorio"><b>Su situación</b><span id="rec-situacion"></span></div>
+  </div>
+
+  <div class="mesa-grid">
+    <!-- bandeja -->
+    <aside class="bandeja" id="bandeja">
+      <div class="band-group"><h4>Avatares</h4><div class="band-items" id="pal-avatares"></div></div>
+      <div class="band-group"><h4>Piezas símbolo</h4><div class="band-items" id="pal-piezas"></div></div>
+      <div class="band-group"><h4>Fichas de tensión</h4><div class="band-items" id="pal-tension"></div></div>
+      <div class="band-group"><h4>Fichas de recurso</h4><div class="band-items" id="pal-recurso"></div></div>
+      <div class="band-group"><h4>Conectores</h4>
+        <p class="band-hint">Elija un tipo y luego toque las dos piezas que quiere unir.</p>
+        <div class="band-items conectores" id="pal-conectores"></div></div>
+    </aside>
+
+    <!-- tablero -->
+    <div class="tablero-col">
+      <div id="tablero" class="tablero"></div>
+      <div class="tablero-tools">
+        <div class="sel-info" id="sel-info">Toque una pieza para nombrarla, girarla o retirarla.</div>
+        <div class="sel-acciones hidden" id="sel-acciones">
+          <button class="mini" onclick="DV.renombrarSel()">✎ Nombrar</button>
+          <button class="mini danger" onclick="DV.eliminarSel()">✕ Retirar</button>
+        </div>
+      </div>
+      <div class="vinc-lista" id="vinc-lista"></div>
+    </div>
+
+    <!-- advisor + fase -->
+    <div class="lateral">
+      <div class="advisor">
+        <div class="advisor-head"><div class="av-mark"></div>
+          <div><b>Advisor 4Shine</b><span>Acompaña sin interpretar</span></div></div>
+        <div class="av-msg" id="av-msg"></div>
+        <div id="av-extra"></div>
+      </div>
+
+      <div class="panel fase-panel" id="fase-panel"></div>
+
+      <div class="log" id="log-box"><h3>Bitácora</h3><div id="log-list"><p class="hint" style="margin:0">La sesión comienza.</p></div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ===== CIERRE ===== -->
+<section class="screen hidden" id="scr-cierre"><div class="wrap" id="cierre-body"></div></section>
+
+<script src="../vendor/konva.min.js"></script>
+<script src="board.js"></script>
+<script src="app.js"></script>
+</body></html>

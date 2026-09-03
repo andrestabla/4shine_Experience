@@ -1,0 +1,201 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cartas Demo · 4Shine Experience</title><link rel="stylesheet" href="experience.css"><style>
+/* ===== anatomía ===== */
+.anatomy{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:center}
+.anatomy-notes div{border-left:3px solid var(--gold);padding:10px 0 10px 18px;margin-bottom:14px}
+.anatomy-notes b{display:block;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:#8c6e15}
+.anatomy-notes p{margin:4px 0 0;color:var(--muted);font-size:.94rem}
+/* ===== cartas de reto ===== */
+.deck-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.tcard{--cc:#c13a68;background:white;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 10px 26px #0713260f;break-inside:avoid}
+.tcard.conecta{--cc:#c13a68}.tcard.comprende{--cc:#8b59b2}.tcard.crea{--cc:#ed8124}.tcard.consolida{--cc:#3988ca}
+.tcard-head{background:var(--cc);color:white;padding:13px 16px;display:flex;justify-content:space-between;align-items:baseline}
+.tcard-head b{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase}
+.tcard-head span{font-size:.68rem;opacity:.85;font-weight:900}
+.tcard-body{padding:16px;display:flex;flex-direction:column;gap:11px;flex:1}
+.tcard h3{font-size:1.14rem;margin:0}
+.tcard .consigna{font-size:.92rem;color:#38465a;margin:0}
+.tcard .zone{font-size:.8rem;color:#536075;margin:0;padding-top:9px;border-top:1px dashed var(--line)}
+.tcard .zone b{display:block;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cc);margin-bottom:3px}
+.tcard-foot{margin-top:auto;background:var(--ink);color:#cfd7e4;font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;padding:9px 16px;display:flex;justify-content:space-between;gap:8px}
+.tcard-foot b{color:var(--gold);white-space:nowrap}
+/* ===== cartas de conducta ===== */
+.behavior-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.bcard{background:var(--ink);color:white;border-radius:14px;border:1px solid #d9b54a88;box-shadow:inset 0 0 0 4px #071326,inset 0 0 0 5px #d9b54a55,0 10px 26px #07132618;padding:20px 18px 16px;display:flex;flex-direction:column;gap:10px;break-inside:avoid}
+.bcard .diamond{width:16px;height:16px;background:var(--gold);transform:rotate(45deg);margin:2px 0 6px 2px}
+.bcard h3{font-size:1.05rem;margin:0}
+.bcard p{margin:0;font-size:.86rem;color:#d5dce7;flex:1}
+.bcard span{font-size:.6rem;letter-spacing:.11em;text-transform:uppercase;color:var(--gold);border-top:1px solid #ffffff22;padding-top:9px}
+/* ===== tarjetas de situación ===== */
+.sit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.scard{background:white;border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 12px 30px #07132612;break-inside:avoid}
+.scard-head{background:var(--ink);color:white;padding:16px 18px}
+.scard-head .ctx{font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);font-weight:900}
+.scard-head h3{font-size:1.3rem;margin:5px 0 0}
+.reveal{padding:13px 18px;border-left:5px solid var(--rc);border-bottom:1px solid var(--line)}
+.reveal b{display:block;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--rc);margin-bottom:4px}
+.reveal p{margin:0;font-size:.88rem;color:#38465a}
+.r1{--rc:#3988ca}.r2{--rc:#ed8124}.r3{--rc:#c13a68}
+.scard-foot{margin-top:auto;padding:12px 18px;background:#fbfaf6;font-size:.72rem;color:#536075}
+.scard-foot b{color:#8c6e15;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:3px}
+/* ===== movimientos (reutiliza estética de la página B) ===== */
+.moves-strip{background:#0b1729;color:white}
+.moves-strip .intro p{color:#cbd4e1}
+.move-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.move-card{padding:22px;border:1px solid #ffffff26;border-radius:14px;background:#101f34;box-shadow:inset 0 4px 0 var(--move);break-inside:avoid}
+.move-card.centro{--move:#c13a68}.move-card.vinculo{--move:#8b59b2}.move-card.sistema{--move:#ed8124}.move-card.legado{--move:#3988ca}
+.move-origin{color:var(--move);font-size:.66rem;font-weight:900;letter-spacing:.12em}
+.move-card h3{font-size:1.6rem;margin:8px 0 4px}
+.move-intent{font-size:.95rem;color:white;margin:0 0 16px}
+.move-card dl,.move-card dd{margin:0}
+.move-card dl div{border-top:1px solid #ffffff1c;padding:10px 0}
+.move-card dt{color:var(--gold);font-size:.64rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}
+.move-card dd{color:#d5dce7;font-size:.85rem}
+/* ===== varios ===== */
+.deck-note{margin:34px 0 0;padding:22px 26px;border-left:5px solid var(--gold);background:white;color:#38465a}
+.deck-note b{color:var(--ink)}
+.print-btn{display:inline-block;margin-top:24px;padding:14px 20px;border-radius:7px;background:var(--gold);color:var(--ink);font-size:.9rem;font-weight:900;text-decoration:none;border:none;cursor:pointer;font-family:inherit}
+.pill-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.pill{font-size:.78rem;padding:8px 14px;border:1px solid #d9b54a77;border-radius:999px;color:#d8dfeb}
+.pill b{color:var(--gold)}
+h2.deck-sub{font-size:1.5rem;margin:52px 0 20px;padding-top:34px;border-top:1px solid var(--line)}
+@media(max-width:980px){.deck-grid,.behavior-grid{grid-template-columns:1fr 1fr}.sit-grid{grid-template-columns:1fr}.move-cards{grid-template-columns:1fr 1fr}.anatomy{grid-template-columns:1fr}}
+@media(max-width:600px){.deck-grid,.behavior-grid,.move-cards{grid-template-columns:1fr}}
+/* ===== impresión: cartas a tamaño real ===== */
+@media print{
+nav,.hero,.intro,.anatomy,.deck-note,.print-btn,.final,footer,.pill-row,h2.deck-sub{display:none!important}
+body{background:white}
+section{padding:0!important}
+.deck-grid,.behavior-grid,.sit-grid,.move-cards{display:flex;flex-wrap:wrap;gap:4mm}
+.tcard,.bcard{width:63.5mm;height:88mm;box-shadow:none}
+.scard{width:88mm;height:126mm;box-shadow:none}
+.move-card{width:63.5mm;height:88mm;background:#101f34!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.tcard-head,.tcard-foot,.bcard,.scard-head,.reveal,.moves-strip{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.moves-strip{background:white}
+}
+</style></head><body>
+<nav><div class="wrap"><a class="brand" href="index.html">4SHINE EXPERIENCE®</a><a class="navlink" href="index.html">Las experiencias</a><a class="navlink" href="opcion-a.html">A · Diamante Vivo</a><a class="navlink" href="opcion-c.html">B · Cruza el Umbral</a><a class="navlink active" href="cartas.html">Cartas · Demo</a><a class="navlink" href="sim/" style="color:#d9b54a;border:1px solid #d9b54a66;border-radius:999px;padding:5px 13px">▶ Simuladores</a></div></nav>
+
+<header class="hero"><div class="wrap" style="padding:90px 0 76px"><span class="eyebrow">Demo jugable · contenido real</span><h1 style="font-size:clamp(3rem,6vw,5.4rem)">Las cartas,<br>sobre la mesa.</h1><p class="lead">Treinta cartas con contenido real y listo para jugar: doce Tarjetas de Reto y ocho Conductas Observables para El Diamante Vivo; seis Situaciones y cuatro Movimientos para Cruza el Umbral. Cada carta está trazada al framework 4Shine.</p>
+<div class="pill-row"><span class="pill"><b>12</b> Tarjetas de Reto</span><span class="pill"><b>8</b> Conductas Observables</span><span class="pill"><b>6</b> Situaciones de 3 revelaciones</span><span class="pill"><b>4</b> Movimientos 4Shine</span></div>
+<button class="print-btn" onclick="window.print()">⎙ Imprimir el demo a tamaño real</button></div></header>
+<main>
+
+<!-- ============ ANATOMÍA ============ -->
+<section class="alt"><div class="wrap"><div class="intro"><span class="eyebrow">Cómo leer una carta</span><h2>Nada en la carta es decorativo.</h2><p>Toda carta 4Shine tiene la misma anatomía: una consigna que provoca, una instrucción física sobre el material, una pregunta de cierre y su ruta de origen en el framework.</p></div>
+<div class="anatomy">
+<div class="deck-grid" style="grid-template-columns:1fr;max-width:320px">
+<article class="tcard comprende"><div class="tcard-head"><b>Comprende</b><span>R·05</span></div><div class="tcard-body"><h3>La creencia</h3><p class="consigna">¿Qué frase te repites sobre esta situación? Dila en voz alta, exactamente como suena en tu cabeza.</p><div class="zone"><b>En el tablero</b>Si esa frase fuera un muro, constrúyelo. Decide dónde está y qué separa.</div><div class="zone"><b>Para cerrar</b>Reescribe la frase como protagonista: ¿qué puedes aprender o aportar aquí?</div></div><div class="tcard-foot"><span>Within · Gestión de creencias</span><b>4SHINE®</b></div></article>
+</div>
+<div class="anatomy-notes">
+<div><b>Campo y número</b><p>El color indica en qué campo del tablero (o dimensión 4Shine) trabaja la carta. El número permite referenciarla en la guía del Advisor.</p></div>
+<div><b>La consigna</b><p>Una pregunta o condición que provoca. Nunca da la respuesta: cambia la conversación.</p></div>
+<div><b>En el tablero / la acción</b><p>Toda carta exige un movimiento físico u observable. Lo que no se mueve o no se dice, no ocurrió.</p></div>
+<div><b>Para cerrar</b><p>La pregunta de debrief que el Advisor usa para convertir el movimiento en aprendizaje.</p></div>
+<div><b>La ruta de origen</b><p>Cada carta nace de una competencia del Mapa 4Shine (4 pilares · 22 componentes · 47 competencias · 96 conductas). Trazabilidad total entre el juego y el framework.</p></div>
+<div><b>Dos vocabularios, un sistema</b><p>El color de la cabecera indica el <b>campo del tablero</b> donde se juega la carta (CONECTA · COMPRENDE · CREA · CONSOLIDA: el recorrido de la sesión). El pie indica la <b>dimensión del framework</b> que entrena (Within · Out · Up · Beyond: el mapa de desarrollo). Ejemplo: una carta se juega en COMPRENDE y desarrolla una competencia de Within.</p></div>
+</div></div></div></section>
+
+<!-- ============ DIAMANTE VIVO: RETOS ============ -->
+<section><div class="wrap"><div class="intro"><span class="eyebrow">El Diamante Vivo · Mazo 1</span><h2>Doce Tarjetas de Reto.</h2><p>Tres por cada campo del tablero. El Advisor elige el sub-mazo según el momento de la sesión; el participante roba a ciegas dentro del campo.</p></div>
+
+<h2 class="deck-sub" style="border-top:none;padding-top:0;margin-top:0;color:#c13a68">CONECTA · Relaciones que inspiran confianza</h2>
+<div class="deck-grid">
+<article class="tcard conecta"><div class="tcard-head"><b>Conecta</b><span>R·01</span></div><div class="tcard-body"><h3>La voz ausente</h3><p class="consigna">¿Quién debería estar en esta escena y no está? Nómbralo.</p><div class="zone"><b>En el tablero</b>Añade su avatar donde le corresponde y conéctalo contigo con el conector que refleje la relación real.</div><div class="zone"><b>Para cerrar</b>¿Qué cambia en la escena ahora que puedes verlo?</div></div><div class="tcard-foot"><span>Up · Gestión de relaciones</span><b>4SHINE®</b></div></article>
+<article class="tcard conecta"><div class="tcard-head"><b>Conecta</b><span>R·02</span></div><div class="tcard-body"><h3>El vínculo tenso</h3><p class="consigna">Elige el vínculo que más energía te consume hoy. ¿Qué lo tensó?</p><div class="zone"><b>En el tablero</b>Retira ese conector y colócalo como quieres que sea dentro de noventa días.</div><div class="zone"><b>Para cerrar</b>¿Cuál es la primera conversación para llegar ahí, y cuándo?</div></div><div class="tcard-foot"><span>Out · Construcción de confianza</span><b>4SHINE®</b></div></article>
+<article class="tcard conecta"><div class="tcard-head"><b>Conecta</b><span>R·03</span></div><div class="tcard-body"><h3>Pide ayuda</h3><p class="consigna">Esta situación no puede sostenerse en soledad. ¿A quién no le has pedido apoyo todavía?</p><div class="zone"><b>En el tablero</b>Coloca una ficha de recurso sobre ese vínculo.</div><div class="zone"><b>Para cerrar</b>¿Qué te ha impedido pedirlo hasta hoy?</div></div><div class="tcard-foot"><span>Within · Apertura al feedback</span><b>4SHINE®</b></div></article>
+</div>
+
+<h2 class="deck-sub" style="color:#8b59b2">COMPRENDE · Mirada empática, escucha profunda</h2>
+<div class="deck-grid">
+<article class="tcard comprende"><div class="tcard-head"><b>Comprende</b><span>R·04</span></div><div class="tcard-body"><h3>El detonante</h3><p class="consigna">¿Qué momento de esta escena te saca de tu centro? Descríbelo sin suavizarlo.</p><div class="zone"><b>En el tablero</b>Marca con una ficha de tensión el punto exacto donde reaccionas en vez de responder.</div><div class="zone"><b>Para cerrar</b>¿Qué señal temprana lo anuncia, y qué harás al detectarla?</div></div><div class="tcard-foot"><span>Within · Autoconciencia emocional</span><b>4SHINE®</b></div></article>
+<article class="tcard comprende"><div class="tcard-head"><b>Comprende</b><span>R·05</span></div><div class="tcard-body"><h3>La creencia</h3><p class="consigna">¿Qué frase te repites sobre esta situación? Dila en voz alta, exactamente como suena en tu cabeza.</p><div class="zone"><b>En el tablero</b>Si esa frase fuera un muro, constrúyelo. Decide dónde está y qué separa.</div><div class="zone"><b>Para cerrar</b>Reescribe la frase como protagonista: ¿qué puedes aprender o aportar aquí?</div></div><div class="tcard-foot"><span>Within · Gestión de creencias</span><b>4SHINE®</b></div></article>
+<article class="tcard comprende"><div class="tcard-head"><b>Comprende</b><span>R·06</span></div><div class="tcard-body"><h3>Los zapatos del otro</h3><p class="consigna">Elige a un actor de tu escena. Durante un minuto, narra la situación desde su lugar, en primera persona.</p><div class="zone"><b>En el tablero</b>Mueve tu avatar a su posición mientras hablas.</div><div class="zone"><b>Para cerrar</b>¿Qué ve esa persona que tú no estabas viendo?</div></div><div class="tcard-foot"><span>Out · Escucha activa y empática</span><b>4SHINE®</b></div></article>
+</div>
+
+<h2 class="deck-sub" style="color:#ed8124">CREA · Ideas y soluciones con propósito</h2>
+<div class="deck-grid">
+<article class="tcard crea"><div class="tcard-head"><b>Crea</b><span>R·07</span></div><div class="tcard-body"><h3>Cambio inesperado</h3><p class="consigna">El plazo acaba de recortarse a la mitad. La decisión ya no puede esperar.</p><div class="zone"><b>En el tablero</b>Reconfigura la escena para responder sin sacrificar tu criterio. Explica cada movimiento.</div><div class="zone"><b>Para cerrar</b>¿Qué soltaste y qué protegiste? ¿Por qué eso?</div></div><div class="tcard-foot"><span>Up · Decisión bajo incertidumbre</span><b>4SHINE®</b></div></article>
+<article class="tcard crea"><div class="tcard-head"><b>Crea</b><span>R·08</span></div><div class="tcard-body"><h3>La regla heredada</h3><p class="consigna">¿Qué estás haciendo en esta situación solo porque "siempre se ha hecho así"?</p><div class="zone"><b>En el tablero</b>Encuentra la pieza que lo representa. Retírala o gírala.</div><div class="zone"><b>Para cerrar</b>¿Qué probarías como piloto esta semana en su lugar?</div></div><div class="tcard-foot"><span>Up · Estimulación intelectual</span><b>4SHINE®</b></div></article>
+<article class="tcard crea"><div class="tcard-head"><b>Crea</b><span>R·09</span></div><div class="tcard-body"><h3>La causa raíz</h3><p class="consigna">Esa tensión que marcaste: ¿es la causa o solo el síntoma?</p><div class="zone"><b>En el tablero</b>Sigue los conectores hacia atrás hasta la pieza donde empezó. Márcala.</div><div class="zone"><b>Para cerrar</b>¿Qué evidencia confirma que ahí está el origen?</div></div><div class="tcard-foot"><span>Up · Resolución de causa raíz</span><b>4SHINE®</b></div></article>
+</div>
+
+<h2 class="deck-sub" style="color:#3988ca">CONSOLIDA · Compromisos que generan impacto</h2>
+<div class="deck-grid">
+<article class="tcard consolida"><div class="tcard-head"><b>Consolida</b><span>R·10</span></div><div class="tcard-body"><h3>La promesa impecable</h3><p class="consigna">Convierte tu próximo paso en un pedido o una promesa: a quién, qué exactamente, con qué condición de satisfacción y para cuándo.</p><div class="zone"><b>En el tablero</b>Señala al destinatario en la escena y regístralo en el Canvas.</div><div class="zone"><b>Para cerrar</b>Si no pudieras cumplir, ¿cuándo y cómo renegociarías?</div></div><div class="tcard-foot"><span>Out · Ingeniería del lenguaje</span><b>4SHINE®</b></div></article>
+<article class="tcard consolida"><div class="tcard-head"><b>Consolida</b><span>R·11</span></div><div class="tcard-body"><h3>La huella</h3><p class="consigna">Imagina esta situación resuelta. ¿Qué debería seguir en pie dentro de un año, cuando nadie recuerde la crisis?</p><div class="zone"><b>En el tablero</b>Coloca una pieza que represente lo que quieres que permanezca.</div><div class="zone"><b>Para cerrar</b>¿Quién más tiene que sostenerlo para que no dependa solo de ti?</div></div><div class="tcard-foot"><span>Beyond · Institucionalización de cultura</span><b>4SHINE®</b></div></article>
+<article class="tcard consolida"><div class="tcard-head"><b>Consolida</b><span>R·12</span></div><div class="tcard-body"><h3>Conducta observable</h3><p class="consigna">De todo lo que se movió hoy, elige la conducta que otros podrán ver esta semana.</p><div class="zone"><b>En el tablero</b>Toma la Tarjeta de Conducta correspondiente y fíjala a tu Canvas de Acción.</div><div class="zone"><b>Para cerrar</b>¿Qué evidencia traerás a la próxima sesión?</div></div><div class="tcard-foot"><span>Within · Responsabilidad radical</span><b>4SHINE®</b></div></article>
+</div>
+
+<div class="deck-note"><b>Regla del mazo:</b> las Tarjetas de Reto nunca premian ni castigan — <b>perturban</b>. Toda carta exige mover algo en la escena y explicarlo en voz alta. La carta R·12 cierra siempre la sesión, sin importar el recorrido.</div>
+</div></section>
+
+<!-- ============ DIAMANTE VIVO: CONDUCTAS ============ -->
+<section class="alt"><div class="wrap"><div class="intro"><span class="eyebrow">El Diamante Vivo · Mazo 2</span><h2>Ocho Conductas Observables.</h2><p>Redactadas tal como aparecen en el Mapa de Competencias 4Shine. El participante se lleva una sola al cierre: se convierte en su compromiso verificable.</p></div>
+<div class="behavior-grid">
+<article class="bcard"><div class="diamond"></div><h3>Escucha activa</h3><p>Presta atención plena cuando el otro habla; parafrasea para confirmar entendimiento y valida los aportes antes de responder.</p><span>Out · Escucha activa y empática</span></article>
+<article class="bcard"><div class="diamond"></div><h3>Pausa estratégica</h3><p>Aplica el método STOP —Parar, Pensar, Observar, Proceder— antes de reaccionar ante una situación de presión.</p><span>Within · Regulación emocional</span></article>
+<article class="bcard"><div class="diamond"></div><h3>Pedido impecable</h3><p>Hace pedidos con condiciones de satisfacción y tiempos claros, evitando ambigüedad y retrabajos.</p><span>Out · Ingeniería del lenguaje</span></article>
+<article class="bcard"><div class="diamond"></div><h3>Cumple acuerdos</h3><p>Gestiona sus promesas: cumple lo pactado y, si no puede, renegocia a tiempo para sostener la confianza.</p><span>Within · Integridad y coherencia</span></article>
+<article class="bcard"><div class="diamond"></div><h3>Habla con claridad</h3><p>Expresa objetivos y expectativas sin ambigüedad sobre qué se espera, de quién y por qué es importante.</p><span>Out · Claridad e inspiración</span></article>
+<article class="bcard"><div class="diamond"></div><h3>Pide feedback</h3><p>Solicita retroalimentación de pares, superiores y equipo para identificar puntos ciegos, y la recibe sin defenderse.</p><span>Within · Apertura al feedback</span></article>
+<article class="bcard"><div class="diamond"></div><h3>Da crédito</h3><p>Reconoce públicamente los logros y atribuye de forma explícita las contribuciones de cada persona.</p><span>Out · Reconocimiento y feedback</span></article>
+<article class="bcard"><div class="diamond"></div><h3>Delega de verdad</h3><p>Define el "qué" y permite al equipo decidir el "cómo", delegando autoridad real y no solo tareas.</p><span>Beyond · Empoderamiento</span></article>
+</div>
+<div class="deck-note"><b>Del demo al producto:</b> el mazo completo contiene las <b>96 conductas observables</b> del Mapa de Competencias — estas ocho son la muestra de calibración del tono y el formato.</div>
+</div></section>
+
+<!-- ============ UMBRAL: SITUACIONES ============ -->
+<section><div class="wrap"><div class="intro"><span class="eyebrow">Cruza el Umbral · Mazo 1</span><h2>Seis Tarjetas de Situación.</h2><p>Cada tarjeta contiene tres revelaciones que el Advisor administra una a una: la situación inicial, la Fuerza de Retorno y el Umbral. El equipo nunca ve lo que viene.</p></div>
+<div class="sit-grid">
+<article class="scard"><div class="scard-head"><span class="ctx">Equipo directivo · S·01</span><h3>El lanzamiento</h3></div>
+<div class="reveal r1"><b>Ronda 1 · Situación</b><p>Faltan diez días para el lanzamiento. Una prueba crítica falla y el cliente principal exige confirmación hoy mismo.</p></div>
+<div class="reveal r2"><b>Ronda 2 · Fuerza de retorno</b><p>El líder técnico renuncia. Dos áreas comienzan a culparse públicamente por la falla.</p></div>
+<div class="reveal r3"><b>Ronda 3 · Umbral</b><p>El CEO pide mantener la fecha y eliminar la revisión de seguridad para lograrlo.</p></div>
+<div class="scard-foot"><b>Pone a prueba</b>Compostura · Decisión bajo incertidumbre · Integridad bajo presión</div></article>
+
+<article class="scard"><div class="scard-head"><span class="ctx">Equipo directivo · S·02</span><h3>La fusión silenciosa</h3></div>
+<div class="reveal r1"><b>Ronda 1 · Situación</b><p>Se anuncia la integración con un área que duplica funciones de la tuya. Tu equipo teme recortes y los rumores crecen más rápido que la información oficial.</p></div>
+<div class="reveal r2"><b>Ronda 2 · Fuerza de retorno</b><p>Se filtra a la prensa una cifra de despidos que no es la real. Dos de tus talentos clave reciben ofertas externas esta semana.</p></div>
+<div class="reveal r3"><b>Ronda 3 · Umbral</b><p>Dirección te pide anunciar a tu equipo que "no habrá cambios". Tú sabes que sí los habrá.</p></div>
+<div class="scard-foot"><b>Pone a prueba</b>Construcción de confianza · Claridad e inspiración · Ética y responsabilidad</div></article>
+
+<article class="scard"><div class="scard-head"><span class="ctx">Mandos medios · S·03</span><h3>El cliente imposible</h3></div>
+<div class="reveal r1"><b>Ronda 1 · Situación</b><p>Tu mayor cliente exige un cambio de alcance sin costo adicional. El equipo ya está al límite de capacidad.</p></div>
+<div class="reveal r2"><b>Ronda 2 · Fuerza de retorno</b><p>Un miembro del equipo comete un error visible para el cliente, que ahora pide sacarlo de la cuenta.</p></div>
+<div class="reveal r3"><b>Ronda 3 · Umbral</b><p>El cliente amenaza con irse hoy si no aceptas todas sus condiciones. Representa el 40% de tus ingresos.</p></div>
+<div class="scard-foot"><b>Pone a prueba</b>Gestión de relaciones · Feedback centrado en conducta · Criterio bajo presión</div></article>
+
+<article class="scard"><div class="scard-head"><span class="ctx">Mandos medios · S·04</span><h3>Dos áreas, una culpa</h3></div>
+<div class="reveal r1"><b>Ronda 1 · Situación</b><p>Un entregable conjunto falla. Tu par de otra área te responsabiliza en un correo con copia a dirección.</p></div>
+<div class="reveal r2"><b>Ronda 2 · Fuerza de retorno</b><p>Tu equipo te pide responder con evidencia que hunde al otro equipo. Dirección exige que "lo resuelvan entre ustedes" en 48 horas.</p></div>
+<div class="reveal r3"><b>Ronda 3 · Umbral</b><p>Descubres que parte del error sí fue de tu equipo — y tu par todavía no lo sabe.</p></div>
+<div class="scard-foot"><b>Pone a prueba</b>Responsabilidad radical · Resolución de causa raíz · Confianza entre pares</div></article>
+
+<article class="scard"><div class="scard-head"><span class="ctx">Educación · S·05</span><h3>El proyecto de grado</h3></div>
+<div class="reveal r1"><b>Ronda 1 · Situación</b><p>A una semana de la feria, la mitad del equipo no ha entregado su parte. Hay que decidir hoy qué se presenta y qué no.</p></div>
+<div class="reveal r2"><b>Ronda 2 · Fuerza de retorno</b><p>El compañero que más sabe propone hacerlo todo él solo "para asegurar la nota".</p></div>
+<div class="reveal r3"><b>Ronda 3 · Umbral</b><p>El profesor ofrece extender el plazo con una condición: que un integrante salga del grupo.</p></div>
+<div class="scard-foot"><b>Pone a prueba</b>Cooperación · Manejo de la presión de grupo · Equidad</div></article>
+
+<article class="scard"><div class="scard-head"><span class="ctx">Educación · S·06</span><h3>La cancha dividida</h3></div>
+<div class="reveal r1"><b>Ronda 1 · Situación</b><p>Un conflicto en redes dividió al grupo en dos bandos. El trabajo en equipo se congeló y la entrega conjunta está en riesgo.</p></div>
+<div class="reveal r2"><b>Ronda 2 · Fuerza de retorno</b><p>Uno de los bandos te exige elegir lado públicamente para "cerrar el tema de una vez".</p></div>
+<div class="reveal r3"><b>Ronda 3 · Umbral</b><p>El conflicto escala a dirección, que pide nombres de responsables antes del viernes.</p></div>
+<div class="scard-foot"><b>Pone a prueba</b>Regulación emocional · Escucha activa · Integridad ante el grupo</div></article>
+</div>
+<div class="deck-note"><b>Regla del mazo:</b> las revelaciones 2 y 3 permanecen ocultas hasta su ronda. El equipo no puede repetir el Movimiento anterior, y en la ronda 3 debe <b>combinar dos</b> para cruzar el umbral.</div>
+</div></section>
+
+<!-- ============ UMBRAL: MOVIMIENTOS ============ -->
+<section class="moves-strip"><div class="wrap"><div class="intro"><span class="eyebrow">Cruza el Umbral · Mazo 2</span><h2>Los cuatro Movimientos 4Shine.</h2><p>Las únicas cartas que el equipo tiene en la mano. Cada una activa una dimensión del framework con pregunta, acción y evidencia.</p></div>
+<div class="move-cards">
+<article class="move-card centro"><span class="move-origin">WITHIN · MIRAR HACIA DENTRO</span><h3>Centro</h3><p class="move-intent">Pausa y define el criterio.</p><dl><div><dt>Pregunta</dt><dd>¿Qué debemos sostener, aunque aumente la presión?</dd></div><div><dt>Acción</dt><dd>Cada persona nombra el criterio que no está dispuesta a sacrificar. El equipo acuerda uno.</dd></div><div><dt>Evidencia</dt><dd>Una frase de criterio compartida.</dd></div></dl></article>
+<article class="move-card vinculo"><span class="move-origin">OUT · MIRAR HACIA EL OTRO</span><h3>Vínculo</h3><p class="move-intent">Abre la conversación clave.</p><dl><div><dt>Pregunta</dt><dd>¿Con quién debemos hablar antes de decidir?</dd></div><div><dt>Acción</dt><dd>El equipo identifica la voz ausente y formula la conversación que necesita sostener.</dd></div><div><dt>Evidencia</dt><dd>Un interlocutor, un mensaje y una pregunta abierta.</dd></div></dl></article>
+<article class="move-card sistema"><span class="move-origin">UP · MIRAR EL SISTEMA</span><h3>Sistema</h3><p class="move-intent">Lee actores y consecuencias.</p><dl><div><dt>Pregunta</dt><dd>¿Qué estamos afectando más allá del resultado inmediato?</dd></div><div><dt>Acción</dt><dd>El equipo identifica dos actores impactados y anticipa una consecuencia no prevista.</dd></div><div><dt>Evidencia</dt><dd>Un ajuste concreto a la decisión inicial.</dd></div></dl></article>
+<article class="move-card legado"><span class="move-origin">BEYOND · MIRAR MÁS ALLÁ</span><h3>Legado</h3><p class="move-intent">Protege la capacidad futura.</p><dl><div><dt>Pregunta</dt><dd>¿Qué debe permanecer cuando esta crisis termine?</dd></div><div><dt>Acción</dt><dd>El equipo define qué práctica, relación o principio quiere fortalecer con su decisión.</dd></div><div><dt>Evidencia</dt><dd>Un compromiso que seguirá vigente después del reto.</dd></div></dl></article>
+</div></div></section>
+
+<!-- ============ CIERRE ============ -->
+<section class="final"><div class="wrap"><span class="eyebrow">Para la reunión con cliente</span><h2>Este demo se juega, no se explica.</h2><p>Treinta cartas alcanzan para una sesión demostrativa completa: quince minutos de El Diamante Vivo con una situación del propio cliente, o una ronda de Cruza el Umbral con su equipo real. Imprime, recorta y llévalo a la mesa.</p><a class="back" href="index.html">Volver a las experiencias</a></div></section>
+
+</main><footer><div class="wrap footer-row"><span>4Shine Experience® · Cartas Demo</span><span>Contenido trazado al Mapa de Competencias V3</span></div></footer></body></html>

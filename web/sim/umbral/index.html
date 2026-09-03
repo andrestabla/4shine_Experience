@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Simulador · Cruza el Umbral · 4Shine Experience</title>
+<link rel="stylesheet" href="app.css">
+</head><body>
+
+<div class="topbar"><div class="wrap">
+  <a class="brand" href="#" onclick="return SIM.reiniciar()">4SHINE EXPERIENCE®<span>Simulador · Cruza el Umbral</span></a>
+  <div class="hud">
+    <span class="chip hide-sm" id="hud-equipo"></span>
+    <span class="chip" id="hud-ronda"></span>
+    <a class="linkout" href="../../index.html">Salir</a>
+  </div>
+</div></div>
+<div class="pressure"><i id="pressure-bar"></i></div>
+
+<!-- ============ 1 · SETUP ============ -->
+<section class="screen" id="scr-setup"><div class="wrap">
+  <span class="eyebrow">Simulación de liderazgo · 3 rondas</span>
+  <h1 class="setup-h1">Cruza el <em>Umbral</em></h1>
+  <p class="lead">Una situación real aumenta de presión en tres rondas. Su equipo debe demostrar que puede sostener una respuesta coherente cuando el contexto se vuelve más complejo. Un Advisor digital evaluará cada movimiento y exigirá evidencia observable.</p>
+
+  <div class="field">
+    <label for="in-equipo">¿Quiénes juegan?</label>
+    <input type="text" id="in-equipo" placeholder="Ej.: Comité de dirección · Ana, Luis, Marta y Diego" maxlength="120">
+  </div>
+
+  <div class="field">
+    <label>Elijan su situación</label>
+    <div class="sit-grid" id="sit-grid"></div>
+  </div>
+
+  <div class="rules-box">
+    <h3>Las reglas de la mesa</h3>
+    <ol>
+      <li>Cada ronda revela nueva información. <b>Nunca saben lo que viene.</b></li>
+      <li>Acuerden una respuesta al caso: tienen <b>3 minutos</b> de conversación.</li>
+      <li>Jueguen un Movimiento 4Shine, respondan su pregunta y <b>declaren la evidencia producida</b>.</li>
+      <li>No pueden repetir el Movimiento de la ronda anterior. En la ronda 3 deben <b>combinar dos</b>.</li>
+      <li>Sin evidencia observable, el Movimiento no cuenta: el Advisor lo devolverá.</li>
+      <li>No hay puntos. Se cruza el umbral demostrando <b>capacidad sostenible</b>.</li>
+    </ol>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn" id="btn-start" disabled onclick="SIM.iniciar()">Comenzar la simulación →</button>
+    <span class="hint" id="setup-hint">Escriban el nombre del equipo y elijan una situación.</span>
+  </div>
+</div></section>
+
+<!-- ============ 2 · RONDA ============ -->
+<section class="screen hidden" id="scr-ronda"><div class="wrap">
+  <div class="steps" id="steps"></div>
+
+  <div class="round-head">
+    <div>
+      <span class="round-tag" id="r-tag"></span>
+      <h2 id="r-nombre"></h2>
+    </div>
+    <div class="timer" id="timer" title="Tiempo de conversación del equipo">3:00<small id="timer-lbl">conversación</small></div>
+  </div>
+
+  <div class="reveal-card">
+    <div class="reveal-top" id="reveal-top"></div>
+    <div class="reveal-body">
+      <div class="sit-name" id="r-sit"></div>
+      <p id="r-texto"></p>
+      <div class="reveal-instr" id="r-instr"></div>
+    </div>
+  </div>
+
+  <div class="play-grid">
+    <div>
+      <div class="panel">
+        <h3>1 · La respuesta del equipo</h3>
+        <textarea id="in-respuesta" placeholder="¿Qué deciden hacer ante esta situación? Escriban la respuesta acordada."></textarea>
+        <p class="hint">Inicien el cronómetro y conversen. Escriban solo lo acordado.</p>
+        <div class="btn-row" style="margin-top:14px">
+          <button class="btn ghost" id="btn-timer" onclick="SIM.toggleTimer()">▶ Iniciar 3 minutos</button>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:18px">
+        <h3 id="mov-title">2 · Jueguen un Movimiento</h3>
+        <div class="mov-grid" id="mov-grid"></div>
+        <div id="mov-detail"></div>
+      </div>
+
+      <div class="panel" style="margin-top:18px" id="panel-evid">
+        <h3>3 · Respondan y demuestren</h3>
+        <div class="field" style="margin:0 0 16px">
+          <label id="lbl-pregunta">Pregunta del Movimiento</label>
+          <textarea id="in-pregunta" placeholder="Respondan aquí la pregunta de la carta."></textarea>
+        </div>
+        <div class="field" style="margin:0">
+          <label id="lbl-evidencia">Evidencia producida</label>
+          <textarea id="in-evidencia" placeholder="¿Qué evidencia concreta y observable produjo este movimiento?"></textarea>
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="btn-enviar" onclick="SIM.enviarJugada()">Presentar al Advisor →</button>
+          <span class="hint" id="jugada-hint"></span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="advisor">
+        <div class="advisor-head">
+          <div class="av-mark"></div>
+          <div><b>Advisor 4Shine</b><span>Director de la simulación</span></div>
+        </div>
+        <div class="av-msg" id="av-msg">Leo la situación y espero su respuesta. Recuerden: no evalúo lo que saben decir, evalúo lo que pueden sostener.</div>
+        <div id="av-extra"></div>
+      </div>
+      <div class="log" id="log-box"><h3>Bitácora de la partida</h3><div id="log-list"><p class="hint" style="margin:0">Aún no hay movimientos registrados.</p></div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ 3 · CANVAS ============ -->
+<section class="screen hidden" id="scr-canvas"><div class="wrap">
+  <span class="eyebrow">Cierre · Realidad sostenible</span>
+  <h2 style="font-size:clamp(2rem,4.5vw,3.2rem);margin:12px 0 14px">El Canvas de Acción</h2>
+  <p class="lead">La simulación termina cuando la respuesta se convierte en algo verificable fuera de la mesa. Completen el Canvas: el Advisor lo usará para emitir su veredicto.</p>
+
+  <div class="panel" style="margin-top:28px">
+    <div class="canvas-grid">
+      <div class="field full" style="margin:0"><label>Decisión — ¿qué decidimos hacer?</label><textarea id="c-decision"></textarea></div>
+      <div class="field" style="margin:18px 0 0"><label>Conducta observable — ¿qué haremos que otros puedan ver?</label><textarea id="c-conducta"></textarea></div>
+      <div class="field" style="margin:18px 0 0"><label>Evidencia — ¿cómo sabremos que ocurrió?</label><textarea id="c-evidencia"></textarea></div>
+      <div class="field" style="margin:18px 0 0"><label>Responsable</label><input type="text" id="c-responsable" placeholder="Nombre de quien responde"></div>
+      <div class="field" style="margin:18px 0 0"><label>Fecha límite</label><input type="text" id="c-fecha" placeholder="Ej.: viernes 12, antes del comité"></div>
+      <div class="field full" style="margin:18px 0 0"><label>Riesgo — ¿qué podría debilitar este compromiso?</label><textarea id="c-riesgo"></textarea></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn" id="btn-veredicto" onclick="SIM.pedirVeredicto()">Cerrar y pedir el veredicto →</button>
+      <span class="hint" id="canvas-hint"></span>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ 4 · DEBRIEF ============ -->
+<section class="screen hidden" id="scr-debrief"><div class="wrap" id="debrief-body"></div></section>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body></html>

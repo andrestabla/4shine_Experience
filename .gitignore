@@ -1,0 +1,28 @@
+# secretos
+.env
+.env.*
+!.env.example
+
+# artefactos
+__pycache__/
+*.pyc
+.DS_Store
+node_modules/
+.vercel/
+tmp_escena.png
+
+# material pesado / fuentes de trabajo (no se despliegan)
+output/
+tmp/
+entrega-s3-4shine/
+*.pdf
+Sistema de juego/simulador/
+
+# material fuente pesado (no se publica)
+Referentes/
+4Shine Personas/
+Manual de marca/
+Sistema de juego/
+.claude/
+Iniciar simulador 4Shine.command
+propuesta.html
