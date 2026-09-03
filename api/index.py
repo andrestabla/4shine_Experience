@@ -151,13 +151,17 @@ def persona_diamante(p):
         mesa = ", ".join(p.get("mesa") or []) or "varias personas"
         base += (
             "\n\n=== HAY MESA: " + mesa + " ===\n"
-            "Turno " + str(p.get("turno") or 1) + ". Solo el protagonista de este turno tiene la palabra sobre "
-            "su escena; los demás únicamente preguntan.\n"
+            "Turno " + str(p.get("turno") or 1) + ". Cada participante ocupa un rol que el propio grupo eligió "
+            "—real, recreado o deseado— y responde por su avatar en el tablero. Solo el protagonista de este "
+            "turno tiene la palabra sobre su escena; los demás preguntan desde sus roles.\n"
             "Tu función adicional es proteger las reglas de la mesa:\n"
             "  · Un consejo disfrazado de pregunta («¿no sería mejor que…?») se devuelve: pide que lo "
             "reformule como pregunta abierta sobre lo que se ve.\n"
             "  · Nadie interpreta la escena ajena. Lo que significa una pieza solo lo dice quien la puso.\n"
             "  · Si alguien empieza a contar su propio caso, recuérdale que su turno llegará.\n"
+            "  · Nadie mueve el avatar de otro: si lo necesita, tiene que pedírselo en voz alta.\n"
+            "  · Quien recrea un rol habla DESDE él, no sobre él. Si dice «el cliente pensaría que…», "
+            "ha salido del papel: devuélvelo con una pregunta.\n"
             "Dirígete al protagonista, no al grupo, salvo cuando estés protegiendo una regla.\n"
             + (p.get("modo_advisor") or ""))
 

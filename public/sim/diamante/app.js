@@ -131,7 +131,7 @@ const DV = (() => {
 
   function elegirModo(id){
     st.modo = id;
-    if(id === "grupal" && !st.mesa.length) st.mesa = ["", ""];
+    if(id === "grupal" && !st.mesa.length) st.mesa = [{nombre:"",tipo:"real"},{nombre:"",tipo:"real"}];
     pintarPaso2();
     pantalla("scr-setup");
     if(id === "grupal") setTimeout(() => abrirReglasMesa(), 320);
@@ -143,22 +143,35 @@ const DV = (() => {
     box.classList.toggle("hidden", st.modo !== "grupal");
     if(st.modo !== "grupal") return;
     const ext = (typeof MODO_CTX !== "undefined" ? MODO_CTX[st.ctx.id]?.grupal : null);
-    $("participantes").innerHTML = st.mesa.map((p,i) => `
-      <div class="part"><input type="text" value="${esc(p)}" maxlength="40"
-        placeholder="${T("Nombre y rol","Nombre")}" oninput="DV.setParticipante(${i}, this.value)">
-        <button class="mini danger" onclick="DV.quitarParticipante(${i})" title="Quitar">✕</button></div>`).join("");
+    const tipos = MODOS.grupal.asignacion.tipos;
+    $("participantes").innerHTML = st.mesa.map((p,i) => {
+      const val = typeof p === "string" ? {nombre:p, tipo:"real"} : p;
+      return `<div class="part">
+        <input type="text" value="${esc(val.nombre||"")}" maxlength="40"
+          placeholder="${T("Nombre y rol en el tablero","Nombre y rol en el tablero")}"
+          oninput="DV.setParticipante(${i}, this.value)">
+        <select onchange="DV.setTipoRol(${i}, this.value)" title="Tipo de rol">
+          ${tipos.map(t=>`<option value="${t.id}" ${val.tipo===t.id?"selected":""}>${esc(t.nombre)}</option>`).join("")}
+        </select>
+        <button class="mini danger" onclick="DV.quitarParticipante(${i})" title="Quitar">✕</button></div>`;
+    }).join("");
     actualizarHintMesa();
   }
   function actualizarHintMesa(){
     if(st.modo !== "grupal" || !$("hint-mesa")) return;
     const ext = (typeof MODO_CTX !== "undefined" ? MODO_CTX[st.ctx.id]?.grupal : null);
-    const n = st.mesa.filter(x=>x.trim()).length + 1;
+    const n = st.mesa.filter(x=>nombreDe(x).trim()).length + 1;
     $("hint-mesa").innerHTML = `${T("Con usted serán","Contigo serán")} <b>${n}</b> en la mesa · turno de ${
       st.ctx.id==="escolar" ? "10" : "15"} min por persona.${ext ? ` <span style="color:#7f8ea6">${esc(ext.nota)}</span>` : ""}`;
   }
-  function agregarParticipante(){ if(st.mesa.length < 5){ st.mesa.push(""); pintarParticipantes(); revisar(); } }
+  function agregarParticipante(){ if(st.mesa.length < 5){ st.mesa.push({nombre:"",tipo:"real"}); pintarParticipantes(); revisar(); } }
   function quitarParticipante(i){ st.mesa.splice(i,1); pintarParticipantes(); revisar(); }
-  function setParticipante(i,v){ st.mesa[i] = v; actualizarHintMesa(); revisar(); }
+  function setParticipante(i,v){
+    if(typeof st.mesa[i] === "string") st.mesa[i] = {nombre:v, tipo:"real"}; else st.mesa[i].nombre = v;
+    actualizarHintMesa(); revisar(); }
+  function setTipoRol(i,t){ if(typeof st.mesa[i] === "string") st.mesa[i] = {nombre:st.mesa[i], tipo:t}; else st.mesa[i].tipo = t; guardar(); }
+  const nombreDe = p => (typeof p === "string" ? p : (p?.nombre || ""));
+  const tipoDe   = p => (typeof p === "string" ? "real" : (p?.tipo || "real"));
 
   /* ---------- paso 2 · situación ---------- */
   function pintarPaso2(){
@@ -626,7 +639,7 @@ const DV = (() => {
                payload.contexto_advisor = st.ctx.advisor, payload.trato = st.ctx.trato;
     payload.modo = st.modo;
     if(st.modo === "grupal"){
-      const nombres = [st.quien.split(",")[0], ...st.mesa.filter(x=>x.trim()).map(x=>x.split(",")[0])];
+      const nombres = [st.quien.split(",")[0], ...st.mesa.filter(x=>nombreDe(x).trim()).map(x=>nombreDe(x))];
       payload.mesa = nombres; payload.turno = st.turno + 1;
       payload.modo_advisor = MODOS.grupal.advisor;
     }
@@ -693,39 +706,38 @@ const DV = (() => {
     if(st.modo !== "grupal"){ box.classList.add("hidden"); return; }
     box.classList.remove("hidden");
     const g = MODOS.grupal;
-    const nombres = [st.quien.split(",")[0] || "Usted", ...st.mesa.filter(x=>x.trim()).map(x=>x.split(",")[0])];
-    const n = nombres.length;
-    const prot = st.turno % n;
-    // roles rotativos: el escriba es el siguiente, el guardián el posterior
-    const rol = i => i === prot ? "protagonista"
-                   : i === (prot+1) % n ? "escriba"
-                   : i === (prot+2) % n ? "tiempo" : "indagadores";
-    const colores = Object.fromEntries(g.roles.map(r => [r.id, r.color]));
-    const nomRol  = Object.fromEntries(g.roles.map(r => [r.id, r.nombre]));
+    const tipos = Object.fromEntries(g.asignacion.tipos.map(t => [t.id, t]));
+    const gente = [{nombre: st.quien.split(",")[0] || "Usted", rol: st.quien.split(",").slice(1).join(",").trim(), tipo:"real"},
+                   ...st.mesa.filter(x => nombreDe(x).trim()).map(x => {
+                     const n = nombreDe(x), c = n.split(",");
+                     return {nombre:c[0].trim(), rol:c.slice(1).join(",").trim(), tipo:tipoDe(x)};
+                   })];
+    const n = gente.length, prot = st.turno % n;
     const pasoAct = g.turno.find(p => p.fase === FASES[st.fase].id) || g.turno[0];
     box.innerHTML = `<h3>La mesa · turno ${st.turno+1} de ${n}</h3>
-      <div class="mesa-personas">${nombres.map((nm,i)=>{
-        const r = rol(i);
-        return `<div class="persona ${r==="protagonista"?"es-prot":""}" style="--rc:${colores[r]}">
-          <b>${esc(nm)}</b><span>${nomRol[r]}</span></div>`;}).join("")}</div>
+      <div class="mesa-personas">${gente.map((p,i)=>{
+        const t = tipos[p.tipo] || tipos.real;
+        return `<div class="persona ${i===prot?"es-prot":""}" style="--rc:${i===prot?"#d9b54a":t.color}">
+          <div><b>${esc(p.nombre)}</b>${p.rol ? `<em>${esc(p.rol)}</em>` : ""}</div>
+          <span>${i===prot ? "su turno" : esc(t.nombre.replace("Rol ",""))}</span></div>`;}).join("")}</div>
       <div class="paso-actual">
         <b>Paso ${pasoAct.n} · ${esc(pasoAct.paso)}</b>
-        <p><i>Protagonista:</i> ${esc(pasoAct.protagonista)}</p>
+        <p><i>${esc(gente[prot].nombre)}:</i> ${esc(pasoAct.protagonista)}</p>
         <p><i>La mesa:</i> ${esc(pasoAct.mesa)}</p>
       </div>
+      <p class="regla-avatar">Solo ${esc(gente[prot].nombre)} mueve su avatar. Para mover el de otro, hay que pedírselo en voz alta.</p>
       <div class="mesa-acciones">
-        <button class="mini" onclick="DV.abrirReglasMesa()">Reglas de la mesa</button>
+        <button class="mini" onclick="DV.abrirReglasMesa()">Roles y reglas</button>
         ${st.fase === FASES.length-1 && st.turno < n-1
-          ? `<button class="mini fuerte" onclick="DV.avanzarTurno()">Turno de ${esc(nombres[(prot+1)%n])} →</button>` : ""}
+          ? `<button class="mini fuerte" onclick="DV.avanzarTurno()">Turno de ${esc(gente[(prot+1)%n].nombre)} →</button>` : ""}
       </div>`;
   }
 
   function avanzarTurno(){
-    const n = 1 + st.mesa.filter(x=>x.trim()).length;
+    const n = 1 + st.mesa.filter(x=>nombreDe(x).trim()).length;
     if(st.turno >= n-1) return;
     st.turno++;
-    // nueva escena para el siguiente protagonista
-    BOARD.limpiar();
+    // la escena NO se borra: cada avatar queda donde lo dejaron y el sistema se acumula
     Object.assign(st, {fase:0, reto:null, carta:null, conducta:null, hilo:[], hallazgo:"",
                        narracion:"", explicacion:"", listoParaAvanzar:false, pendiente:"", pngAntes:""});
     $("hilo-box")?.classList.add("hidden");
@@ -952,17 +964,25 @@ const DV = (() => {
     m.className = "modal modal-ayuda";
     m.innerHTML = `<div class="modal-caja ancha" style="--mc:${st.ctx?.color || "#d9b54a"}">
       <span class="m-tag">Mesa de trabajo · ${esc(st.ctx?.nombre || "")}</span>
-      <h3>Cómo participa cada quien</h3>
-      <p class="m-idea">Cada participante construye <b>su propia</b> situación, pero la mesa trabaja
-        <b>una escena a la vez</b>. Estos roles rotan en cada turno: todos pasan por todos.</p>
+      <h3>${esc(g.asignacion.titulo)}</h3>
+      <p class="m-idea">${esc(g.asignacion.idea)}</p>
 
-      <div class="roles-grid">${g.roles.map(r=>`
+      <div class="roles-grid">${g.asignacion.tipos.map(r=>`
         <div class="rol" style="--rc:${r.color}">
           <b>${esc(r.nombre)}</b>
-          <p class="rol-que">${esc(r.que)}</p>
-          <ul class="rol-si">${r.hace.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
-          <ul class="rol-no">${r.evita.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+          <p class="rol-que">${esc(r.desc)}</p>
+          <p class="rol-cuando"><i>Cuándo</i>${esc(r.cuando)}</p>
+          <p class="rol-cuidado"><i>Cuidado</i>${esc(r.cuidado)}</p>
         </div>`).join("")}</div>
+      <p class="m-nota">${esc(g.asignacion.mezcla)}</p>
+
+      <h4 class="m-sub">${esc(g.avatar.titulo)}</h4>
+      <ol class="reglas-lista">${g.avatar.reglas.map(r=>`<li><b>${esc(r.t)}</b>${esc(r.d)}</li>`).join("")}</ol>
+
+      <h4 class="m-sub">${esc(g.hilo.titulo)}</h4>
+      <p class="m-idea" style="font-size:.95rem">${esc(g.hilo.idea)}</p>
+      <ol class="m-pasos">${g.hilo.pasos.map(p=>`<li>${p}</li>`).join("")}</ol>
+      <p class="m-nota">${esc(g.hilo.nota)}</p>
 
       <h4 class="m-sub">La ruta de un turno${st.ctx?.id==="escolar" ? " · 10 min" : " · 15 min"}</h4>
       <div class="turno-lista">${g.turno.map(p=>`
@@ -976,8 +996,11 @@ const DV = (() => {
           </div>
         </div>`).join("")}</div>
 
-      <h4 class="m-sub">Las seis reglas</h4>
+      <h4 class="m-sub">Las reglas de la mesa</h4>
       <ol class="reglas-lista">${g.reglas.map(r=>`<li><b>${esc(r.t)}</b>${esc(r.d)}</li>`).join("")}</ol>
+
+      <h4 class="m-sub">Funciones de apoyo, si el grupo las quiere</h4>
+      <ul class="apoyos">${g.apoyos.map(a=>`<li><b>${esc(a.nombre)}</b> ${esc(a.que)}</li>`).join("")}</ul>
 
       ${ext ? `<p class="m-nota">${esc(ext.nota)}</p>` : ""}
       <p class="m-advisor"><b>El Advisor en la mesa</b>${esc(g.advisor)}</p>
@@ -1058,7 +1081,7 @@ const DV = (() => {
 
   return {abrirAyudaFase, abrirAyudaAdvisor, cerrarModal, elegirEscenario, volverEscenario, volverModo,
           elegirModo, elegirSituacion, agregarParticipante, quitarParticipante, setParticipante,
-          abrirPilares, pedirCartaAdvisor, aceptarCarta, abrirComoCartas,
+          abrirPilares, pedirCartaAdvisor, aceptarCarta, abrirComoCartas, setTipoRol,
           abrirReglasMesa, avanzarTurno,
           iniciar, avanzar, robarReto, enviarNarracion, responderAdvisor,
           enviarReconfiguracion, cerrar, renombrarSel, eliminarSel,

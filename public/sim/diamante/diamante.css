@@ -345,3 +345,17 @@
 .origen-carta{margin:8px 0 0;font-size:.72rem;color:#7f8ea6;text-align:center}
 .tp-cuerpo b i{background:var(--gold);color:#071326;padding:2px 7px;border-radius:4px;font-size:.6rem;
   letter-spacing:.08em;text-transform:uppercase;margin-left:8px;font-weight:900}
+
+/* roles elegidos por el grupo */
+.rol-cuando,.rol-cuidado{margin:8px 0 0;font-size:.79rem;line-height:1.45}
+.rol-cuando{color:#8fd6a5}.rol-cuidado{color:#ffc98a}
+.rol-cuando i,.rol-cuidado i{display:block;font-style:normal;font-size:.58rem;letter-spacing:.11em;
+  text-transform:uppercase;opacity:.75;margin-bottom:2px}
+.apoyos{margin:0;padding-left:18px;color:#cbd3df;font-size:.86rem;line-height:1.5}
+.apoyos li+li{margin-top:6px}
+.apoyos b{color:#fff}
+.part select{background:#ffffff0a;border:1px solid var(--line);border-radius:9px;color:var(--text);
+  padding:0 10px;font-family:inherit;font-size:.82rem;cursor:pointer}
+.persona div em{display:block;font-style:normal;font-size:.72rem;color:#8494ab;margin-top:1px}
+.regla-avatar{margin:12px 0 0;padding:11px 13px;border-left:3px solid var(--gold);background:#d9b54a10;
+  border-radius:0 9px 9px 0;font-size:.78rem;color:#cbd3df;line-height:1.45}
