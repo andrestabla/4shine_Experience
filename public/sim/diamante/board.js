@@ -13,6 +13,41 @@ const BOARD = (() => {
 
   let stage, capaFondo, capaVinculos, capaPiezas, onCambio = () => {}, onSel = () => {};
   let piezas = [], vinculos = [], seq = 0, modoConectar = null, sel = null;
+  let historial = [], restaurando = false;
+
+  /* ---------- historial (deshacer) ---------- */
+  function instantanea(){
+    return JSON.stringify({
+      piezas: piezas.map(p => ({id:p.id, tipo:p.tipo, sub:p.sub, glifo:p.glifo, nombre:p.nombre,
+                                color:p.color, label:p.label, x:p.nodo.x(), y:p.nodo.y(),
+                                rot:p.nodo.rotation()})),
+      vinculos: vinculos.map(v => ({...v, nodo:undefined})), seq
+    });
+  }
+  function guardarHistorial(){
+    if(restaurando) return;
+    historial.push(instantanea());
+    if(historial.length > 40) historial.shift();
+  }
+  function deshacer(){
+    if(historial.length < 2) return false;
+    historial.pop();                       // estado actual
+    const prev = historial[historial.length - 1];
+    restaurar(JSON.parse(prev));
+    return true;
+  }
+  function restaurar(e){
+    restaurando = true;
+    piezas.forEach(p => p.nodo.destroy());
+    piezas = []; vinculos = [];
+    capaVinculos.destroyChildren();
+    e.piezas.forEach(d => { const id = agregarPieza(d, d.x, d.y, d.id); 
+      const p = piezas.find(x => x.id === id); if(p && d.rot) p.nodo.rotation(d.rot); });
+    seq = e.seq;
+    e.vinculos.forEach(v => vinculos.push({de:v.de, a:v.a, tipo:v.tipo}));
+    redibujarVinculos(); capaPiezas.draw();
+    restaurando = false; sincronizar(); onCambio();
+  }
 
   /* ---------- construcción del tablero ---------- */
   function pintarFondo(){
@@ -139,8 +174,8 @@ const BOARD = (() => {
                    cilindro:crearCilindro, muro:crearMuro};
 
   /* ---------- API de piezas ---------- */
-  function agregarPieza(def, x, y){
-    const id = "p" + (++seq);
+  function agregarPieza(def, x, y, idFijo){
+    const id = idFijo || ("p" + (++seq));
     const g = new Konva.Group({x, y, draggable:true, id});
     const forma = def.tipo === "ficha"
       ? crearFicha(def.sub, def.glifo, def.color)
@@ -151,14 +186,14 @@ const BOARD = (() => {
       shadowColor:"#000", shadowBlur:5, shadowOpacity:.9});
     g.add(etiqueta);
     g.on("dragstart", () => { g.moveToTop(); g.opacity(.92); });
-    g.on("dragend", () => { g.opacity(1); sincronizar(); onCambio(); });
+    g.on("dragend", () => { g.opacity(1); sincronizar(); guardarHistorial(); onCambio(); });
     g.on("dragmove", () => { redibujarVinculos(); });
     g.on("click tap", e => { e.cancelBubble = true; clicPieza(id); });
     g.on("mouseenter", () => stage.container().style.cursor = "grab");
     g.on("mouseleave", () => stage.container().style.cursor = "default");
     capaPiezas.add(g);
     piezas.push({id, ...def, nodo:g, etiquetaNodo:etiqueta});
-    capaPiezas.draw(); sincronizar(); onCambio();
+    capaPiezas.draw(); sincronizar(); guardarHistorial(); onCambio();
     return id;
   }
 
@@ -183,15 +218,26 @@ const BOARD = (() => {
     capaPiezas.draw();
   }
 
+  function rotar(id, grados){
+    const p = piezas.find(x => x.id === id); if(!p) return;
+    p.nodo.rotation((p.nodo.rotation() + grados) % 360);
+    p.etiquetaNodo.rotation(-p.nodo.rotation());
+    capaPiezas.draw(); guardarHistorial(); onCambio();
+  }
+  function duplicar(id){
+    const p = piezas.find(x => x.id === id); if(!p) return null;
+    const def = {tipo:p.tipo, sub:p.sub, glifo:p.glifo, nombre:p.nombre, color:p.color, label:p.label};
+    return agregarPieza(def, p.nodo.x() + 46, p.nodo.y() + 34);
+  }
   function renombrar(id, texto){
     const p = piezas.find(x => x.id === id); if(!p) return;
-    p.label = texto; p.etiquetaNodo.text(texto); capaPiezas.draw(); sincronizar(); onCambio();
+    p.label = texto; p.etiquetaNodo.text(texto); capaPiezas.draw(); sincronizar(); guardarHistorial(); onCambio();
   }
   function eliminar(id){
     const p = piezas.find(x => x.id === id); if(!p) return;
     vinculos = vinculos.filter(v => { if(v.de===id||v.a===id){ v.nodo?.destroy(); return false; } return true; });
     p.nodo.destroy(); piezas = piezas.filter(x => x.id !== id);
-    sel = null; capaPiezas.draw(); redibujarVinculos(); sincronizar(); onCambio(); onSel(null);
+    sel = null; capaPiezas.draw(); redibujarVinculos(); sincronizar(); guardarHistorial(); onCambio(); onSel(null);
   }
   function iniciarConexion(tipo){ modoConectar = {tipo, desde:null}; marcarSel(null); }
   function cancelarConexion(){ modoConectar = null; marcarSel(null); }
@@ -205,7 +251,7 @@ const BOARD = (() => {
   };
   function conectar(de, a, tipo){
     if(vinculos.some(v => (v.de===de&&v.a===a)||(v.de===a&&v.a===de))) return;
-    vinculos.push({de, a, tipo}); redibujarVinculos(); sincronizar(); onCambio();
+    vinculos.push({de, a, tipo}); redibujarVinculos(); sincronizar(); guardarHistorial(); onCambio();
   }
   function redibujarVinculos(){
     capaVinculos.destroyChildren();
@@ -222,7 +268,7 @@ const BOARD = (() => {
     });
     capaVinculos.draw();
   }
-  function quitarVinculo(i){ vinculos.splice(i,1); redibujarVinculos(); sincronizar(); onCambio(); }
+  function quitarVinculo(i){ vinculos.splice(i,1); redibujarVinculos(); sincronizar(); guardarHistorial(); onCambio(); }
 
   /* ---------- lectura de la escena ---------- */
   function campoDe(x, y){
@@ -262,7 +308,8 @@ const BOARD = (() => {
     }
     const dist = piezas.filter(p => p.tipo!=="ficha" && p.campo!=="fuera").map(p => {
       const d = Math.round(Math.hypot(p.x-CX, p.y-CY));
-      return `${p.label||p.nombre} a ${d<70?"muy cerca del":d<170?"media distancia del":"lejos del"} centro`;
+      const q = d < 70 ? "muy cerca del centro" : d < 170 ? "a media distancia del centro" : "lejos del centro";
+      return `${p.label||p.nombre} ${q}`;
     });
     if(dist.length) t.push("Distancias: " + dist.join("; ") + ".");
     return t.join(" ");
@@ -295,7 +342,13 @@ const BOARD = (() => {
     const e = stage.scaleX(); return {x:p.x/e, y:p.y/e};
   }
 
-  return {init, agregarPieza, renombrar, eliminar, iniciarConexion, cancelarConexion, conectar,
-          quitarVinculo, estado, describir, huella, exportarPNG, limpiar, posPuntero,
-          campoDe, TIPOS_VINC, CAMPOS, PALETA, W, H, CX, CY, get vinculos(){return vinculos}, get sel(){return sel}};
+  function serializar(){ return instantanea(); }
+  function cargar(json){ try{ restaurar(JSON.parse(json)); historial = [instantanea()]; return true; }catch(e){ return false; } }
+
+  return {init, agregarPieza, renombrar, eliminar, rotar, duplicar, deshacer,
+          iniciarConexion, cancelarConexion, conectar, quitarVinculo,
+          estado, describir, huella, exportarPNG, limpiar, posPuntero, serializar, cargar,
+          campoDe, TIPOS_VINC, CAMPOS, PALETA, W, H, CX, CY,
+          get vinculos(){return vinculos}, get sel(){return sel},
+          get puedeDeshacer(){return historial.length > 1}};
 })();

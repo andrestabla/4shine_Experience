@@ -62,9 +62,14 @@
       <div id="tablero" class="tablero"></div>
       <div class="tablero-tools">
         <div class="sel-info" id="sel-info">Toque una pieza para nombrarla, girarla o retirarla.</div>
-        <div class="sel-acciones hidden" id="sel-acciones">
-          <button class="mini" onclick="DV.renombrarSel()">✎ Nombrar</button>
-          <button class="mini danger" onclick="DV.eliminarSel()">✕ Retirar</button>
+        <div class="sel-acciones">
+          <button class="mini" onclick="DV.deshacer()" title="Ctrl+Z">↶ Deshacer</button>
+          <span class="sel-solo hidden">
+            <button class="mini" onclick="DV.renombrarSel()">✎ Nombrar</button>
+            <button class="mini" onclick="DV.rotarSel()" title="Tecla R">⟳ Girar</button>
+            <button class="mini" onclick="DV.duplicarSel()" title="Tecla D">⧉ Duplicar</button>
+            <button class="mini danger" onclick="DV.eliminarSel()" title="Supr">✕ Retirar</button>
+          </span>
         </div>
       </div>
       <div class="vinc-lista" id="vinc-lista"></div>
@@ -80,6 +85,8 @@
       </div>
 
       <div class="panel fase-panel" id="fase-panel"></div>
+
+      <div class="hilo hidden" id="hilo-box"></div>
 
       <div class="log" id="log-box"><h3>Bitácora</h3><div id="log-list"><p class="hint" style="margin:0">La sesión comienza.</p></div></div>
     </div>

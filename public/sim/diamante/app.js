@@ -79,7 +79,9 @@ const DV = (() => {
   const $ = id => document.getElementById(id);
   const esc = s => (s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const st = {quien:"", situacion:"", fase:0, reto:null, huellaAntes:"", conducta:null,
-              narracion:"", explicacion:"", log:[], preguntas:[], offline:false};
+              narracion:"", explicacion:"", log:[], offline:false,
+              hilo:[], listoParaAvanzar:false, hallazgo:"",
+              pngAntes:"", escenaAntesTexto:"", pendiente:""};
 
   /* ---------- setup ---------- */
   function pintarEjemplos(){
@@ -154,9 +156,8 @@ const DV = (() => {
       if(def.tipo==="ficha") def.label = "";
       const id = BOARD.agregarPieza(def, x, y);
       if(def.tipo!=="ficha" && !def.label){
-        const n = prompt(`¿Qué representa este ${def.nombre.toLowerCase()}?`, "");
-        if(n) BOARD.renombrar(id, n);
-      }
+        pedirNombre(`¿Qué representa este ${def.nombre.toLowerCase()}?`, "").then(n => { if(n) BOARD.renombrar(id, n); guardar(); });
+      } else guardar();
     }
     arrastrando = null;
   }
@@ -166,12 +167,12 @@ const DV = (() => {
       document.querySelectorAll(".pal[data-conn]").forEach(x=>x.classList.remove("on"));
       nota("Vínculo creado."); pintarVinculos(); return;
     }
-    $("sel-acciones").classList.toggle("hidden", !p);
+    document.querySelector(".sel-solo").classList.toggle("hidden", !p);
     nota(p ? `Seleccionado: <b>${esc(p.label||p.nombre)}</b>` : "Toque una pieza para nombrarla o retirarla.");
   }
   function renombrarSel(){ const id = BOARD.sel; if(!id) return;
     const p = BOARD.estado().piezas.find(x=>x.id===id);
-    const n = prompt("¿Qué representa esta pieza?", p?.label||""); if(n!==null) BOARD.renombrar(id,n); }
+    pedirNombre("¿Qué representa esta pieza?", p?.label||"").then(n => { BOARD.renombrar(id, n); guardar(); }); }
   function eliminarSel(){ if(BOARD.sel) BOARD.eliminar(BOARD.sel); }
   function pintarVinculos(){
     const vs = BOARD.vinculos;
@@ -183,7 +184,12 @@ const DV = (() => {
     }).join("");
   }
   function quitarVinc(i){ BOARD.quitarVinculo(i); pintarVinculos(); }
-  function onCambioTablero(){ pintarVinculos(); actualizarBotonFase(); }
+  let guardarPendiente = null;
+  function onCambioTablero(){
+    pintarVinculos(); actualizarBotonFase();
+    clearTimeout(guardarPendiente);
+    guardarPendiente = setTimeout(guardar, 700);   // autoguardado tras cada movimiento
+  }
 
   /* ---------- fases ---------- */
   function montarFase(){
@@ -215,10 +221,22 @@ const DV = (() => {
       <div class="btn-row" style="margin-top:8px"><button class="btn" id="btn-fase" onclick="DV.avanzar()">Terminé de construir →</button></div>`;
   }
   function panelComprende(){
-    $("fase-panel").innerHTML = `<h3>Narre lo que ve</h3>
-      <div class="field" style="margin:0 0 14px"><label>¿Qué muestra su escena?</label>
-        <textarea id="in-narracion" placeholder="Describa lo que construyó: quién está, qué separa a quién, dónde duele.">${esc(st.narracion)}</textarea></div>
-      <div class="btn-row" style="margin-top:0"><button class="btn" id="btn-fase" onclick="DV.enviarNarracion()">Contarle al Advisor →</button></div>`;
+    if(!st.hilo.length){
+      $("fase-panel").innerHTML = `<h3>Narre lo que ve</h3>
+        <div class="field" style="margin:0 0 14px"><label>¿Qué muestra su escena?</label>
+          <textarea id="in-narracion" placeholder="Describa lo que construyó: quién está, qué separa a quién, dónde duele.">${esc(st.narracion)}</textarea></div>
+        <div class="btn-row" style="margin-top:0"><button class="btn" id="btn-fase" onclick="DV.enviarNarracion()">Contarle al Advisor →</button></div>`;
+      return;
+    }
+    $("fase-panel").innerHTML = `<h3>Conversación</h3>
+      ${st.pendiente ? `<div class="pregunta-viva">“${esc(st.pendiente)}”</div>` : ""}
+      <div class="field" style="margin:0 0 12px"><label>Su respuesta</label>
+        <textarea id="in-respuesta-dialogo" placeholder="Responda con lo que ve en el tablero. Puede mover piezas mientras responde."></textarea></div>
+      <div class="btn-row" style="margin-top:0;gap:10px">
+        <button class="btn" id="btn-fase" onclick="DV.responderAdvisor()">Responder →</button>
+        ${st.listoParaAvanzar ? `<button class="btn ghost" onclick="DV.avanzar()">Pasar al Reto ▸</button>` : ""}
+      </div>
+      ${st.listoParaAvanzar ? `<p class="hint" style="margin-top:12px;color:#8fd6a5">El Advisor considera que ya hay material suficiente. Puede seguir conversando o avanzar.</p>` : ""}`;
   }
   function panelCrea(){
     if(!st.reto){
@@ -237,7 +255,10 @@ const DV = (() => {
       <div class="field" style="margin:0 0 12px"><label>¿Qué movió y por qué?</label>
         <textarea id="in-explicacion" placeholder="Explique cada movimiento que hizo sobre el tablero."></textarea></div>
       <div id="alerta-mov"></div>
-      <div class="btn-row" style="margin-top:0"><button class="btn" id="btn-fase" onclick="DV.enviarReconfiguracion()">Presentar al Advisor →</button></div>`;
+      <div class="btn-row" style="margin-top:0;gap:10px">
+        <button class="btn" id="btn-fase" onclick="DV.enviarReconfiguracion()">Presentar al Advisor →</button>
+        ${st.listoParaAvanzar ? `<button class="btn ghost" onclick="DV.avanzar()">Pasar al cierre ▸</button>` : ""}
+      </div>`;
   }
   function panelConsolida(){
     $("fase-panel").innerHTML = `<h3>Una sola conducta</h3>
@@ -268,6 +289,8 @@ const DV = (() => {
     const pool = RETOS.filter(r => r.id !== st.reto?.id);
     st.reto = pool[Math.floor(Math.random()*pool.length)];
     st.huellaAntes = BOARD.huella();
+    st.pngAntes = BOARD.exportarPNG();
+    st.listoParaAvanzar = false;
     panelCrea();
     log(`Tarjeta ${st.reto.id} · ${st.reto.t}`);
   }
@@ -295,13 +318,50 @@ const DV = (() => {
     const off = o._modo === "offline";
     const preguntas = o.preguntas || ["¿Qué pieza está más lejos de usted y por qué la puso ahí?",
       "¿Qué hay en su escena que no había nombrado hasta ahora?","¿Qué falta en este tablero?"];
-    st.preguntas = preguntas;
-    mostrar(o.devolucion || "Leo su escena. Responda estas preguntas antes de continuar.",
+    st.hilo.push({rol:"persona", texto:st.narracion});
+    st.hilo.push({rol:"advisor", texto:(o.devolucion||"") + " " + preguntas.join(" ")});
+    st.pendiente = preguntas[0];
+    st.patron = o.patron || "";
+    pintarHilo();
+    mostrar(o.devolucion || "Leo su escena.",
       `<div class="av-sonda">${preguntas.map(p=>`“${esc(p)}”`).join("<br><br>")}</div>
        <div class="av-flags"><span class="flag ok">✓ escena registrada</span>
        ${o.patron?`<span class="flag mid">patrón: ${esc(o.patron)}</span>`:""}</div>`, off);
-    log("Narración registrada"); 
-    setTimeout(()=>{ st.fase = 2; montarFase(); }, 3200);
+    log("Narración registrada");
+    panelComprende();
+  }
+
+  /* ---------- diálogo con el Advisor ---------- */
+  async function responderAdvisor(){
+    const r = ($("in-respuesta-dialogo").value || "").trim();
+    if(r.length < 8){ nota("Responda con algo más que una palabra."); return; }
+    $("btn-fase").disabled = true; pensando();
+    st.hilo.push({rol:"persona", texto:r});
+    const o = await pedir({fase:"dv_dialogo", quien:st.quien, situacion:st.situacion,
+      escena:BOARD.describir(), hilo:st.hilo.slice(0,-1), respuesta:r});
+    const off = o._modo === "offline";
+    st.hilo.push({rol:"advisor", texto:(o.respuesta||"") + (o.siguiente_pregunta ? " " + o.siguiente_pregunta : "")});
+    st.pendiente = o.siguiente_pregunta || "";
+    if(o.listo){ st.listoParaAvanzar = true; if(o.hallazgo) st.hallazgo = o.hallazgo; }
+    pintarHilo();
+    mostrar(o.respuesta || "",
+      `${o.siguiente_pregunta ? `<div class="av-sonda">“${esc(o.siguiente_pregunta)}”</div>` : ""}
+       <div class="av-flags">
+        ${o.listo ? `<span class="flag ok">✓ material suficiente</span>` : `<span class="flag mid">seguimos</span>`}
+        ${o.hallazgo ? `<span class="flag ok">hallazgo</span>` : ""}
+       </div>
+       ${o.hallazgo ? `<p class="hint" style="margin-top:10px;color:#d5dce7"><b style="color:#f0d488">Hizo visible:</b> ${esc(o.hallazgo)}</p>` : ""}`, off);
+    log("Intercambio con el Advisor");
+    panelComprende(); $("btn-fase") && ($("btn-fase").disabled = false);
+  }
+
+  function pintarHilo(){
+    const box = $("hilo-box"); if(!box) return;
+    box.classList.remove("hidden");
+    box.innerHTML = `<h3>Conversación</h3>` + st.hilo.map(m =>
+      `<div class="msg ${m.rol}"><b>${m.rol === "advisor" ? "Advisor" : esc(st.quien.split(",")[0] || "Usted")}</b>
+       <p>${esc(m.texto)}</p></div>`).join("");
+    box.scrollTop = box.scrollHeight;
   }
 
   async function enviarReconfiguracion(){
@@ -323,8 +383,12 @@ const DV = (() => {
       `<div class="av-sonda">“${esc(o.pregunta_cierre || st.reto.p)}”</div>
        <div class="av-flags"><span class="flag ok">✓ el tablero cambió</span>
        ${o.significativo===false?`<span class="flag mid">movimiento superficial</span>`:`<span class="flag ok">movimiento con sentido</span>`}</div>`, off);
+    st.listoParaAvanzar = true;
+    st.hilo.push({rol:"persona", texto:"[movió el tablero] " + st.explicacion});
+    st.hilo.push({rol:"advisor", texto:o.devolucion || ""});
+    pintarHilo();
     log(`Reconfiguración: ${st.explicacion.slice(0,60)}…`);
-    setTimeout(()=>{ st.fase = 3; montarFase(); }, 3400);
+    panelCrea();
   }
 
   function elegirConducta(i){ st.conducta = i; panelConsolida(); }
@@ -338,8 +402,15 @@ const DV = (() => {
     const o = await pedir({fase:"dv_cierre", quien:st.quien, situacion:st.situacion,
       escena:BOARD.describir(), narracion:st.narracion, explicacion:st.explicacion,
       reto:st.reto?.t || "", conducta:CONDUCTAS[st.conducta], cuando, evidencia});
-    pintarCierre(o, png, cuando, evidencia);
-    pantalla("scr-cierre");
+    try{
+      localStorage.removeItem("4shine.diamante.sesion");
+      pintarCierre(o, png, cuando, evidencia);
+      pantalla("scr-cierre");
+    }catch(err){
+      $("btn-fase").disabled = false;
+      nota("No fue posible cerrar la sesión. Inténtelo de nuevo.");
+      return;
+    }
   }
 
   function pintarCierre(o, png, cuando, evidencia){
@@ -350,6 +421,11 @@ const DV = (() => {
         <h2 style="color:#f0d488">La escena cambió</h2>
         <p>${esc(o.sintesis || "La situación que trajo hoy quedó representada, perturbada y reconfigurada. Lo que sigue ya no es una idea: es una conducta con fecha.")}</p>
       </div>
+      ${st.pngAntes ? `<div class="antes-despues">
+        <figure><img src="${st.pngAntes}" alt="La escena antes de la tarjeta"><figcaption><b>Antes</b> · como llegó la situación a la mesa</figcaption></figure>
+        <div class="flecha">→</div>
+        <figure><img src="${png}" alt="La escena después del movimiento"><figcaption><b>Después</b> · tras la tarjeta «${esc(st.reto?.t||"")}»</figcaption></figure>
+      </div>` : ""}
       <div class="cierre-grid">
         <div class="escena-final"><img src="${png}" alt="Escena final del tablero">
           <div class="cap">Escena final · ${esc(st.situacion)}</div></div>
@@ -371,7 +447,9 @@ const DV = (() => {
       ${o.patron_central?`<div class="relato" style="margin-top:24px"><b style="color:#f0d488">Patrón central:</b> ${esc(o.patron_central)}</div>`:""}
       ${o.para_la_proxima?`<div class="insight-grid" style="margin-top:16px"><div class="insight"><b>Para la próxima sesión</b><p>${esc(o.para_la_proxima)}</p></div>
         ${o.lo_que_no_dijo?`<div class="insight"><b>Lo que no llegó a nombrar</b><p>${esc(o.lo_que_no_dijo)}</p></div>`:""}
-        <div class="insight"><b>Su narración</b><p>${esc(st.narracion.slice(0,180))}${st.narracion.length>180?"…":""}</p></div></div>`:""}
+        ${st.hallazgo?`<div class="insight"><b>Lo que hizo visible</b><p>${esc(st.hallazgo)}</p></div>`:""}</div>`:""}
+      ${st.hilo.length?`<div class="transcript" style="margin-top:24px"><h3>La conversación completa</h3>
+        ${st.hilo.map(m=>`<div class="msg ${m.rol}"><b>${m.rol==="advisor"?"Advisor":esc(st.quien.split(",")[0]||"Usted")}</b><p>${esc(m.texto)}</p></div>`).join("")}</div>`:""}
       <div class="btn-row"><button class="btn" onclick="window.print()">⎙ Guardar el acta</button>
         <a class="btn ghost" href="${png}" download="escena-4shine.png">↓ Descargar la escena</a>
         <button class="btn ghost" onclick="location.reload()">Nueva sesión</button></div>`;
@@ -382,16 +460,98 @@ const DV = (() => {
     $("log-list").innerHTML = st.log.map(x=>`<div class="log-item"><b>${esc(x)}</b></div>`).join("");
   }
   function avanzar(){
+    if(st.fase >= FASES.length - 1) return;          // la última fase cierra con DV.cerrar()
     if(st.fase===0){ st.escenaAntesTexto = BOARD.describir(); log("Escena construida"); }
-    st.fase++; montarFase();
+    st.listoParaAvanzar = false; st.pendiente = "";
+    st.fase++; montarFase(); guardar();
   }
+
+  /* ---------- persistencia ---------- */
+  const CLAVE = "4shine.diamante.sesion";
+  function guardar(){
+    try{
+      localStorage.setItem(CLAVE, JSON.stringify({
+        quien:st.quien, situacion:st.situacion, fase:st.fase, narracion:st.narracion,
+        explicacion:st.explicacion, hilo:st.hilo, hallazgo:st.hallazgo, patron:st.patron,
+        reto:st.reto, conducta:st.conducta, log:st.log, tablero:BOARD.serializar(), ts:Date.now()
+      }));
+    }catch(e){}
+  }
+  function haySesion(){
+    try{ const d = JSON.parse(localStorage.getItem(CLAVE) || "null");
+      return d && d.quien && (Date.now() - d.ts) < 1000*60*60*24*7 ? d : null; }catch(e){ return null; }
+  }
+  function retomar(){
+    const d = haySesion(); if(!d) return;
+    Object.assign(st, {quien:d.quien, situacion:d.situacion, fase:d.fase, narracion:d.narracion||"",
+      explicacion:d.explicacion||"", hilo:d.hilo||[], hallazgo:d.hallazgo||"", patron:d.patron||"",
+      reto:d.reto||null, conducta:d.conducta, log:d.log||[]});
+    $("in-quien").value = st.quien; $("in-situacion").value = st.situacion; revisar();
+    $("hud-quien").innerHTML = `<b>${esc(st.quien)}</b>`;
+    $("rec-situacion").textContent = st.situacion;
+    pantalla("scr-mesa");
+    if(!BOARD._listo){ BOARD.init("tablero", onCambioTablero, onSeleccion); BOARD._listo = true; pintarBandeja(); }
+    if(d.tablero) BOARD.cargar(d.tablero);
+    montarFase(); pintarHilo(); pintarVinculos();
+    st.log.length && ($("log-list").innerHTML = st.log.map(x=>`<div class="log-item"><b>${esc(x)}</b></div>`).join(""));
+  }
+  function descartarSesion(){ try{ localStorage.removeItem(CLAVE); }catch(e){} location.reload(); }
+
+  /* ---------- modal de nombre ---------- */
+  function pedirNombre(titulo, valor){
+    return new Promise(res => {
+      const m = document.createElement("div");
+      m.className = "modal";
+      m.innerHTML = `<div class="modal-caja">
+        <h3>${esc(titulo)}</h3>
+        <input type="text" id="modal-in" value="${esc(valor||"")}" maxlength="42" placeholder="Ej.: Mi jefe · La decisión · Hacerlo sola">
+        <p class="hint">Nombre la pieza con las palabras que usaría fuera de esta mesa.</p>
+        <div class="btn-row" style="margin-top:16px"><button class="btn" id="modal-ok">Aceptar</button>
+          <button class="btn ghost" id="modal-x">Sin nombre</button></div></div>`;
+      document.body.appendChild(m);
+      const inp = m.querySelector("#modal-in"); inp.focus(); inp.select();
+      const cerrar = v => { m.remove(); res(v); };
+      m.querySelector("#modal-ok").onclick = () => cerrar(inp.value.trim());
+      m.querySelector("#modal-x").onclick = () => cerrar("");
+      inp.onkeydown = e => { if(e.key === "Enter") cerrar(inp.value.trim()); if(e.key === "Escape") cerrar(""); };
+      m.onclick = e => { if(e.target === m) cerrar(""); };
+    });
+  }
+
+  /* ---------- herramientas de pieza ---------- */
+  function rotarSel(){ if(BOARD.sel){ BOARD.rotar(BOARD.sel, 30); guardar(); } }
+  function duplicarSel(){ if(BOARD.sel){ BOARD.duplicar(BOARD.sel); guardar(); } }
+  function deshacer(){ if(BOARD.deshacer()){ pintarVinculos(); nota("Deshecho."); guardar(); } else nota("No hay nada que deshacer."); }
+
+  document.addEventListener("keydown", e => {
+    if($("scr-mesa").classList.contains("hidden")) return;
+    const escribiendo = /INPUT|TEXTAREA/.test(document.activeElement.tagName);
+    if(escribiendo) return;
+    if((e.metaKey || e.ctrlKey) && e.key === "z"){ e.preventDefault(); deshacer(); }
+    if(e.key === "r" && BOARD.sel) rotarSel();
+    if(e.key === "d" && BOARD.sel) duplicarSel();
+    if((e.key === "Backspace" || e.key === "Delete") && BOARD.sel){ e.preventDefault(); eliminarSel(); }
+  });
 
   document.addEventListener("DOMContentLoaded", () => {
     pintarEjemplos();
+    const prev = haySesion();
+    if(prev){
+      const aviso = document.createElement("div");
+      aviso.className = "rules-box";
+      aviso.style.cssText = "border-color:#d9b54a88;background:#d9b54a12";
+      aviso.innerHTML = `<h3 style="color:#f0d488">Hay una sesión sin terminar</h3>
+        <p style="color:#d5dce7;margin:0 0 14px">«${esc(prev.situacion.slice(0,90))}${prev.situacion.length>90?"…":""}» —
+        quedó en la fase ${prev.fase+1} de 4.</p>
+        <div class="btn-row" style="margin-top:0"><button class="btn" onclick="DV.retomar()">Retomar donde quedé →</button>
+          <button class="btn ghost" onclick="DV.descartarSesion()">Empezar de cero</button></div>`;
+      $("scr-setup").querySelector(".wrap").insertBefore(aviso, $("scr-setup").querySelector(".rules-box"));
+    }
     $("in-quien").addEventListener("input", revisar);
     $("in-situacion").addEventListener("input", revisar);
   });
 
-  return {iniciar, usarEjemplo, avanzar, robarReto, enviarNarracion, enviarReconfiguracion,
-          elegirConducta, cerrar, renombrarSel, eliminarSel, quitarVinc};
+  return {iniciar, usarEjemplo, avanzar, robarReto, enviarNarracion, responderAdvisor,
+          enviarReconfiguracion, elegirConducta, cerrar, renombrarSel, eliminarSel,
+          rotarSel, duplicarSel, deshacer, quitarVinc, retomar, descartarSesion};
 })();

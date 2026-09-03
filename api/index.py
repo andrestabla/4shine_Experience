@@ -129,6 +129,9 @@ FALLBACKS = {
     "dv_reconfigurar": lambda p: {
         "devolucion": "Registro que el tablero cambió.", "significativo": True,
         "pregunta_cierre": "¿Qué haría falta para que ese movimiento se sostenga fuera de esta mesa?", "_modo": "offline"},
+    "dv_dialogo": lambda p: {
+        "respuesta": "Registro lo que dice.", "siguiente_pregunta": "",
+        "listo": True, "hallazgo": "", "_modo": "offline"},
     "dv_cierre": lambda p: {
         "sintesis": "La escena quedó construida, perturbada y reconfigurada. El compromiso quedó registrado.",
         "_modo": "offline"},
@@ -242,6 +245,31 @@ la escena mostraba. No interprete el significado emocional: describa el cambio o
 Devuelve JSON: {{"devolucion":"2-3 frases nombrando exactamente qué cambió en el tablero, citando sus palabras",
 "significativo":true|false,"pregunta_cierre":"la pregunta que convierte el movimiento en aprendizaje"}}"""
         out = call_openai([{"role": "system", "content": PERSONA_DIAMANTE}, {"role": "user", "content": user}])
+        return out
+
+    if fase == "dv_dialogo":
+        hilo = "\n".join(f"{'ADVISOR' if m['rol']=='advisor' else 'PERSONA'}: {m['texto']}"
+                          for m in (p.get("hilo") or []))
+        user = f"""PARTICIPANTE: {p.get('quien')} · SITUACIÓN: «{p.get('situacion')}»
+
+ESTADO ACTUAL DEL TABLERO:
+{p.get('escena')}
+
+CONVERSACIÓN HASTA AHORA:
+{hilo}
+
+LA PERSONA ACABA DE RESPONDER: «{p.get('respuesta')}»
+
+Continúe la conversación como Advisor. Decida si ya hay material suficiente para pasar a la
+siguiente fase o si conviene profundizar una vez más. Hay material suficiente cuando la persona
+ha nombrado algo que no había dicho al principio, o ha reconocido una relación entre piezas que
+antes no veía. NO interprete, NO aconseje: devuelva sus palabras y pregunte por lo visible.
+Devuelve JSON: {{"respuesta":"2-3 frases en voz de Advisor, citando textualmente algo que la persona acaba de decir",
+"siguiente_pregunta":"la próxima pregunta, o cadena vacía si ya no hace falta",
+"listo":true|false,
+"hallazgo":"si listo es true, 1 frase con lo que la persona hizo visible, en SUS palabras; si no, cadena vacía"}}"""
+        out = call_openai([{"role": "system", "content": PERSONA_DIAMANTE}, {"role": "user", "content": user}])
+        out.setdefault("listo", False)
         return out
 
     if fase == "dv_cierre":
