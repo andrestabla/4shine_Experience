@@ -1,10 +1,6 @@
 /* ===== El Diamante Vivo · interfaz de mesa ===== */
 .wrap.narrow{width:min(880px,calc(100% - 40px))}
 .wrap.wide{width:min(1580px,calc(100% - 32px))}
-.ejemplos{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.ejemplos button{background:#ffffff0a;border:1px solid var(--line);color:var(--muted);border-radius:999px;
-  padding:7px 14px;font-size:.8rem;cursor:pointer;font-family:inherit;text-align:left}
-.ejemplos button:hover{border-color:var(--gold);color:var(--gold-b)}
 
 .mesa-head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap;margin-bottom:18px}
 .mesa-head h2{font-size:clamp(1.7rem,3.4vw,2.5rem);margin:4px 0 6px}
@@ -240,3 +236,29 @@
 .modal-caja.ancha::-webkit-scrollbar-track{background:transparent}
 .modal-caja.ancha::-webkit-scrollbar-thumb{background:#d9b54a55;border-radius:5px;border:2px solid var(--panel)}
 .modal-caja.ancha::-webkit-scrollbar-thumb:hover{background:#d9b54a88}
+
+/* ===== paso 1 · escenarios ===== */
+.escenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px}
+.esc{text-align:left;background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--ec);
+  border-radius:16px;padding:28px 24px;color:var(--text);font-family:inherit;cursor:pointer;transition:.22s;
+  display:flex;flex-direction:column;gap:9px}
+.esc:hover{transform:translateY(-5px);border-color:var(--ec);box-shadow:0 20px 44px #00000066}
+.esc-perfil{font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ec);font-weight:900}
+.esc h3{font-size:1.45rem;margin:2px 0 0}
+.esc-lema{margin:0;font-size:.92rem;color:#d5dce7;font-style:italic}
+.esc-desc{margin:0;font-size:.86rem;color:var(--muted);line-height:1.55;flex:1}
+.esc-mundo{font-size:.72rem;color:#66768f;padding-top:12px;border-top:1px dashed var(--line);line-height:1.5}
+.esc-go{margin-top:6px;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:900;color:var(--ec)}
+
+/* ===== paso 2 · situaciones ===== */
+.volver{background:none;border:none;color:var(--muted);font-family:inherit;font-size:.84rem;cursor:pointer;
+  padding:0;margin-bottom:20px}
+.volver:hover{color:var(--gold-b)}
+.situaciones{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.sit-op{text-align:left;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:15px 17px;
+  color:var(--text);font-family:inherit;cursor:pointer;transition:.16s}
+.sit-op:hover{border-color:var(--ctx,var(--gold))}
+.sit-op.on{border-color:var(--ctx,var(--gold));box-shadow:0 0 0 2px var(--ctx,var(--gold));background:#16294a}
+.sit-op b{display:block;font-size:.95rem;margin-bottom:5px}
+.sit-op span{font-size:.8rem;color:var(--muted);line-height:1.5}
+@media(max-width:900px){.escenarios,.situaciones{grid-template-columns:1fr}}

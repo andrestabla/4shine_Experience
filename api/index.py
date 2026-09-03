@@ -138,6 +138,27 @@ FALLBACKS = {
 }
 
 
+def persona_diamante(p):
+    """La persona del Advisor, ajustada al escenario de aplicación."""
+    base = PERSONA_DIAMANTE
+    extra = (p.get("contexto_advisor") or "").strip()
+    if extra:
+        base += ("\n\nESCENARIO DE ESTA SESIÓN: " + (p.get("contexto_nombre") or "") + ".\n" + extra)
+    if p.get("trato") == "tu":
+        base = base.replace("tratando de usted", "tuteando")
+        base += (
+            "\n\n=== TRATO OBLIGATORIO: TUTEO ===\n"
+            "Conjuga SIEMPRE en segunda persona del singular. Esta regla está por encima de todo lo demás.\n"
+            "  ✗ «usted dijo» → ✓ «dijiste»\n"
+            "  ✗ «nombró» → ✓ «nombraste»       ✗ «escribió» → ✓ «escribiste»\n"
+            "  ✗ «puso» → ✓ «pusiste»           ✗ «su tablero» → ✓ «tu tablero»\n"
+            "  ✗ «¿qué hace que…?» impersonal → ✓ «¿qué hace que…?» sigue valiendo, pero el resto va en tú\n"
+            "  ✗ «coloque» → ✓ «coloca»         ✗ «mueva» → ✓ «mueve»\n"
+            "Revisa cada frase antes de responder: si aparece una forma de usted, reescríbela.\n"
+            "Frases cortas. Si escribe poco, pregunta una sola cosa más, no tres. Sin moralina.")
+    return base
+
+
 def procesar(p):
     """Núcleo compartido: recibe el payload y devuelve el dict de respuesta."""
     fase = p.get("fase")
@@ -220,7 +241,7 @@ qué nombró en palabras pero no está en la escena, qué está en la escena per
 NO interprete, NO aconseje, NO diagnostique. Use las palabras exactas de la persona.
 Devuelve JSON: {{"devolucion":"2 frases devolviendo lo que observa en el tablero, sin interpretar, citando algo textual suyo",
 "preguntas":["...","...","..."],"patron":"2-4 palabras que nombren el patrón visible, en minúsculas (ej. 'distancia con el equipo')"}}"""
-        out = call_openai([{"role": "system", "content": PERSONA_DIAMANTE}, {"role": "user", "content": user}])
+        out = call_openai([{"role": "system", "content": persona_diamante(p)}, {"role": "user", "content": user}])
         out.setdefault("preguntas", [])
         return out
 
@@ -244,7 +265,7 @@ algo que la persona había señalado como importante; es SUPERFICIAL si solo rea
 la escena mostraba. No interprete el significado emocional: describa el cambio observable y pregunte.
 Devuelve JSON: {{"devolucion":"2-3 frases nombrando exactamente qué cambió en el tablero, citando sus palabras",
 "significativo":true|false,"pregunta_cierre":"la pregunta que convierte el movimiento en aprendizaje"}}"""
-        out = call_openai([{"role": "system", "content": PERSONA_DIAMANTE}, {"role": "user", "content": user}])
+        out = call_openai([{"role": "system", "content": persona_diamante(p)}, {"role": "user", "content": user}])
         return out
 
     if fase == "dv_dialogo":
@@ -268,7 +289,7 @@ Devuelve JSON: {{"respuesta":"2-3 frases en voz de Advisor, citando textualmente
 "siguiente_pregunta":"la próxima pregunta, o cadena vacía si ya no hace falta",
 "listo":true|false,
 "hallazgo":"si listo es true, 1 frase con lo que la persona hizo visible, en SUS palabras; si no, cadena vacía"}}"""
-        out = call_openai([{"role": "system", "content": PERSONA_DIAMANTE}, {"role": "user", "content": user}])
+        out = call_openai([{"role": "system", "content": persona_diamante(p)}, {"role": "user", "content": user}])
         out.setdefault("listo", False)
         return out
 
@@ -286,7 +307,7 @@ Devuelve JSON: {{"sintesis":"3-4 frases que recorran lo que pasó en la mesa, ci
 "patron_central":"1 frase que nombre el patrón que la propia persona hizo visible (con SUS palabras, no las suyas)",
 "lo_que_no_dijo":"1 frase sobre algo presente en el tablero que no llegó a nombrar, formulado como observación",
 "para_la_proxima":"1 frase: qué convendría traer a la próxima sesión"}}"""
-        out = call_openai([{"role": "system", "content": PERSONA_DIAMANTE}, {"role": "user", "content": user}])
+        out = call_openai([{"role": "system", "content": persona_diamante(p)}, {"role": "user", "content": user}])
         return out
 
     return {"error": "fase desconocida"}

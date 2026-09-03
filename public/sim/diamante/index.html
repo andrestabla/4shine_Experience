@@ -11,28 +11,32 @@
 </div></div>
 <div class="pressure"><i id="fase-bar"></i></div>
 
-<!-- ===== SETUP ===== -->
-<section class="screen" id="scr-setup"><div class="wrap narrow">
-  <span class="eyebrow">Experiencia individual · construcción simbólica</span>
+<!-- ===== PASO 1 · ESCENARIO ===== -->
+<section class="screen" id="scr-escenario"><div class="wrap narrow">
+  <span class="eyebrow">Paso 1 de 2 · Escenario de aplicación</span>
   <h1 class="setup-h1">El Diamante <em>Vivo</em></h1>
-  <p class="lead">Construya sobre el tablero la situación de liderazgo que hoy tiene delante. No se responde con palabras: se representa con piezas. Después una tarjeta la perturbará y usted tendrá que moverla.</p>
+  <p class="lead">La misma arquitectura funciona con un comité directivo y con un grupo de último grado. Lo que cambia es el lenguaje, las situaciones que se ponen sobre la mesa y cómo media el Advisor. Elija con quién va a jugar.</p>
+  <div class="escenarios" id="escenarios"></div>
+</div></section>
 
-  <div class="field"><label for="in-quien">¿Quién construye?</label>
-    <input type="text" id="in-quien" placeholder="Nombre y rol · Ej.: Laura, directora comercial" maxlength="90"></div>
+<!-- ===== PASO 2 · SITUACIÓN ===== -->
+<section class="screen hidden" id="scr-setup"><div class="wrap narrow">
+  <button class="volver" onclick="DV.volverEscenario()">‹ Cambiar de escenario</button>
+  <span class="eyebrow" id="s2-eyebrow"></span>
+  <h1 class="setup-h1" id="s2-titulo"></h1>
+  <p class="lead" id="s2-lead"></p>
 
-  <div class="field"><label for="in-situacion">¿Qué situación va a poner sobre la mesa?</label>
-    <textarea id="in-situacion" placeholder="Una decisión, una relación difícil, una transición. Real, vigente y suya."></textarea>
-    <div class="ejemplos" id="ejemplos"></div></div>
+  <div class="field"><label id="lbl-quien">¿Quién construye?</label>
+    <input type="text" id="in-quien" maxlength="90"></div>
 
-  <div class="rules-box"><h3>Cómo funciona</h3><ol>
-    <li><b>CONECTA · Construyo</b> — represente la situación con avatares, piezas y vínculos.</li>
-    <li><b>COMPRENDE · Narro</b> — cuente lo que construyó. El Advisor solo pregunta, nunca interpreta.</li>
-    <li><b>CREA · Reconfiguro</b> — una Tarjeta de Reto perturba la escena: <b>hay que mover piezas</b>, no comentar.</li>
-    <li><b>CONSOLIDA · Actúo</b> — elija una conducta observable y regístrela en el Canvas de Acción.</li>
-  </ol></div>
+  <div class="field"><label id="lbl-sit">Elija la situación que va sobre la mesa</label>
+    <div class="situaciones" id="situaciones"></div>
+    <textarea id="in-situacion" placeholder="…o escriba aquí la suya."></textarea></div>
+
+  <div class="rules-box" id="como-funciona"></div>
 
   <div class="btn-row"><button class="btn" id="btn-start" disabled onclick="DV.iniciar()">Abrir el tablero →</button>
-    <span class="hint" id="setup-hint">Complete quién construye y qué situación va a trabajar.</span></div>
+    <span class="hint" id="setup-hint"></span></div>
 </div></section>
 
 <!-- ===== MESA ===== -->
@@ -97,6 +101,7 @@
 <section class="screen hidden" id="scr-cierre"><div class="wrap" id="cierre-body"></div></section>
 
 <script src="../vendor/konva.min.js"></script>
+<script src="../../data/contextos.js"></script>
 <script src="../../data/conductas.js"></script>
 <script src="board.js"></script>
 <script src="app.js"></script>

@@ -35,7 +35,13 @@ const PAL_RECURSO = [
 
 /* Los retos son el RECTO de las cartas del mazo unificado (data/conductas.js).
    El REVERSO de esa misma carta es la conducta observable que se compromete al cierre. */
-const mazoCompleto = () => (typeof CONDUCTAS !== "undefined" ? CONDUCTAS : []).filter(c => c.reto && c.reto.t);
+let CTX_ACTUAL = null;   // lo fija DV al elegir escenario; el mazo se adapta a él
+function mazoCompleto(){
+  const base = (typeof CONDUCTAS !== "undefined" ? CONDUCTAS : []).filter(c => c.reto && c.reto.t);
+  if(CTX_ACTUAL !== "escolar") return base;
+  // variante escolar: mismo mapa de competencias, lenguaje del estudiante
+  return base.map(c => c.escolar ? {...c, reto:c.escolar.reto, conducta:c.escolar.conducta} : c);
+}
 
 
 /* Las conductas vienen del mazo completo (data/conductas.js): 96 cartas, 4 pilares. */
@@ -105,30 +111,87 @@ const FASES = [
 const DV = (() => {
   const $ = id => document.getElementById(id);
   const esc = s => (s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  const st = {quien:"", situacion:"", fase:0, reto:null, huellaAntes:"", conducta:null,
+
+  /* ---------- adaptación de lenguaje por escenario ---------- */
+  const tuteo = () => (st.ctx?.trato === "tu");
+  // T(textoUsted, textoTú) — elige según el escenario
+  const T = (u, t) => tuteo() ? t : u;
+  function esc2(s){ return esc(s); }
+  const st = {ctx:null, quien:"", situacion:"", fase:0, reto:null, huellaAntes:"", conducta:null,
               narracion:"", explicacion:"", log:[], offline:false,
               hilo:[], listoParaAvanzar:false, hallazgo:"",
               pngAntes:"", escenaAntesTexto:"", pendiente:""};
 
-  /* ---------- setup ---------- */
-  function pintarEjemplos(){
-    $("ejemplos").innerHTML = EJEMPLOS.map((e,i)=>`<button onclick="DV.usarEjemplo(${i})">${esc(e)}</button>`).join("");
+  /* ---------- paso 1 · escenario ---------- */
+  function pintarEscenarios(){
+    $("escenarios").innerHTML = CONTEXTOS.map(c => `
+      <button class="esc" style="--ec:${c.color}" onclick="DV.elegirEscenario('${c.id}')">
+        <span class="esc-perfil">${esc(c.perfil)} · ${esc(c.duracion)}</span>
+        <h3>${esc(c.nombre)}</h3>
+        <p class="esc-lema">${esc(c.lema)}</p>
+        <p class="esc-desc">${esc(c.desc)}</p>
+        <span class="esc-mundo">${esc(c.mundo)}</span>
+        <span class="esc-go">Elegir este escenario →</span>
+      </button>`).join("");
   }
-  function usarEjemplo(i){ $("in-situacion").value = EJEMPLOS[i]; revisar(); }
+
+  function elegirEscenario(id){
+    st.ctx = CTX(id); CTX_ACTUAL = st.ctx.id;
+    document.body.style.setProperty("--ctx", st.ctx.color);
+    pintarPaso2();
+    pantalla("scr-setup");
+  }
+  function volverEscenario(){ pantalla("scr-escenario"); }
+
+  /* ---------- paso 2 · situación ---------- */
+  function pintarPaso2(){
+    const c = st.ctx;
+    $("s2-eyebrow").textContent = `Paso 2 de 2 · ${c.nombre}`;
+    $("s2-eyebrow").style.color = c.color;
+    $("s2-titulo").innerHTML = T("¿Qué pone <em>sobre la mesa</em>?", "¿Qué pones <em>sobre la mesa</em>?");
+    $("s2-lead").textContent = T(
+      "Elija una situación real, vigente y suya. No se responde con palabras: se representa con piezas, y después una tarjeta la perturba.",
+      "Elige una situación real, de ahora y tuya. No se responde hablando: se arma con piezas, y después una carta la mueve.");
+    $("lbl-quien").textContent = T("¿Quién construye?", "¿Quién juega?");
+    $("in-quien").placeholder = T("Nombre y rol · Ej.: Laura, directora comercial",
+                                  "Tu nombre · Ej.: Sara, once B");
+    $("lbl-sit").textContent = T("Elija la situación que va sobre la mesa", "Elige la situación que va sobre la mesa");
+    $("in-situacion").placeholder = T("…o escriba aquí la suya.", "…o escribe aquí la tuya.");
+    $("situaciones").innerHTML = c.situaciones.map((x,i) => `
+      <button class="sit-op" onclick="DV.elegirSituacion(${i})" data-i="${i}">
+        <b>${esc(x.t)}</b><span>${esc(x.d)}</span></button>`).join("");
+    $("como-funciona").innerHTML = `<h3>${T("Cómo funciona","Cómo se juega")}</h3><ol>
+      <li><b>Conecta · ${T("Construyo","Armo")}</b> — ${T("represente la situación con avatares, piezas y vínculos.","arma la situación con avatares, piezas y vínculos.")}</li>
+      <li><b>Comprende · ${T("Narro","Cuento")}</b> — ${T("cuente lo que construyó. El Advisor solo pregunta.","cuentas lo que armaste. El Advisor solo pregunta.")}</li>
+      <li><b>Crea · ${T("Reconfiguro","Muevo")}</b> — ${T("una carta perturba la escena: hay que mover el tablero.","una carta mueve la escena: hay que cambiar el tablero.")}</li>
+      <li><b>Consolida · ${T("Actúo","Actúo")}</b> — ${T("elija una conducta observable con fecha.","eliges algo concreto que vas a hacer, con fecha.")}</li>
+    </ol>`;
+    $("btn-start").textContent = T("Abrir el tablero →", "Abrir el tablero →");
+    revisar();
+  }
+  function elegirSituacion(i){
+    const x = st.ctx.situaciones[i];
+    $("in-situacion").value = x.d;
+    document.querySelectorAll(".sit-op").forEach(b => b.classList.toggle("on", +b.dataset.i === i));
+    revisar();
+  }
   function revisar(){
     st.quien = $("in-quien").value.trim(); st.situacion = $("in-situacion").value.trim();
     const ok = st.quien.length>=2 && st.situacion.length>=15;
     $("btn-start").disabled = !ok;
-    $("setup-hint").textContent = ok ? "Todo listo. El tablero espera." : "Complete quién construye y qué situación va a trabajar.";
+    $("setup-hint").textContent = ok
+      ? T("Todo listo. El tablero espera.", "Listo. El tablero espera.")
+      : T("Complete quién construye y qué situación va a trabajar.", "Escribe tu nombre y elige una situación.");
   }
   function iniciar(){
     $("hud-quien").innerHTML = `<b>${esc(st.quien)}</b>`;
     $("rec-situacion").textContent = st.situacion;
+    document.querySelector(".sit-recordatorio b").textContent = T("Su situación","Tu situación");
     pantalla("scr-mesa");
     if(!BOARD._listo){ BOARD.init("tablero", onCambioTablero, onSeleccion); BOARD._listo = true; pintarBandeja(); }
     montarFase();
   }
-  const pantalla = id => ["scr-setup","scr-mesa","scr-cierre"].forEach(s=>$(s).classList.toggle("hidden", s!==id));
+  const pantalla = id => ["scr-escenario","scr-setup","scr-mesa","scr-cierre"].forEach(s=>$(s).classList.toggle("hidden", s!==id));
 
   /* ---------- bandeja + arrastre ---------- */
   let ghost = null, arrastrando = null;
@@ -226,7 +289,7 @@ const DV = (() => {
     $("f-tag").textContent = f.tag; $("f-tag").style.color = f.color;
     $("f-nombre").textContent = f.nombre;
     $("f-instr").innerHTML = `<button class="ayuda-btn" onclick="DV.abrirAyudaFase(true)">
-        <i>?</i> Cómo funciona esta fase</button>
+        <i>?</i> ${T("Cómo funciona esta fase","Qué toca hacer aquí")}</button>
       <button class="ayuda-btn" onclick="DV.abrirAyudaAdvisor()"><i>◆</i> ¿Qué hace el Advisor?</button>`;
     $("steps").innerHTML = FASES.map((x,i)=>
       `<span class="step ${i===st.fase?"on":(i<st.fase?"done":"")}">${i<st.fase?"✓ ":""}${x.tag.split(" · ")[1]}</span>`).join("")
@@ -235,7 +298,12 @@ const DV = (() => {
     const paneles = {conecta:panelConecta, comprende:panelComprende, crea:panelCrea, consolida:panelConsolida};
     paneles[f.id]();
     setTimeout(() => abrirAyudaFase(false), 260);
-    $("av-msg").textContent = {
+    $("av-msg").textContent = tuteo() ? {
+      conecta:"Arma primero. No me cuentes todavía qué significa: ponlo en el tablero y deja que se vea.",
+      comprende:"Ahora cuéntame lo que armaste. Voy a preguntar por distancias, ausencias y tensiones.",
+      crea:"Roba la carta. Lo que pida hay que hacerlo en el tablero: si nada se mueve, no pasó.",
+      consolida:"Cierra eligiendo una sola cosa. Prefiero una que puedas sostener a cinco que suenen bien."
+    }[f.id] : {
       conecta:"Construya primero. No me cuente todavía qué significa: colóquelo sobre el tablero y déjelo verse.",
       comprende:"Ahora cuénteme lo que construyó. Voy a preguntar por distancias, ausencias y tensiones.",
       crea:"Robe la tarjeta. Lo que pida hay que hacerlo sobre el tablero: si nada se mueve, no ocurrió.",
@@ -436,6 +504,8 @@ const DV = (() => {
 
   /* ---------- llamadas al Advisor ---------- */
   async function pedir(payload){
+    if(st.ctx) payload.contexto_id = st.ctx.id, payload.contexto_nombre = st.ctx.nombre,
+               payload.contexto_advisor = st.ctx.advisor, payload.trato = st.ctx.trato;
     try{
       const r = await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
       return await r.json();
@@ -615,7 +685,7 @@ const DV = (() => {
   function guardar(){
     try{
       localStorage.setItem(CLAVE, JSON.stringify({
-        quien:st.quien, situacion:st.situacion, fase:st.fase, narracion:st.narracion,
+        ctxId:st.ctx?.id, quien:st.quien, situacion:st.situacion, fase:st.fase, narracion:st.narracion,
         explicacion:st.explicacion, hilo:st.hilo, hallazgo:st.hallazgo, patron:st.patron,
         reto:st.reto, conducta:st.conducta, log:st.log, tablero:BOARD.serializar(), ts:Date.now()
       }));
@@ -627,12 +697,16 @@ const DV = (() => {
   }
   function retomar(){
     const d = haySesion(); if(!d) return;
+    st.ctx = CTX(d.ctxId || "gerencial"); CTX_ACTUAL = st.ctx.id;
+    document.body.style.setProperty("--ctx", st.ctx.color);
     Object.assign(st, {quien:d.quien, situacion:d.situacion, fase:d.fase, narracion:d.narracion||"",
       explicacion:d.explicacion||"", hilo:d.hilo||[], hallazgo:d.hallazgo||"", patron:d.patron||"",
       reto:d.reto||null, conducta:d.conducta, log:d.log||[]});
+    pintarPaso2();
     $("in-quien").value = st.quien; $("in-situacion").value = st.situacion; revisar();
     $("hud-quien").innerHTML = `<b>${esc(st.quien)}</b>`;
     $("rec-situacion").textContent = st.situacion;
+    document.querySelector(".sit-recordatorio b").textContent = T("Su situación","Tu situación");
     pantalla("scr-mesa");
     if(!BOARD._listo){ BOARD.init("tablero", onCambioTablero, onSeleccion); BOARD._listo = true; pintarBandeja(); }
     if(d.tablero) BOARD.cargar(d.tablero);
@@ -707,22 +781,23 @@ const DV = (() => {
         igual que en la mesa real: <b>acompaña sin interpretar</b>.</p>
       <div class="m-dos">
         <div class="m-si"><b>Sí hace</b><ul>
-          <li>Lee la escena que usted construyó y pregunta por lo <b>visible</b>: distancias, ausencias, qué separa a qué.</li>
-          <li>Le devuelve <b>sus propias palabras</b> cuando pregunta.</li>
-          <li>Señala lo que nombró en voz alta pero no está en el tablero.</li>
+          <li>Lee la escena que ${T("usted construyó","construiste")} y pregunta por lo <b>visible</b>: distancias, ausencias, qué separa a qué.</li>
+          <li>${T("Le devuelve <b>sus propias palabras</b>","Te devuelve <b>tus propias palabras</b>")} cuando pregunta.</li>
+          <li>Señala lo que ${T("nombró","nombraste")} en voz alta pero no está en el tablero.</li>
           <li>Exige evidencia concreta: un nombre, una frase textual, un ajuste específico.</li>
           <li>Protege el ritmo y el cierre con una conducta verificable.</li>
         </ul></div>
         <div class="m-no"><b>Nunca hace</b><ul>
-          <li>Decirle qué significa una pieza, un muro o una distancia.</li>
-          <li>Interpretar su situación o diagnosticarlo.</li>
-          <li>Darle consejos o proponerle la solución.</li>
+          <li>${T("Decirle","Decirte")} qué significa una pieza, un muro o una distancia.</li>
+          <li>${T("Interpretar su situación o diagnosticarlo.","Interpretar tu situación o diagnosticarte.")}</li>
+          <li>${T("Darle consejos o proponerle la solución.","Darte consejos o proponerte la solución.")}</li>
           <li>Aceptar respuestas abstractas que nadie podría verificar mañana.</li>
-          <li>Resolver por usted lo que le toca decidir.</li>
+          <li>${T("Resolver por usted lo que le toca decidir.","Resolver por ti lo que te toca decidir.")}</li>
         </ul></div>
       </div>
-      <p class="m-nota">Si el Advisor digital no está disponible, la sesión sigue siendo jugable y se le
-        avisará en pantalla: nunca finge una evaluación que no hizo.</p>
+      <p class="m-advisor" style="margin-bottom:14px"><b>En este escenario</b>${esc(st.ctx?.advisor || "")}</p>
+      <p class="m-nota">Si el Advisor digital no está disponible, la sesión sigue siendo jugable y se
+        ${T("le avisará","te avisará")} en pantalla: nunca finge una evaluación que no hizo.</p>
       <div class="btn-row" style="margin-top:20px"><button class="btn" id="m-ok">Cerrar</button></div>
     </div>`;
     document.body.appendChild(m);
@@ -746,7 +821,7 @@ const DV = (() => {
   });
 
   document.addEventListener("DOMContentLoaded", () => {
-    pintarEjemplos();
+    pintarEscenarios();
     const prev = haySesion();
     if(prev){
       const aviso = document.createElement("div");
@@ -757,14 +832,14 @@ const DV = (() => {
         quedó en la fase ${prev.fase+1} de 4.</p>
         <div class="btn-row" style="margin-top:0"><button class="btn" onclick="DV.retomar()">Retomar donde quedé →</button>
           <button class="btn ghost" onclick="DV.descartarSesion()">Empezar de cero</button></div>`;
-      $("scr-setup").querySelector(".wrap").insertBefore(aviso, $("scr-setup").querySelector(".rules-box"));
+      $("scr-escenario").querySelector(".wrap").appendChild(aviso);
     }
     $("in-quien").addEventListener("input", revisar);
     $("in-situacion").addEventListener("input", revisar);
   });
 
-  return {abrirAyudaFase, abrirAyudaAdvisor, cerrarModal,
-          iniciar, usarEjemplo, avanzar, robarReto, enviarNarracion, responderAdvisor,
+  return {abrirAyudaFase, abrirAyudaAdvisor, cerrarModal, elegirEscenario, volverEscenario, elegirSituacion,
+          iniciar, avanzar, robarReto, enviarNarracion, responderAdvisor,
           enviarReconfiguracion, cerrar, renombrarSel, eliminarSel,
           elegirPilarConducta, pasarConducta, barajarConductas, tomarConducta, tomarJugada, voltearJugada,
           rotarSel, duplicarSel, deshacer, quitarVinc, retomar, descartarSesion};
