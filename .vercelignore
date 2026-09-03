@@ -6,7 +6,10 @@ entrega-s3-4shine/
 output/
 tmp/
 docs/
+tools/
+.git/
 *.pdf
 *.docx
 *.pptx
 *.xlsx
+*.command

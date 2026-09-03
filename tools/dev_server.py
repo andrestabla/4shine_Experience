@@ -8,7 +8,7 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE, "api"))
 from index import responder  # noqa: E402
 
-WEB = os.path.join(BASE, "web")
+WEB = os.path.join(BASE, "public")
 PORT = int(os.environ.get("PORT", "8765"))
 
 

@@ -28,3 +28,7 @@ Iniciar 4Shine Experience.command
 propuesta.html
 .vercel
 .env*
+_uv/
+uv.lock
+pyproject.toml
+.vercel/
