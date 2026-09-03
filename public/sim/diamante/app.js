@@ -34,29 +34,36 @@ const PAL_RECURSO = [
 ];
 
 const RETOS = [
-  {id:"R01",campo:"conecta",  t:"La voz ausente",  c:"¿Quién debería estar en esta escena y no está? Nómbrelo.", z:"Añada su avatar donde le corresponde y conéctelo con el vínculo que refleje la relación real.", p:"¿Qué cambia en la escena ahora que puede verlo?", o:"Up · Gestión de relaciones"},
-  {id:"R02",campo:"conecta",  t:"El vínculo tenso",c:"Elija el vínculo que más energía le consume hoy. ¿Qué lo tensó?", z:"Retire ese conector y colóquelo como quiere que sea dentro de noventa días.", p:"¿Cuál es la primera conversación para llegar ahí, y cuándo?", o:"Out · Construcción de confianza"},
-  {id:"R03",campo:"conecta",  t:"Pide ayuda",      c:"Esta situación no puede sostenerse en soledad. ¿A quién no le ha pedido apoyo todavía?", z:"Coloque una ficha de recurso sobre ese vínculo.", p:"¿Qué le ha impedido pedirlo hasta hoy?", o:"Within · Apertura al feedback"},
-  {id:"R04",campo:"comprende",t:"El detonante",    c:"¿Qué momento de esta escena lo saca de su centro? Descríbalo sin suavizarlo.", z:"Marque con una ficha de tensión el punto exacto donde reacciona en vez de responder.", p:"¿Qué señal temprana lo anuncia, y qué hará al detectarla?", o:"Within · Autoconciencia emocional"},
-  {id:"R05",campo:"comprende",t:"La creencia",     c:"¿Qué frase se repite sobre esta situación? Dígala en voz alta, exactamente como suena en su cabeza.", z:"Si esa frase fuera un muro, constrúyalo. Decida dónde está y qué separa.", p:"Reescriba la frase como protagonista: ¿qué puede aprender o aportar aquí?", o:"Within · Gestión de creencias"},
-  {id:"R06",campo:"comprende",t:"Los zapatos del otro",c:"Elija a un actor de su escena. Durante un minuto, narre la situación desde su lugar, en primera persona.", z:"Mueva su avatar a la posición de esa persona mientras habla.", p:"¿Qué ve esa persona que usted no estaba viendo?", o:"Out · Escucha activa y empática"},
-  {id:"R07",campo:"crea",     t:"Cambio inesperado",c:"El plazo acaba de recortarse a la mitad. La decisión ya no puede esperar.", z:"Reconfigure la escena para responder sin sacrificar su criterio. Explique cada movimiento.", p:"¿Qué soltó y qué protegió? ¿Por qué eso?", o:"Up · Decisión bajo incertidumbre"},
-  {id:"R08",campo:"crea",     t:"La regla heredada",c:"¿Qué está haciendo en esta situación solo porque «siempre se ha hecho así»?", z:"Encuentre la pieza que lo representa. Retírela o cámbiela de lugar.", p:"¿Qué probaría como piloto esta semana en su lugar?", o:"Up · Estimulación intelectual"},
-  {id:"R09",campo:"crea",     t:"La causa raíz",   c:"Esa tensión que marcó: ¿es la causa o solo el síntoma?", z:"Siga los vínculos hacia atrás hasta la pieza donde empezó. Muévala al centro.", p:"¿Qué evidencia confirma que ahí está el origen?", o:"Up · Resolución de causa raíz"},
-  {id:"R10",campo:"consolida",t:"La promesa impecable",c:"Convierta su próximo paso en un pedido: a quién, qué exactamente, con qué condición de satisfacción y para cuándo.", z:"Acerque al destinatario de ese pedido a su avatar.", p:"Si no pudiera cumplir, ¿cuándo y cómo renegociaría?", o:"Out · Ingeniería del lenguaje"},
-  {id:"R11",campo:"consolida",t:"La huella",       c:"Imagine esta situación resuelta. ¿Qué debería seguir en pie dentro de un año?", z:"Coloque una pieza que represente lo que quiere que permanezca.", p:"¿Quién más tiene que sostenerlo para que no dependa solo de usted?", o:"Beyond · Institucionalización de cultura"},
-  {id:"R12",campo:"consolida",t:"El precio",       c:"Toda decisión cuesta algo. ¿Qué pierde si actúa como acaba de configurar la escena?", z:"Retire del tablero la pieza que representa eso que deja ir.", p:"¿Está dispuesto a pagarlo? ¿Qué lo haría reconsiderar?", o:"Within · Responsabilidad radical"}
+  /* ---- SHINE WITHIN · Comprende ---- */
+  {id:"W1",campo:"within",t:"La creencia",c:"¿Qué frase se repite sobre esta situación? Dígala en voz alta, exactamente como suena en su cabeza.",z:"Si esa frase fuera un muro, constrúyalo. Decida dónde está y qué separa.",p:"Reescriba la frase como protagonista: ¿qué puede aprender o aportar aquí?",o:"Within · Gestión de creencias"},
+  {id:"W2",campo:"within",t:"El detonante",c:"¿Qué momento de esta escena lo saca de su centro? Descríbalo sin suavizarlo.",z:"Marque con una ficha de tensión el punto exacto donde reacciona en vez de responder.",p:"¿Qué señal temprana lo anuncia, y qué hará al detectarla?",o:"Within · Autoconciencia emocional"},
+  {id:"W3",campo:"within",t:"El precio",c:"Toda decisión cuesta algo. ¿Qué pierde si actúa como acaba de configurar la escena?",z:"Retire del tablero la pieza que representa eso que deja ir.",p:"¿Está dispuesto a pagarlo? ¿Qué lo haría reconsiderar?",o:"Within · Responsabilidad radical"},
+  {id:"W4",campo:"within",t:"Pide ayuda",c:"Esta situación no puede sostenerse en soledad. ¿A quién no le ha pedido apoyo todavía?",z:"Coloque una ficha de recurso sobre ese vínculo.",p:"¿Qué le ha impedido pedirlo hasta hoy?",o:"Within · Apertura al feedback"},
+  /* ---- SHINE OUT · Conecta ---- */
+  {id:"O1",campo:"out",t:"El vínculo tenso",c:"Elija el vínculo que más energía le consume hoy. ¿Qué lo tensó?",z:"Retire ese conector y colóquelo como quiere que sea dentro de noventa días.",p:"¿Cuál es la primera conversación para llegar ahí, y cuándo?",o:"Out · Construcción de confianza"},
+  {id:"O2",campo:"out",t:"Los zapatos del otro",c:"Elija a un actor de su escena. Durante un minuto, narre la situación desde su lugar, en primera persona.",z:"Mueva su avatar a la posición de esa persona mientras habla.",p:"¿Qué ve esa persona que usted no estaba viendo?",o:"Out · Escucha activa y empática"},
+  {id:"O3",campo:"out",t:"La promesa impecable",c:"Convierta su próximo paso en un pedido: a quién, qué exactamente, con qué condición de satisfacción y para cuándo.",z:"Acerque al destinatario de ese pedido a su avatar.",p:"Si no pudiera cumplir, ¿cuándo y cómo renegociaría?",o:"Out · Ingeniería del lenguaje"},
+  {id:"O4",campo:"out",t:"El mensaje que no llegó",c:"¿Qué cree que entendió la otra persona, distinto de lo que usted quiso decir?",z:"Coloque una pieza entre ambos que represente ese malentendido.",p:"¿Qué haría falta para comprobar qué entendió realmente?",o:"Out · Adaptabilidad comunicativa"},
+  /* ---- SHINE UP · Crea ---- */
+  {id:"U1",campo:"up",t:"La voz ausente",c:"¿Quién debería estar en esta escena y no está? Nómbrelo.",z:"Añada su avatar donde le corresponde y conéctelo con el vínculo que refleje la relación real.",p:"¿Qué cambia en la escena ahora que puede verlo?",o:"Up · Gestión de relaciones"},
+  {id:"U2",campo:"up",t:"Cambio inesperado",c:"El plazo acaba de recortarse a la mitad. La decisión ya no puede esperar.",z:"Reconfigure la escena para responder sin sacrificar su criterio. Explique cada movimiento.",p:"¿Qué soltó y qué protegió? ¿Por qué eso?",o:"Up · Decisión bajo incertidumbre"},
+  {id:"U3",campo:"up",t:"La causa raíz",c:"Esa tensión que marcó: ¿es la causa o solo el síntoma?",z:"Siga los vínculos hacia atrás hasta la pieza donde empezó. Muévala al centro.",p:"¿Qué evidencia confirma que ahí está el origen?",o:"Up · Resolución de causa raíz"},
+  {id:"U4",campo:"up",t:"La regla heredada",c:"¿Qué está haciendo en esta situación solo porque «siempre se ha hecho así»?",z:"Encuentre la pieza que lo representa. Retírela o cámbiela de lugar.",p:"¿Qué probaría como piloto esta semana en su lugar?",o:"Up · Estimulación intelectual"},
+  /* ---- SHINE BEYOND · Consolida ---- */
+  {id:"B1",campo:"beyond",t:"La huella",c:"Imagine esta situación resuelta. ¿Qué debería seguir en pie dentro de un año?",z:"Coloque una pieza que represente lo que quiere que permanezca.",p:"¿Quién más tiene que sostenerlo para que no dependa solo de usted?",o:"Beyond · Institucionalización de cultura"},
+  {id:"B2",campo:"beyond",t:"Quién queda",c:"Si usted no estuviera la próxima semana, ¿quién sostendría esto?",z:"Coloque a esa persona en el tablero y únala a lo que tendría que sostener.",p:"¿Qué necesitaría de usted para poder hacerlo?",o:"Beyond · Mentoría y sucesión"},
+  {id:"B3",campo:"beyond",t:"El costo para otros",c:"¿A quién afecta esta decisión, más allá de usted, sin que haya estado en la conversación?",z:"Añada esa pieza al tablero, donde le corresponda.",p:"¿Qué cambia en su decisión ahora que esa persona está a la vista?",o:"Beyond · Ética y responsabilidad social"},
+  {id:"B4",campo:"beyond",t:"Lo que enseño sin decirlo",c:"Su forma de resolver esto le enseña algo a quienes lo observan. ¿Qué les está enseñando?",z:"Coloque una pieza que represente esa lección y ubíquela donde otros puedan verla.",p:"¿Es la lección que quiere dejar? Si no, ¿qué tendría que cambiar hoy?",o:"Beyond · Liderazgo de servicio"}
 ];
-const CONDUCTAS = [
-  {t:"Escucha activa",   d:"Presta atención plena cuando el otro habla; parafrasea para confirmar entendimiento antes de responder.", o:"Out · Escucha activa y empática"},
-  {t:"Pausa estratégica",d:"Aplica el método STOP —Parar, Pensar, Observar, Proceder— antes de reaccionar ante una situación de presión.", o:"Within · Regulación emocional"},
-  {t:"Pedido impecable", d:"Hace pedidos con condiciones de satisfacción y tiempos claros, evitando ambigüedad y retrabajos.", o:"Out · Ingeniería del lenguaje"},
-  {t:"Cumple acuerdos",  d:"Gestiona sus promesas: cumple lo pactado y, si no puede, renegocia a tiempo para sostener la confianza.", o:"Within · Integridad y coherencia"},
-  {t:"Habla con claridad",d:"Expresa objetivos y expectativas sin ambigüedad sobre qué se espera, de quién y por qué importa.", o:"Out · Claridad e inspiración"},
-  {t:"Pide feedback",    d:"Solicita retroalimentación para identificar puntos ciegos, y la recibe sin ponerse a la defensiva.", o:"Within · Apertura al feedback"},
-  {t:"Da crédito",       d:"Reconoce públicamente los logros y atribuye de forma explícita las contribuciones de cada persona.", o:"Out · Reconocimiento y feedback"},
-  {t:"Delega de verdad", d:"Define el «qué» y permite al equipo decidir el «cómo», delegando autoridad real y no solo tareas.", o:"Beyond · Empoderamiento"}
-];
+
+/* Las conductas vienen del mazo completo (data/conductas.js): 96 cartas, 4 pilares. */
+const PIL_META = {
+  within:{nombre:"Shine Within", verbo:"Comprende", color:"#8b59b2"},
+  out:   {nombre:"Shine Out",    verbo:"Conecta",   color:"#c13a68"},
+  up:    {nombre:"Shine Up",     verbo:"Crea",      color:"#ed8124"},
+  beyond:{nombre:"Shine Beyond", verbo:"Consolida", color:"#3988ca"}
+};
+
 const EJEMPLOS = [
   "Me ofrecieron liderar una nueva región y llevo tres semanas sin responder.",
   "Tengo que dar feedback difícil a alguien de mi equipo con quien tengo buena relación.",
@@ -245,10 +252,11 @@ const DV = (() => {
         <div class="btn-row" style="margin-top:0"><button class="btn" onclick="DV.robarReto()">Robar tarjeta ▲</button></div>`;
       return;
     }
-    const r = st.reto, col = {conecta:"#c13a68",comprende:"#8b59b2",crea:"#ed8124",consolida:"#3988ca"}[r.campo];
+    const r = st.reto, col = (PIL_META[r.campo]||{}).color || "#d9b54a";
+    const pilNombre = (PIL_META[r.campo]||{}).nombre || "";
     $("fase-panel").innerHTML = `<h3>Su tarjeta</h3>
       <div class="reto-card" style="--rc:${col}">
-        <div class="reto-head" style="background:${col}"><b>${r.campo}</b><span>${r.id}</span></div>
+        <div class="reto-head" style="background:${col}"><b>${esc(pilNombre.replace("Shine ",""))} · ${esc((PIL_META[r.campo]||{}).verbo||"")}</b><span>${r.id}</span></div>
         <div class="reto-body"><h4>${esc(r.t)}</h4><p class="consigna">${esc(r.c)}</p>
           <div class="zona"><b>En el tablero</b>${esc(r.z)}</div></div>
         <div class="reto-foot">${esc(r.o)}</div></div>
@@ -261,15 +269,77 @@ const DV = (() => {
       </div>`;
   }
   function panelConsolida(){
+    const pil = st.pilarConducta || "within";
+    const mazo = (typeof CONDUCTAS !== "undefined" ? CONDUCTAS : []).filter(c => c.pilar === pil);
+    const sel = st.conducta ? mazo.find(c => c.id === st.conducta) : null;
     $("fase-panel").innerHTML = `<h3>Una sola conducta</h3>
-      <div class="cond-grid">${CONDUCTAS.map((c,i)=>
-        `<button class="cond ${st.conducta===i?"sel":""}" onclick="DV.elegirConducta(${i})">
-          <b>${esc(c.t)}</b><p>${esc(c.d)}</p><span>${esc(c.o)}</span></button>`).join("")}</div>
+      <p class="hint" style="margin:0 0 12px">Elija el pilar desde el que quiere comprometerse y saque una carta del mazo.</p>
+      <div class="pilar-tabs">${Object.entries(PIL_META).map(([id,p]) =>
+        `<button class="ptab ${id===pil?"on":""}" style="--pc:${p.color}" onclick="DV.elegirPilarConducta('${id}')">
+          ${esc(p.nombre.replace("Shine ",""))}<small>${(typeof CONDUCTAS!=="undefined"?CONDUCTAS:[]).filter(c=>c.pilar===id).length}</small></button>`).join("")}</div>
+      <div class="mini-abanico" id="mini-abanico"></div>
+      <div class="btn-row" style="margin-top:12px;gap:8px">
+        <button class="ctrl-mini" onclick="DV.barajarConductas()">⤮ Barajar</button>
+        <button class="ctrl-mini" onclick="DV.pasarConducta(-1)">‹</button>
+        <button class="ctrl-mini" onclick="DV.pasarConducta(1)">›</button>
+        <button class="ctrl-mini fuerte" onclick="DV.tomarConducta()">Tomar esta carta</button>
+      </div>
+      ${sel ? `<div class="conducta-elegida"><b>Su compromiso</b><h4>${esc(sel.competencia)}</h4>
+        <p>${esc(sel.conducta)}</p><span>${esc(PIL_META[sel.pilar].nombre)} → ${esc(sel.componente)}</span></div>` : ""}
       <div class="field" style="margin:16px 0 0"><label>¿Ante quién y cuándo?</label>
-        <input type="text" id="in-cuando" placeholder="Ej.: con Marta, en el comité del jueves"></div>
+        <input type="text" id="in-cuando" value="${esc(st.cuando||"")}" placeholder="Ej.: con Marta, en el comité del jueves"></div>
       <div class="field" style="margin:14px 0 0"><label>¿Qué evidencia traerá?</label>
-        <textarea id="in-evidencia" placeholder="Cómo sabremos que ocurrió."></textarea></div>
+        <textarea id="in-evidencia" placeholder="Cómo sabremos que ocurrió.">${esc(st.evidencia||"")}</textarea></div>
       <div class="btn-row"><button class="btn" id="btn-fase" onclick="DV.cerrar()">Cerrar la sesión →</button></div>`;
+    pintarMiniAbanico();
+  }
+
+  function pintarMiniAbanico(){
+    const cont = $("mini-abanico"); if(!cont) return;
+    const pil = st.pilarConducta || "within";
+    if(!st.mazo || st.mazoPilar !== pil){
+      st.mazo = (typeof CONDUCTAS !== "undefined" ? CONDUCTAS : []).filter(c => c.pilar === pil);
+      st.mazoPilar = pil; st.mazoI = 0;
+    }
+    const n = st.mazo.length; if(!n){ cont.innerHTML = ""; return; }
+    const p = PIL_META[pil];
+    let html = "";
+    for(let k = 4; k >= 0; k--){
+      const c = st.mazo[(st.mazoI + k) % n];
+      const dx = k*14 - 28, dy = k*6, ang = k*4 - 8, sc = 1 - k*0.05;
+      html += `<article class="mcarta" style="--cc:${p.color};transform:translate(${dx}px,${dy}px) rotate(${ang}deg) scale(${sc});z-index:${5-k};opacity:${1-k*0.1}">
+        <div class="mc-top">${esc(p.nombre.replace("Shine ",""))}<span>${c.id}</span></div>
+        <div class="mc-body"><b>${esc(c.competencia)}</b><p>${esc(c.conducta)}</p></div>
+        <div class="mc-foot">${esc(c.componente)}</div></article>`;
+    }
+    cont.innerHTML = html;
+    const act = st.mazo[st.mazoI];
+    cont.insertAdjacentHTML("beforeend",
+      `<span class="mini-pos">${st.mazoI+1} / ${n} · ${esc(act.competencia)}</span>`);
+  }
+  function elegirPilarConducta(id){ st.pilarConducta = id; st.mazo = null; st.conducta = null; panelConsolida(); }
+  function pasarConducta(d){
+    if(!st.mazo) return;
+    st.mazoI = (st.mazoI + d + st.mazo.length) % st.mazo.length; pintarMiniAbanico();
+  }
+  function barajarConductas(){
+    if(!st.mazo) return;
+    const cont = $("mini-abanico");
+    [...cont.querySelectorAll(".mcarta")].forEach(el => {
+      el.style.transition = "transform .3s,opacity .3s";
+      el.style.transform = `translate(${(Math.random()*2-1)*130}px,${(Math.random()*2-1)*50}px) rotate(${(Math.random()*2-1)*30}deg) scale(.9)`;
+      el.style.opacity = ".2";
+    });
+    setTimeout(() => {
+      for(let i = st.mazo.length-1; i>0; i--){ const j = Math.floor(Math.random()*(i+1)); [st.mazo[i],st.mazo[j]]=[st.mazo[j],st.mazo[i]]; }
+      st.mazoI = 0; pintarMiniAbanico();
+    }, 320);
+  }
+  function tomarConducta(){
+    if(!st.mazo) return;
+    st.conducta = st.mazo[st.mazoI].id;
+    st.cuando = ($("in-cuando")?.value)||""; st.evidencia = ($("in-evidencia")?.value)||"";
+    panelConsolida(); guardar();
   }
 
   function actualizarBotonFase(){
@@ -391,17 +461,21 @@ const DV = (() => {
     panelCrea();
   }
 
-  function elegirConducta(i){ st.conducta = i; panelConsolida(); }
+
 
   async function cerrar(){
-    if(st.conducta===null){ nota("Elija una conducta observable."); return; }
+    if(!st.conducta){ nota("Saque una carta del mazo y tómela."); return; }
+    const carta = (typeof CONDUCTAS !== "undefined" ? CONDUCTAS : []).find(c => c.id === st.conducta);
+    if(!carta){ nota("No fue posible leer la carta."); return; }
     const cuando = $("in-cuando").value.trim(), evidencia = $("in-evidencia").value.trim();
     if(!cuando || evidencia.length<10){ $("sel-info").textContent = "Complete ante quién/cuándo y la evidencia."; return; }
     $("btn-fase").disabled = true; pensando();
     const png = BOARD.exportarPNG();
     const o = await pedir({fase:"dv_cierre", quien:st.quien, situacion:st.situacion,
       escena:BOARD.describir(), narracion:st.narracion, explicacion:st.explicacion,
-      reto:st.reto?.t || "", conducta:CONDUCTAS[st.conducta], cuando, evidencia});
+      reto:st.reto?.t || "",
+      conducta:{t:carta.competencia, d:carta.conducta, o:`${PIL_META[carta.pilar].nombre} · ${carta.componente}`},
+      cuando, evidencia});
     try{
       localStorage.removeItem("4shine.diamante.sesion");
       pintarCierre(o, png, cuando, evidencia);
@@ -414,7 +488,8 @@ const DV = (() => {
   }
 
   function pintarCierre(o, png, cuando, evidencia){
-    const c = CONDUCTAS[st.conducta];
+    const k = (typeof CONDUCTAS !== "undefined" ? CONDUCTAS : []).find(x => x.id === st.conducta) || {};
+    const c = {t:k.competencia||"—", d:k.conducta||"", o:`${(PIL_META[k.pilar]||{}).nombre||""} · ${k.componente||""}`};
     $("cierre-body").innerHTML = `
       <div class="verdict cruzo" style="border-color:#d9b54a;background:linear-gradient(180deg,#151f16,#0b1729)">
         <span class="eyebrow">${esc(st.quien)}</span>
@@ -552,6 +627,7 @@ const DV = (() => {
   });
 
   return {iniciar, usarEjemplo, avanzar, robarReto, enviarNarracion, responderAdvisor,
-          enviarReconfiguracion, elegirConducta, cerrar, renombrarSel, eliminarSel,
+          enviarReconfiguracion, cerrar, renombrarSel, eliminarSel,
+          elegirPilarConducta, pasarConducta, barajarConductas, tomarConducta,
           rotarSel, duplicarSel, deshacer, quitarVinc, retomar, descartarSesion};
 })();

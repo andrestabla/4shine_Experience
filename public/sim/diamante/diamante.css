@@ -139,3 +139,33 @@
 
 .sel-acciones{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .sel-solo{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ===== mazo de conductas dentro del simulador ===== */
+.pilar-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
+.ptab{background:var(--panel2);border:1px solid var(--line);border-top:3px solid var(--pc);border-radius:9px;
+  padding:9px 10px;color:var(--text);font-size:.76rem;font-family:inherit;cursor:pointer;transition:.15s;
+  display:flex;justify-content:space-between;align-items:center;gap:6px}
+.ptab:hover{border-color:var(--pc)}
+.ptab.on{background:#16294a;box-shadow:0 0 0 2px var(--pc)}
+.ptab small{color:var(--pc);font-weight:900;font-size:.68rem}
+.mini-abanico{position:relative;height:210px;display:grid;place-items:center;margin-bottom:6px}
+.mcarta{position:absolute;width:186px;height:186px;border-radius:12px;background:white;color:var(--ink);
+  box-shadow:0 12px 26px #00000066;transform-origin:50% 130%;overflow:hidden;display:flex;flex-direction:column;
+  transition:transform .45s cubic-bezier(.22,.8,.26,1),opacity .3s}
+.mc-top{background:var(--cc);color:white;padding:7px 11px;font-size:.56rem;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:900;display:flex;justify-content:space-between}
+.mc-body{padding:11px;flex:1;min-height:0;overflow:hidden}
+.mc-body b{display:block;font-size:.8rem;margin-bottom:5px;line-height:1.2}
+.mc-body p{margin:0;font-size:.66rem;color:#38465a;line-height:1.4}
+.mc-foot{background:var(--ink);color:#8fa0bc;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;padding:6px 11px}
+.mini-pos{position:absolute;bottom:-2px;left:0;right:0;text-align:center;font-size:.7rem;color:#7f8ea6}
+.ctrl-mini{background:#ffffff0d;border:1px solid var(--line);color:var(--text);border-radius:7px;
+  padding:9px 13px;font-size:.78rem;font-family:inherit;cursor:pointer}
+.ctrl-mini:hover{border-color:var(--gold);color:var(--gold-b)}
+.ctrl-mini.fuerte{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:900}
+.ctrl-mini.fuerte:hover{background:var(--gold-b);color:var(--ink)}
+.conducta-elegida{margin-top:14px;border:1px solid #d9b54a66;border-radius:12px;padding:16px 18px;background:#d9b54a10}
+.conducta-elegida b{display:block;font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.conducta-elegida h4{font-size:1.05rem;margin:0 0 6px}
+.conducta-elegida p{margin:0;font-size:.85rem;color:#d5dce7}
+.conducta-elegida span{display:block;margin-top:10px;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#7f8ea6}

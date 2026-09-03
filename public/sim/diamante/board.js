@@ -2,10 +2,10 @@
 const BOARD = (() => {
   const W = 900, H = 680, CX = 450, CY = 340, R = 300;
   const CAMPOS = [
-    {id:"conecta",   nombre:"CONECTA",   sub:"Relaciones que inspiran confianza", color:"#c13a68", vs:[[CX,CY],[CX,CY-R],[CX+R,CY]]},
-    {id:"comprende", nombre:"COMPRENDE", sub:"Mirada empática, escucha profunda",  color:"#8b59b2", vs:[[CX,CY],[CX+R,CY],[CX,CY+R]]},
-    {id:"crea",      nombre:"CREA",      sub:"Ideas y soluciones con propósito",   color:"#ed8124", vs:[[CX,CY],[CX,CY+R],[CX-R,CY]]},
-    {id:"consolida", nombre:"CONSOLIDA", sub:"Compromisos que generan impacto",    color:"#3988ca", vs:[[CX,CY],[CX-R,CY],[CX,CY-R]]}
+    {id:"out",    nombre:"OUT",    verbo:"Conecta",   sub:"Vínculos, confianza e influencia",      color:"#c13a68", vs:[[CX,CY],[CX,CY-R],[CX+R,CY]]},
+    {id:"up",     nombre:"UP",     verbo:"Crea",      sub:"Ecosistema, estrategia y decisión",     color:"#ed8124", vs:[[CX,CY],[CX+R,CY],[CX,CY+R]]},
+    {id:"beyond", nombre:"BEYOND", verbo:"Consolida", sub:"Legado, otros y huella que permanece",  color:"#3988ca", vs:[[CX,CY],[CX,CY+R],[CX-R,CY]]},
+    {id:"within", nombre:"WITHIN", verbo:"Comprende", sub:"Identidad, creencias y regulación",     color:"#8b59b2", vs:[[CX,CY],[CX-R,CY],[CX,CY-R]]}
   ];
   const PALETA = {
     avatar:  {neutro:"#e8ddc8", yo:"#d9b54a", magenta:"#c13a68", morado:"#8b59b2", naranja:"#ed8124", azul:"#3988ca"},
@@ -69,13 +69,15 @@ const BOARD = (() => {
       points:[CX,CY-r,CX+r,CY,CX,CY+r,CX-r,CY], closed:true,
       stroke:"#d9b54a", strokeWidth:1, opacity:.14+i*.05, dash:i===1?[6,6]:undefined})));
     // etiquetas de campo
-    const pos = {conecta:[CX+128,CY-118], comprende:[CX+128,CY+96], crea:[CX-208,CY+96], consolida:[CX-208,CY-118]};
+    const pos = {out:[CX+126,CY-126], up:[CX+126,CY+88], beyond:[CX-206,CY+88], within:[CX-206,CY-126]};
     CAMPOS.forEach(c => {
       const [x,y] = pos[c.id];
-      capaFondo.add(new Konva.Text({x,y,text:c.nombre,fontSize:15,fontStyle:"bold",fontFamily:"Arial",
-        fill:c.color,letterSpacing:2.5,width:180}));
-      capaFondo.add(new Konva.Text({x,y:y+18,text:c.sub,fontSize:10.5,fontFamily:"Arial",
-        fill:"#7f8ea6",width:180,lineHeight:1.3}));
+      capaFondo.add(new Konva.Text({x,y,text:c.nombre,fontSize:16,fontStyle:"bold",fontFamily:"Arial",
+        fill:c.color,letterSpacing:3,width:190}));
+      capaFondo.add(new Konva.Text({x,y:y+19,text:c.verbo.toUpperCase(),fontSize:10,fontStyle:"bold",
+        fontFamily:"Arial",fill:"#93a2b8",letterSpacing:2.2,width:190}));
+      capaFondo.add(new Konva.Text({x,y:y+34,text:c.sub,fontSize:10,fontFamily:"Arial",
+        fill:"#66768f",width:190,lineHeight:1.35}));
     });
     // diamante central dorado
     capaFondo.add(new Konva.Line({points:[CX,CY-26,CX+26,CY,CX,CY+26,CX-26,CY],closed:true,
@@ -275,10 +277,10 @@ const BOARD = (() => {
     const dx = x - CX, dy = y - CY;
     if(Math.abs(dx) + Math.abs(dy) > R) return "fuera";
     if(Math.abs(dx) + Math.abs(dy) < 34) return "centro";
-    if(dx >= 0 && dy <= 0) return "conecta";
-    if(dx >= 0 && dy > 0) return "comprende";
-    if(dx < 0 && dy > 0) return "crea";
-    return "consolida";
+    if(dx >= 0 && dy <= 0) return "out";
+    if(dx >= 0 && dy > 0) return "up";
+    if(dx < 0 && dy > 0) return "beyond";
+    return "within";
   }
   function sincronizar(){
     piezas.forEach(p => { p.x = Math.round(p.nodo.x()); p.y = Math.round(p.nodo.y()); p.campo = campoDe(p.x,p.y); });
@@ -294,11 +296,13 @@ const BOARD = (() => {
     sincronizar();
     if(!piezas.length) return "(el tablero está vacío)";
     const nom = p => (p.label ? `«${p.label}»` : p.nombre) + (p.tipo!=="ficha"?` (${p.nombre.toLowerCase()})`:"");
-    const porCampo = {centro:[],conecta:[],comprende:[],crea:[],consolida:[],fuera:[]};
+    const porCampo = {centro:[],out:[],up:[],beyond:[],within:[],fuera:[]};
     piezas.forEach(p => porCampo[p.campo].push(nom(p)));
     let t = [];
-    const etiquetas = {centro:"En el CENTRO del diamante", conecta:"En CONECTA", comprende:"En COMPRENDE",
-                       crea:"En CREA", consolida:"En CONSOLIDA", fuera:"Fuera del tablero"};
+    const etiquetas = {centro:"En el CENTRO del diamante",
+                       out:"En SHINE OUT (vínculos · Conecta)", up:"En SHINE UP (sistema · Crea)",
+                       beyond:"En SHINE BEYOND (legado · Consolida)", within:"En SHINE WITHIN (interioridad · Comprende)",
+                       fuera:"Fuera del tablero"};
     Object.entries(porCampo).forEach(([k,v]) => { if(v.length) t.push(`${etiquetas[k]}: ${v.join(", ")}.`); });
     if(vinculos.length){
       t.push("Vínculos: " + vinculos.map(v => {
