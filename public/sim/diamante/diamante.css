@@ -55,15 +55,6 @@
 .lateral{display:flex;flex-direction:column;gap:16px;position:sticky;top:78px}
 .fase-panel h3{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
 .fase-panel textarea{min-height:90px}
-.reto-card{border-radius:12px;overflow:hidden;border:1px solid var(--line);margin-bottom:14px;background:var(--panel2)}
-.reto-head{padding:9px 14px;display:flex;justify-content:space-between;color:#fff;font-size:.62rem;
-  letter-spacing:.13em;text-transform:uppercase;font-weight:900}
-.reto-body{padding:16px}
-.reto-body h4{font-size:1.1rem;margin:0 0 8px}
-.reto-body .consigna{font-size:.92rem;color:#e2e9f4;margin:0 0 12px}
-.reto-body .zona{font-size:.82rem;color:var(--muted);padding-top:10px;border-top:1px dashed var(--line)}
-.reto-body .zona b{display:block;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--rc);margin-bottom:3px}
-.reto-foot{background:#07131f;padding:8px 14px;font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;color:#7f8ea6}
 .mov-alert{border:1px solid #ed812488;background:#ed812415;border-radius:10px;padding:12px 14px;font-size:.84rem;color:#ffc98a;margin-top:12px}
 
 /* conductas */
@@ -171,9 +162,38 @@
 .conducta-elegida span{display:block;margin-top:10px;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#7f8ea6}
 
 /* reverso de la carta jugada, en el cierre */
-.reverso-jugada{border:1px solid #d9b54a66;border-radius:12px;padding:18px;background:linear-gradient(180deg,#16294a,#101f34)}
-.reverso-jugada.tomada{border-color:#5aa06e;background:linear-gradient(180deg,#14291f,#101f34)}
-.reverso-jugada b{display:block;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
-.reverso-jugada.tomada b{color:#8fd6a5}
-.reverso-jugada h4{font-size:1.08rem;margin:0 0 7px}
-.reverso-jugada p{margin:0 0 14px;font-size:.85rem;color:#d5dce7}
+
+/* ===== la carta física en la mesa ===== */
+.carta-mesa{display:grid;place-items:center;perspective:1400px;padding:6px 0 10px}
+.jcarta{position:relative;width:246px;height:330px;transform-style:preserve-3d;
+  transition:transform .6s cubic-bezier(.3,.8,.3,1);cursor:pointer}
+.jcarta.entrando{transform:translateY(38px) rotate(-6deg) scale(.9);opacity:0}
+.jcarta:not(.entrando){opacity:1}
+.jcara{position:absolute;inset:0;border-radius:15px;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 18px 40px #00000075;backface-visibility:hidden;transition:transform .6s cubic-bezier(.3,.8,.3,1)}
+.jcara.recto{background:#fff;color:var(--ink);transform:rotateY(0)}
+.jcara.reverso{background:var(--ink);color:#fff;border:1px solid #d9b54a55;transform:rotateY(180deg)}
+.jcarta.volteada .jcara.recto{transform:rotateY(-180deg)}
+.jcarta.volteada .jcara.reverso{transform:rotateY(0)}
+.jc-top{background:var(--cc);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;
+  align-items:baseline;flex:none;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-weight:900}
+.jc-top span{opacity:.85}
+.jc-body{padding:14px 15px 10px;display:flex;flex-direction:column;gap:8px;flex:1;min-height:0;overflow:hidden}
+.jc-body h4{font-size:1.05rem;margin:0;line-height:1.2;color:var(--ink)}
+.jc-cons{margin:0;font-size:.82rem;color:#38465a;line-height:1.45}
+.jc-zona{margin:0;font-size:.73rem;color:#536075;padding-top:8px;border-top:1px dashed #d8d5cb;line-height:1.4}
+.jc-zona b{display:block;font-size:.53rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cc);margin-bottom:2px}
+.jc-foot{background:var(--ink);color:#cfd7e4;font-size:.52rem;letter-spacing:.09em;text-transform:uppercase;
+  padding:8px 14px;display:flex;justify-content:space-between;flex:none;margin-top:auto}
+.jc-foot b{color:var(--gold)}
+.jcara.reverso .jc-top{background:#ffffff10;border-bottom:1px solid #ffffff1a;color:var(--cc)}
+.jcara.reverso .jc-foot{background:#ffffff0d;color:#8fa0bc}
+.jrev{padding:18px 15px;display:flex;flex-direction:column;gap:8px;flex:1;min-height:0}
+.jrombo{width:14px;height:14px;background:var(--gold);transform:rotate(45deg);margin-bottom:2px}
+.jcomp{font-size:.53rem;letter-spacing:.11em;text-transform:uppercase;color:#8fa0bc}
+.jrev h4{font-size:1rem;margin:0;color:#fff}
+.jrev p{margin:0;font-size:.78rem;color:#d5dce7;line-height:1.5;flex:1;overflow:hidden}
+.jc-pregunta{margin:4px 0 0;border-left:3px solid var(--gold);background:#d9b54a10;border-radius:0 9px 9px 0;
+  padding:11px 14px;font-size:.86rem;color:var(--gold-b);font-style:italic}
+.jc-pregunta b{display:block;font-style:normal;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:3px}

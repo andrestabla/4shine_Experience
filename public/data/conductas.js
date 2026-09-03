@@ -148,10 +148,10 @@ const CONDUCTAS = [
   "competencia": "Regulación emocional",
   "conducta": "Aplica la pausa estratégica (Método STOP: Parar, Pensar, Observar, Proceder) antes de reaccionar ante una crisis.",
   "reto": {
-   "t": "Pausa breve",
-   "c": "Ante esta escalada, deténgase un instante y cuente tres respiraciones antes de mover o hablar.",
-   "z": "Marque con una ficha de tensión el punto del tablero donde suele actuar o responder de forma inmediata.",
-   "p": "Si esperara esas tres respiraciones, ¿qué decisión distinta tomaría?"
+   "t": "El segundo antes",
+   "c": "Mire la ficha de tensión más caliente de su escena. ¿Qué hace usted en el segundo anterior a estallar ahí?",
+   "z": "Coloque una ficha de recurso justo antes de esa tensión, en el punto donde todavía puede elegir.",
+   "p": "¿Qué le dará la señal de que ese segundo llegó?"
   }
  },
  {
@@ -200,10 +200,10 @@ const CONDUCTAS = [
   "competencia": "Gestión de la energía",
   "conducta": "Incorpora rutinas de bienestar físico y mental para recargar su \"batería\" de liderazgo.",
   "reto": {
-   "t": "Rutina recargadora",
-   "c": "Defina una práctica breve diaria (física o mental) e insértela ahora mismo en su calendario de la escena.",
-   "z": "Añada una ficha de recurso a su avatar con el nombre de esa práctica y acérquela a la pieza de energía.",
-   "p": "¿Qué obstáculo tendrá que desplazar para sostener esa rutina cada semana?"
+   "t": "Batería visible",
+   "c": "¿Qué pieza en Within representa su nivel de energía hoy y qué la ha agotado? Ubíquela tal como está en la escena.",
+   "z": "Coloque una ficha de recurso en el campo donde su energía se sostiene, y una de tensión donde se agota.",
+   "p": "Si esa pieza no cambia, ¿qué impacto tendrá en su liderazgo la próxima semana?"
   }
  },
  {
@@ -213,10 +213,10 @@ const CONDUCTAS = [
   "competencia": "Claridad de propósito (Ikigai)",
   "conducta": "Define y articula un \"para qué\" claro que conecta su trabajo diario con un impacto mayor (ej. \"Estoy aquí para empoderar a otros\").",
   "reto": {
-   "t": "Impacto claro",
-   "c": "Redacte en una frase el impacto mayor por el que hace este trabajo y colóquelo como guía en la escena.",
-   "z": "Coloque una ficha de foco junto a su avatar con esa frase escrita y sitúela frente a las decisiones clave.",
-   "p": "¿Cómo modifica esa frase la prioridad de la siguiente decisión en esta escena?"
+   "t": "Norte claro",
+   "c": "¿Qué 'para qué' aparece cuando mira la pieza base en Within? Dígalo en una frase, tal como lo siente usted.",
+   "z": "Acérque una ficha de energía a la pieza Within que más refleja ese paraqué.",
+   "p": "¿Qué decisión reciente habría sido distinta si ese paraqué hubiera guiado la elección?"
   }
  },
  {
@@ -226,10 +226,10 @@ const CONDUCTAS = [
   "competencia": "Claridad de propósito (Ikigai)",
   "conducta": "Utiliza su propósito como filtro para la toma de decisiones difíciles, asegurando que sus acciones honren su intención de vida.",
   "reto": {
-   "t": "Filtro de acción",
-   "c": "Frente a este dilema, compare cada opción con la frase que acaba de poner y permita avanzar solo la que encaje con ella.",
-   "z": "Mueva la pieza base asociada a la opción que no coincide hacia fuera del tablero para dejarla en revisión.",
-   "p": "¿Qué renuncia implicaría priorizar la opción que coincide con esa frase?"
+   "t": "Filtro personal",
+   "c": "Frente al dilema que muestra su escena, ¿qué pieza en Within habla por su propósito? ¿Cuál le pide avanzar o frenar?",
+   "z": "Aleje una ficha de decisión de la pieza que contradice su sentido personal dentro de Within.",
+   "p": "¿Qué ganancia y qué costo ve al priorizar lo que su propósito señala?"
   }
  },
  {
@@ -278,10 +278,10 @@ const CONDUCTAS = [
   "competencia": "Autenticidad",
   "conducta": "Se muestra genuino, sin adoptar \"máscaras\" corporativas; tiene la valentía de ser él mismo mientras lidera.",
   "reto": {
-   "t": "Sin máscara",
-   "c": "Revele una incomodidad real que oculta en el rol y diga cómo actuará la próxima vez siendo auténtico.",
-   "z": "Retire la pieza que sirve como máscara sobre su avatar y trasládela al campo Out.",
-   "p": "¿Qué riesgo acepta para mantenerse así frente a su equipo?"
+   "t": "Máscara quitada",
+   "c": "¿Qué barrera o conector impide que su avatar muestre cómo es usted realmente? Descríbalo.",
+   "z": "Retire o gire la barrera frente a su avatar que simbolice esa incomodidad.",
+   "p": "Al hacerlo, ¿qué palabra auténtica surge para describir su liderazgo?"
   }
  },
  {
@@ -304,10 +304,10 @@ const CONDUCTAS = [
   "competencia": "Práctica reflexiva",
   "conducta": "Dedica tiempo agendado para la auto-observación y el análisis de su desempeño (ej. llevar un diario o bitácora emocional).",
   "reto": {
-   "t": "Hora de bitácora",
-   "c": "Reserve ahora un bloque semanal para registrar por escrito lo que hizo y cómo lo vivió.",
-   "z": "Coloque una ficha de recurso en Within y ponga una ficha de tensión en el campo donde suele postergar esa práctica.",
-   "p": "Si falla una semana, ¿qué ajuste hará para sostener la práctica?"
+   "t": "Mirada interna",
+   "c": "¿Qué sensación o patrón aparece con más fuerza alrededor de su avatar en esta escena y cómo lo nota usted?",
+   "z": "En el tablero, ponga una ficha 'registro' junto a su avatar y marque con una ficha tensión el patrón emocional más frecuente.",
+   "p": "¿Qué insight diferente obtendría si leyera esa ficha dentro de siete días?"
   }
  },
  {
@@ -330,10 +330,10 @@ const CONDUCTAS = [
   "competencia": "Apertura al feedback",
   "conducta": "Solicita retroalimentación constructiva de pares, superiores y subordinados para identificar puntos ciegos.",
   "reto": {
-   "t": "Pida el espejo",
-   "c": "Elija a una persona del tablero y solicite una retroalimentación concreta y medible sobre un comportamiento suyo.",
-   "z": "Acerque a esa persona a su avatar, cambie el conector a 'en revisión' y marque con una ficha de tensión el área donde sospecha un punto ciego.",
-   "p": "Si recibe retroalimentación inesperada, ¿qué pregunta hará para clarificarla?"
+   "t": "El punto ciego",
+   "c": "De las personas que puso en el tablero, ¿cuál ve algo de usted que usted no ve? ¿Y por qué no se lo ha preguntado?",
+   "z": "Gire el avatar de esa persona hasta que quede mirando hacia el suyo.",
+   "p": "¿Qué pregunta exacta le haría, si supiera que responderá con franqueza?"
   }
  },
  {
@@ -343,10 +343,10 @@ const CONDUCTAS = [
   "competencia": "Apertura al feedback",
   "conducta": "Recibe la crítica sin ponerse a la defensiva, utilizándola como insumo para su crecimiento personal.",
   "reto": {
-   "t": "Escucha sin barrera",
-   "c": "Permanezca dos minutos sin justificar ni explicar ante una crítica simulada que alguien del tablero le ofrece.",
-   "z": "Coloque una ficha de barrera junto a su avatar y luego retírela mientras mantiene la atención en la fuente de la crítica.",
-   "p": "¿Qué emoción apareció primero y cómo la usará como insumo para mejorar?"
+   "t": "Escucha presente",
+   "c": "¿Qué conector en Within le indica que se cierra ante crítica y qué ficha lo devuelve visible en la escena?",
+   "z": "En el tablero, marque ese conector con una ficha de tensión.",
+   "p": "¿Qué observación concreta surge sobre su reacción al verlo marcado?"
   }
  },
  {
@@ -382,10 +382,10 @@ const CONDUCTAS = [
   "competencia": "Regulación somática y fisiológica",
   "conducta": "Aplica técnicas de respiración consciente antes de situaciones de alta presión.",
   "reto": {
-   "t": "Respire antes",
-   "c": "Nombre la próxima situación de alta presión en la que se verá involucrado y la técnica de respiración que usará antes de actuar.",
-   "z": "Acerque una ficha de energía a su avatar y marque con una ficha de tensión el umbral donde suele perder la calma.",
-   "p": "¿Qué señal corporal será su disparador para empezar esa respiración?"
+   "t": "Respiración en juego",
+   "c": "¿Qué ficha de tensión en Within se activa ante la pieza Out que hoy le aprieta y cómo lo nota en su cuerpo?",
+   "z": "Mueva esa ficha de tensión un paso hacia su avatar.",
+   "p": "¿Qué variación en la escena anticipa cuando esa ficha cambie de posición?"
   }
  },
  {
@@ -395,10 +395,10 @@ const CONDUCTAS = [
   "competencia": "Compostura",
   "conducta": "Mantiene la serenidad en situaciones de crisis, proyectando confianza y evitando que el pánico paralice al equipo.",
   "reto": {
-   "t": "Faro en crisis",
-   "c": "Describa el tono y el gesto que mantendrá para sostener calma cuando el equipo muestre pánico.",
-   "z": "Acerque su avatar al puente que conecta con el equipo y cambie ese conector a 'acuerdo'.",
-   "p": "¿Qué palabra o frase dirá primero para anclar esa postura?"
+   "t": "Punto de calma",
+   "c": "¿Qué avatar en Within proyecta compostura frente a la ficha de tensión mayor y qué gesto suyo se reconoce primero?",
+   "z": "En el tablero, acerque una ficha foco al avatar que elige.",
+   "p": "¿Qué muestra ese acercamiento sobre cómo su presencia impacta al equipo?"
   }
  },
  {
@@ -408,10 +408,10 @@ const CONDUCTAS = [
   "competencia": "Compostura",
   "conducta": "Controla los impulsos y evita reacciones defensivas, permitiendo que otros piensen con claridad y ejecuten tareas críticas.",
   "reto": {
-   "t": "Freno visible",
-   "c": "Al recibir una crítica que normalmente le provoca defensa, anuncie en voz alta que hará una pausa y qué escuchará primero.",
-   "z": "Marque con una ficha de tensión la pieza que suele activar su impulsividad y aleje su avatar dos casillas.",
-   "p": "¿Qué hará con los segundos que ganó al anunciar la pausa?"
+   "t": "Calma en escena",
+   "c": "¿Qué pieza o vínculo en su tablero dispara su reacción defensiva cuando recibe crítica?",
+   "z": "Aleje dos centímetros la pieza que simboliza la crítica respecto a su avatar y ponga una ficha de tensión en el conector.",
+   "p": "¿Qué revela este ajuste sobre su impulso a defenderse?"
   }
  },
  {
@@ -434,10 +434,10 @@ const CONDUCTAS = [
   "competencia": "Re-alineación Cognitiva",
   "conducta": "Reescribe narrativas internas de duda (\"ocupo el cargo\") por narrativas de propiedad (\"merezco el cargo\").",
   "reto": {
-   "t": "Poseer el cargo",
-   "c": "Diga en voz alta la frase que sustituye 'ocupo el cargo' por una afirmación que lo ponga como dueño de las decisiones.",
-   "z": "Marque con una ficha de recurso la pieza que representa su rol y cambie su conector con el puesto a 'acuerdo'.",
-   "p": "¿Qué decisión concreta realizará esta semana para que esa frase tenga evidencia?"
+   "t": "Frase repetida",
+   "c": "¿Qué frase en Within se repite sobre su pertenencia al cargo? Dígala exactamente como suena en su cabeza.",
+   "z": "Acerque su avatar al centro del diamante hasta que la distancia refleje cuánto se siente dueño de ese rol.",
+   "p": "¿Qué cambiaría en la escena si esa frase sonara diferente?"
   }
  },
  {
@@ -460,10 +460,10 @@ const CONDUCTAS = [
   "competencia": "Claridad e inspiración",
   "conducta": "Expresa objetivos y la visión de futuro de forma clara, evitando la ambigüedad sobre qué se espera y por qué es importante.",
   "reto": {
-   "t": "Meta y norte",
-   "c": "Formule en una frase clara el objetivo concreto de esta escena y por qué ese resultado importa para el futuro del equipo.",
-   "z": "Coloque la pieza foco en el campo Out y conéctela con un conector 'acuerdo' al avatar que asumirá la responsabilidad.",
-   "p": "¿Qué indicador mostrará que nadie sigue confundido sobre lo que se espera?"
+   "t": "Foco claro",
+   "c": "¿Qué foco en la escena está más ambiguo y qué genera esa confusión sobre su propósito?",
+   "z": "Acérquelo al avatar que lo lidera y marque con una ficha de recurso la distancia restante.",
+   "p": "¿Qué palabra o imagen cambiaría para que ese foco sea comprensible ahora?"
   }
  },
  {
@@ -473,10 +473,10 @@ const CONDUCTAS = [
   "competencia": "Claridad e inspiración",
   "conducta": "Utiliza un tono entusiasta, historias o metáforas para alinear al equipo bajo un propósito común y motivador.",
   "reto": {
-   "t": "La historia motor",
-   "c": "Cuente en una frase metafórica o con una imagen entusiasta por qué este trabajo mueve al equipo y quién se verá inspirado.",
-   "z": "Acérque una ficha de energía al avatar que quiere alinear y gire la pieza puente hacia la visión que acaba de contar.",
-   "p": "¿Qué persona se sintió más llamada por esta historia?"
+   "t": "Imagen que une",
+   "c": "¿Qué pieza en Out funciona ya como relato que motiva y qué barrera la fragmenta ante quienes debería inspirar?",
+   "z": "En el tablero, acerque la pieza 'foco' a quien aparece más distante.",
+   "p": "¿Qué revela ese movimiento sobre quién necesita oír esa historia?"
   }
  },
  {
@@ -512,10 +512,10 @@ const CONDUCTAS = [
   "competencia": "Adaptabilidad Comunicativa",
   "conducta": "Lee a su audiencia y ajusta su estilo y lenguaje (ej. técnico vs. estratégico) según el interlocutor.",
   "reto": {
-   "t": "Adapte el vocabulario",
-   "c": "Reescriba en una frase el mismo mensaje con el tono más apropiado para este interlocutor (técnico o ejecutivo).",
-   "z": "Acerque la pieza base al avatar destinatario y cambie el conector a 'activo' si el mensaje cuadra o a 'en revisión' si no.",
-   "p": "¿Qué palabra cambió para ganarse la atención del receptor?"
+   "t": "Mensaje a medida",
+   "c": "¿Qué pieza o distancia en su tablero señala quién necesita un tono más técnico o más estratégico?",
+   "z": "En el tablero, mueva el mensaje que representa su comunicación más cerca del avatar del interlocutor y marque su tono con una ficha 'técnico' o 'estratégico'.",
+   "p": "¿Qué cambio en la recepción del mensaje emergió al ajustar esa proximidad y etiqueta?"
   }
  },
  {
@@ -538,10 +538,10 @@ const CONDUCTAS = [
   "competencia": "Construcción de confianza (Trust)",
   "conducta": "Comparte información relevante de manera oportuna y honesta (transparencia), incluso las malas noticias.",
   "reto": {
-   "t": "Comparta lo esencial",
-   "c": "Comunique en una frase la información relevante, incluidos los riesgos o malas noticias, y diga a quién afecta ahora.",
-   "z": "Mueva la pieza base que contiene esa información al campo Out y conecte con 'activo' a los avatares directamente afectados.",
-   "p": "¿Qué riesgo disminuye al decir esto ahora?"
+   "t": "Información clave",
+   "c": "¿Qué pieza en su tablero contiene información relevante que otros necesitan y qué la bloquea?",
+   "z": "Acerque esa pieza al avatar afectado y marque su conector como activo o tenso.",
+   "p": "¿Qué cambio en ese conector sería prueba de mayor transparencia?"
   }
  },
  {
@@ -551,10 +551,10 @@ const CONDUCTAS = [
   "competencia": "Construcción de confianza (Trust)",
   "conducta": "Admite abiertamente cuando \"no sabe\" algo y trata a todos con respeto, eliminando el miedo a represalias por reportar problemas.",
   "reto": {
-   "t": "No lo sé",
-   "c": "Diga en voz alta 'no lo sé' cuando corresponda y proponga al menos un paso concreto para averiguarlo y un plazo.",
-   "z": "Acérque al interlocutor a su avatar y coloque una ficha de recurso entre ambos para mostrar apoyo.",
-   "p": "¿Qué acordó para que alguien informe un problema sin temor la próxima vez?"
+   "t": "Admisión abierta",
+   "c": "¿Dónde en el tablero se siente una barrera por miedo a preguntar o admitir desconocimiento?",
+   "z": "Gire la pieza barrera y ponga una ficha de tensión sobre el vínculo que más la activa.",
+   "p": "¿Qué haría que admitir 'no saber' fuese seguro para esa persona?"
   }
  },
  {
@@ -577,10 +577,10 @@ const CONDUCTAS = [
   "competencia": "Influencia ética y persuasión",
   "conducta": "Apela a valores e ideales compartidos para generar una voluntad genuina de colaboración en el equipo.",
   "reto": {
-   "t": "Valor compartido",
-   "c": "Nombre el ideal que conecta al grupo y proponga una acción concreta que lo encarne.",
-   "z": "Añada una pieza 'puente' entre su avatar y el colectivo y marque con una ficha de energía esa conexión.",
-   "p": "¿Qué sucedería en esta escena si ese ideal dejara de guiar la acción?"
+   "t": "Lo que compartimos",
+   "c": "Frente a la pieza que representa lo que usted quiere lograr, ¿qué de eso le importa también a quien tiene enfrente?",
+   "z": "Coloque una pieza base entre ambos avatares: lo que ninguno de los dos está dispuesto a perder.",
+   "p": "Si mañana empezara la conversación por esa pieza, ¿qué cambiaría?"
   }
  },
  {
@@ -591,9 +591,9 @@ const CONDUCTAS = [
   "conducta": "Reconoce públicamente los logros y da crédito explícito a los colaboradores por sus contribuciones, fomentando el orgullo colectivo.",
   "reto": {
    "t": "Crédito visible",
-   "c": "Declare en voz alta qué logro alcanzó el equipo y nombre explícitamente a quienes lo hicieron posible.",
-   "z": "Marque con una ficha de recurso la pieza del colaborador reconocido y cambie el conector hacia él a 'acuerdo'.",
-   "p": "¿Qué orgullo colectivo emergió cuando el mérito fue expuesto así?"
+   "c": "¿Qué logro en el tablero no tiene reconocimiento visible para usted? Nómbralo en voz alta.",
+   "z": "Coloque junto a la pieza correspondiente una ficha de reconocimiento.",
+   "p": "¿Qué vínculo en Out cambiaría si ese reconocimiento fuera explícito?"
   }
  },
  {
@@ -603,10 +603,10 @@ const CONDUCTAS = [
   "competencia": "Reconocimiento y feedback",
   "conducta": "Brinda feedback privado, específico y centrado en la conducta (no en la persona) para corregir el rumbo y desarrollar talento.",
   "reto": {
-   "t": "Corrección dirigida",
-   "c": "En privado, señale una conducta observable que quiere cambiar y diga el próximo gesto concreto que espera.",
-   "z": "Aleje el avatar del destinatario un paso del colectivo y marque con una ficha de tensión la pieza conductual que quiere corregir.",
-   "p": "¿Qué acuerdo observable sellaron para el próximo gesto de corrección?"
+   "t": "Reconocimiento certero",
+   "c": "¿Qué pieza en Out merece un reconocimiento privado y qué conector actual dificulta que lo reciba?",
+   "z": "En el tablero, retire ese conector y cambie su conector por 'acuerdo' entre ambas piezas.",
+   "p": "¿Qué le dice ahora el tablero sobre la forma y el lugar del reconocimiento?"
   }
  },
  {
@@ -642,10 +642,10 @@ const CONDUCTAS = [
   "competencia": "Ingeniería del lenguaje (promesas y pedidos)",
   "conducta": "Hace pedidos impecables (con condiciones de satisfacción y tiempos claros) para evitar retrabajos.",
   "reto": {
-   "t": "Pedido impecable",
-   "c": "Formule un pedido concreto: quién hará qué, con qué condición de satisfacción y para cuándo.",
-   "z": "Acerque al destinatario al resultado esperado y marque con una ficha de recurso la tarea; cambie el conector a 'acuerdo'.",
-   "p": "Si no se cumple a tiempo, ¿qué señal activará para renegociar?"
+   "t": "Lo que dio por hecho",
+   "c": "Elija un vínculo de su escena por el que espera algo de alguien. ¿Esa persona sabe exactamente qué, y para cuándo?",
+   "z": "Cambie ese conector a «en revisión» hasta que pueda decir en voz alta qué pidió y con qué plazo.",
+   "p": "¿Qué se ha roto antes por dar ese pedido por entendido?"
   }
  },
  {
@@ -655,10 +655,10 @@ const CONDUCTAS = [
   "competencia": "Ingeniería del lenguaje (promesas y pedidos)",
   "conducta": "Gestiona sus promesas: si no puede cumplir, revoca o renegocia a tiempo, manteniendo la confianza.",
   "reto": {
-   "t": "Promesa revisada",
-   "c": "Si no podrá cumplir la promesa anunciada, comuníquelo ahora y proponga una alternativa con nuevo plazo.",
-   "z": "Cambie el conector que une su avatar con la promesa a 'en revisión' o retírelo y añada una ficha de recurso sobre la alternativa propuesta.",
-   "p": "¿Cómo protegerá la confianza del otro tras este cambio?"
+   "t": "Promesa en juego",
+   "c": "¿Qué promesa en Out está hoy más expuesta en su tablero y qué conector la vincula al resto?",
+   "z": "Marque esa pieza con una ficha de tensión.",
+   "p": "¿Qué cambiaría en la escena si esa ficha se moviera a otro vínculo?"
   }
  },
  {
@@ -668,10 +668,10 @@ const CONDUCTAS = [
   "competencia": "Conectividad interna y externa",
   "conducta": "Conecta activamente a su equipo con otras áreas para derribar silos y fomentar la colaboración interdepartamental.",
   "reto": {
-   "t": "Puente entre áreas",
-   "c": "Invite a una persona de otra área a participar en el próximo hito del proyecto y clarifique qué aportará.",
-   "z": "Acerque al avatar de esa otra área al campo Up y únalo con un conector 'acuerdo' al avatar de su equipo.",
-   "p": "¿Qué seguimiento hará para sostener ese puente?"
+   "t": "Vínculo externo",
+   "c": "¿Qué pieza puente conecta a su avatar con otras áreas en este tablero? Diga su nombre tal como suena.",
+   "z": "Acerque la pieza puente que une su avatar con la pieza de la otra área.",
+   "p": "¿Qué cambia en la energía del vínculo al acercarla?"
   }
  },
  {
@@ -707,10 +707,10 @@ const CONDUCTAS = [
   "competencia": "Gestión de relaciones (relationship management)",
   "conducta": "Utiliza su capital social para apoyar a su equipo y abrir puertas a nuevas oportunidades de negocio o desarrollo.",
   "reto": {
-   "t": "Abra la puerta",
-   "c": "Ofrezca una presentación o referencia de alto valor para una oportunidad concreta del equipo esta semana.",
-   "z": "Añada al tablero la pieza 'base' del contacto externo, gírela hacia el avatar del miembro beneficiado y cambie el conector a 'activo'.",
-   "p": "¿Qué resultado espera que esa presentación desbloquee?"
+   "t": "Puente visible",
+   "c": "¿Qué puente en su tablero conecta al equipo con oportunidades externas y qué le falta?",
+   "z": "Marque con una ficha de recurso ese puente.",
+   "p": "¿Quién sostendría ese puente si usted no pudiera hacerlo?"
   }
  },
  {
@@ -759,10 +759,10 @@ const CONDUCTAS = [
   "competencia": "Pensamiento estratégico",
   "conducta": "No se limita a \"apagar fuegos\" a corto plazo; dedica tiempo de calidad a la planificación y a las iniciativas de largo alcance.",
   "reto": {
-   "t": "Bloque estratégico",
-   "c": "Reserve en su calendario una mañana dedicada a avanzar en una iniciativa de largo plazo y defina dos entregables para ese bloque.",
-   "z": "Retire una ficha de tensión del campo Up, mueva su avatar dos pasos hacia la pieza 'foco' de la iniciativa y ponga una ficha de recurso sobre ella.",
-   "p": "¿Qué indicador medible usará para juzgar que ese tiempo fue bien invertido?"
+   "t": "Espacio estratégico",
+   "c": "¿Qué pieza en Up hoy está más alejada de sus urgencias y qué le indica esa distancia?",
+   "z": "Marque con una ficha de recurso la pieza que represente una iniciativa de largo plazo.",
+   "p": "¿Qué revela esa ficha sobre la prioridad real que da al futuro?"
   }
  },
  {
@@ -772,10 +772,10 @@ const CONDUCTAS = [
   "competencia": "Visión compartida (visioning)",
   "conducta": "Articula un escenario futuro aspiracional de manera vívida (ej. \"ser referentes regionales en 5 años\") logrando que el equipo haga propia esa visión (shared vision).",
   "reto": {
-   "t": "Futuro tangible",
-   "c": "Describa en una frase concreta y sensorial cómo será este proyecto dentro de cinco años para que alguien del equipo lo pueda sentir y repetir.",
-   "z": "Coloque una pieza 'foco' que represente ese futuro, acerque los avatares que lo comparten y marque con fichas de recurso a quienes ya lo sienten propio.",
-   "p": "¿Qué frase de 10 palabras resumirá esto cuando alguien le pida el propósito en 30 segundos?"
+   "t": "Futuro presente",
+   "c": "¿Qué pieza falta para que la visión a cinco años en este tablero se sienta compartida? Nómbrela.",
+   "z": "Coloque una ficha 'visión' junto a la pieza foco que imagine para dentro de cinco años.",
+   "p": "¿Quién en la escena podría repetir esa visión y qué cambia si lo hace?"
   }
  },
  {
@@ -785,10 +785,10 @@ const CONDUCTAS = [
   "competencia": "Visión compartida (visioning)",
   "conducta": "Comunica el \"por qué\" detrás de las metas, dando un fuerte sentido de finalidad y propósito al trabajo diario.",
   "reto": {
-   "t": "Por qué claro",
-   "c": "Explique en una sola frase cuál es el propósito profundo que justifica la meta actual y cómo cambia el trabajo diario de un integrante.",
-   "z": "Acerque la pieza 'base' de la meta al avatar más impactado y cambie su conector a 'acuerdo' o 'en revisión' según lo sintonice.",
-   "p": "¿Qué indicador mostrará que ese propósito está presente en la rutina dentro de dos semanas?"
+   "t": "El para qué",
+   "c": "Señale la meta más lejana de su tablero. Si alguien de su equipo preguntara «¿y esto para qué?», ¿qué respondería hoy?",
+   "z": "Trace un puente desde esa meta hasta el avatar de la persona a quien más le costaría explicárselo.",
+   "p": "¿Qué parte de esa respuesta todavía no ha dicho en voz alta?"
   }
  },
  {
@@ -798,10 +798,10 @@ const CONDUCTAS = [
   "competencia": "Alineación de metas (execution)",
   "conducta": "Traduce la visión abstracta en objetivos SMART (específicos, medibles, alcanzables, relevantes y temporales) y planes de acción concretos",
   "reto": {
-   "t": "Visión a objetivo",
-   "c": "Transforme la visión que aparece en este tablero en un objetivo concreto con número, plazo y responsable en una línea.",
-   "z": "Añada una pieza 'energía' que represente el indicador, coloque una ficha de recurso para el responsable y cambie el conector a 'activo'.",
-   "p": "¿Qué evidencia medible mostrará progreso en cuatro semanas?"
+   "t": "Objetivo en juego",
+   "c": "¿Qué número, plazo o responsable sugiere la pieza que representa la visión en su tablero y cuál falta para usted?",
+   "z": "En el tablero, coloque una ficha 'número' junto a la pieza de visión y acerque una ficha 'plazo' hacia ella.",
+   "p": "¿Qué se vuelve más claro o más riesgoso para su liderazgo con esas cifras visibles?"
   }
  },
  {
@@ -811,10 +811,10 @@ const CONDUCTAS = [
   "competencia": "Alineación de metas (execution)",
   "conducta": "Asegura la \"línea de vista\": explica claramente cómo las tareas cotidianas y las metas de corto plazo contribuyen a la estrategia general.",
   "reto": {
-   "t": "Línea visible",
-   "c": "Señale una tarea cotidiana y explique en una frase cómo esa acción contribuye directamente a la estrategia que está.",
-   "z": "Acerque la ficha de esa tarea hacia el pilar Up y cambie su conector a 'acuerdo' si la contribución queda clara o a 'en revisión' si no.",
-   "p": "¿Qué ajuste hará a la tarea para que su contribución sea visible en 10 días?"
+   "t": "Conexión clara",
+   "c": "¿Qué pieza en Up contiene hoy una tarea cotidiana y qué conector muestra su distancia a la meta estratégica?",
+   "z": "En el tablero, acerque esa pieza una casilla hacia la meta y cambie su conector a 'activo'.",
+   "p": "¿Qué evidencia de alineación aparece tras ese movimiento?"
   }
  },
  {
@@ -824,10 +824,10 @@ const CONDUCTAS = [
   "competencia": "Decisión bajo incertidumbre",
   "conducta": "Reúne datos rápidamente y consulta expertos, pero toma decisiones oportunas incluso con información incompleta, evitando la \"parálisis por análisis\".",
   "reto": {
-   "t": "Decidir ya",
-   "c": "Frente a una decisión urgente sin toda la información, diga qué mínimo dato solicitaría y a quién consultaría hoy antes de decidir.",
-   "z": "Añada una ficha de recurso por la información obtenida, acerque al experto y marque el conector 'activo' con su avatar antes de tomar la decisión.",
-   "p": "¿En cuánto tiempo tomará la decisión sin esperar más datos?"
+   "t": "Dato mínimo",
+   "c": "¿Qué conector en Up bloquea su decisión por falta de información y qué dato mínimo ya en el tablero podría liberarlo?",
+   "z": "Marque ese dato mínimo con una ficha de recurso en Up.",
+   "p": "Si ese dato apareciera ahora, ¿quién en su tablero estaría listo para decidir?"
   }
  },
  {
@@ -837,10 +837,10 @@ const CONDUCTAS = [
   "competencia": "Decisión bajo incertidumbre",
   "conducta": "Asume la responsabilidad de las consecuencias de sus decisiones, sean aciertos o errores, sin buscar culpables externos.",
   "reto": {
-   "t": "Asume efecto",
-   "c": "Describa en una frase concreta qué decisión suya reciente produjo un resultado no esperado y qué parte le corresponde en ese desenlace.",
-   "z": "Coloque una ficha de tensión sobre su avatar y retire o cambie a 'roto' el conector que ocultó su responsabilidad en el proceso.",
-   "p": "¿Qué acción pública realizará esta semana para asumir esa consecuencia ante el equipo?"
+   "t": "Responsabilidad marcada",
+   "c": "¿Qué pieza en Up representa la decisión más incierta y qué conector muestra quién la respalda o la aísla?",
+   "z": "En el tablero, marque esa pieza con una ficha de tensión.",
+   "p": "¿Cómo cambia su lectura de responsabilidad al verla marcada?"
   }
  },
  {
@@ -850,10 +850,10 @@ const CONDUCTAS = [
   "competencia": "Resolución de causa raíz",
   "conducta": "No se queda en la corrección de síntomas superficiales; investiga a fondo para identificar y resolver la causa raíz de los problemas basándose en evidencias y datos.",
   "reto": {
-   "t": "Hacia la raíz",
-   "c": "Elija el problema recurrente más visible y en una frase proponga la causa subyacente acompañada de la evidencia que la sostiene.",
-   "z": "Mueva la pieza 'barrera' que representa el síntoma hacia la pieza que identifica como origen y marque con fichas de recurso las pruebas recogidas.",
-   "p": "¿Qué experimento lanzará en quince días para confirmar o refutar esa causa?"
+   "t": "Síntoma persistente",
+   "c": "¿Qué síntoma recurrente ve en Up que no se resuelve del todo? Dígalo como la frase que se repite en su cabeza.",
+   "z": "Marque con una ficha de tensión la recurrencia en Up que más le preocupa.",
+   "p": "¿Qué evidencia en el tablero sugiere dónde podría estar la causa raíz?"
   }
  },
  {
@@ -863,10 +863,10 @@ const CONDUCTAS = [
   "competencia": "Resolución de causa raíz",
   "conducta": "Aplica el pensamiento crítico para cuestionar suposiciones y reducir sesgos antes de decidir",
   "reto": {
-   "t": "Gire la suposición",
-   "c": "Identifique una suposición clave que sostiene la estrategia y formule en una frase la alternativa contraria a esa suposición.",
-   "z": "Gire 180° la pieza que representa esa suposición, cambie su conector a 'en revisión' y añada una ficha de tensión por cada sesgo que identifique.",
-   "p": "¿Qué dato o prueba anularía hoy esa suposición?"
+   "t": "Suposición central",
+   "c": "¿Qué suposición sostiene la pieza foco en Up para usted? Dígala en voz alta tal como suena.",
+   "z": "Marque con una ficha roja la suposición que más fragiliza la estrategia en Up.",
+   "p": "Si esa suposición fuera falsa, ¿qué pieza en Up cambiaría primero?"
   }
  },
  {
@@ -980,10 +980,10 @@ const CONDUCTAS = [
   "competencia": "Liderazgo en entornos de transformación tecnológica",
   "conducta": "Promueve la adopción de nuevas herramientas digitales sin perder el enfoque en el bienestar del equipo.",
   "reto": {
-   "t": "Herramienta y cuidado",
-   "c": "En el tablero, añada la pieza que representa la nueva herramienta en Up y acerque una ficha de recurso al avatar del equipo.",
-   "z": "La pieza tecnológica en Up está conectada al avatar del equipo con un conector 'en revisión' y junto a ese avatar hay una ficha de recurso.",
-   "p": "¿Qué condición exigirá para que la adopción no reduzca ese recurso?"
+   "t": "Herramienta visible",
+   "c": "¿Dónde está la pieza que simboliza la nueva herramienta y qué distancia guarda con el avatar del equipo?",
+   "z": "Acerque la pieza de la nueva herramienta hacia el avatar del equipo.",
+   "p": "¿Qué tensión o recurso aparece al estrechar esa distancia?"
   }
  },
  {
@@ -993,10 +993,10 @@ const CONDUCTAS = [
   "competencia": "Liderazgo en entornos de transformación tecnológica",
   "conducta": "Traduce conceptos tecnológicos complejos a decisiones de negocio estratégicas.",
   "reto": {
-   "t": "Conexión accionable",
-   "c": "Convierta este concepto tecnológico en una decisión de negocio concreta: qué se decide, quién lo ejecuta y qué indicador medirá el resultado.",
-   "z": "Añada una pieza que represente el concepto tecnológico en Up, mueva su avatar para colocarlo entre esa pieza y la pieza del objetivo de negocio y cambie el conector entre ambas piezas a 'activo'.",
-   "p": "¿Qué decisión diferente ejecutaría mañana gracias a esta conexión?"
+   "t": "Concepto en escena",
+   "c": "¿Dónde en Up reside el concepto tecnológico en su tablero y qué pieza de negocio debería acercarse para hacerlo relevante?",
+   "z": "Acérquelo: mueva la pieza de negocio un paso hacia el concepto.",
+   "p": "¿Qué necesitaría esa pieza de negocio para sostener la conexión sin tensarla?"
   }
  },
  {
@@ -1006,10 +1006,10 @@ const CONDUCTAS = [
   "competencia": "Mentoría y sucesión",
   "conducta": "Identifica activamente el talento interno y dedica tiempo a formar a sus sucesores para garantizar la continuidad del liderazgo (construcción de pipeline).",
   "reto": {
-   "t": "Sustituto señalado",
-   "c": "En el tablero, coloque en Beyond el avatar de la persona que podría sucederle y únalo con un conector 'acuerdo' a las piezas clave que tendría que sostener, añadiendo una ficha de recurso que represente tiempo de su parte.",
-   "z": "Un avatar en Beyond está unido por un conector 'acuerdo' a las piezas críticas y tiene junto a sí una ficha de recurso que marca formación.",
-   "p": "¿Qué primer acto hará esta semana para transferir ese recurso?"
+   "t": "Sucesor visible",
+   "c": "¿Qué persona fuera del tablero debería estar en Beyond para sostener la pieza base y qué conector imagina entre ustedes?",
+   "z": "Coloque en Beyond el avatar de esa persona.",
+   "p": "¿Qué indicio en el tablero le diría si esa persona está dispuesta a sostenerlo?"
   }
  },
  {
@@ -1045,10 +1045,10 @@ const CONDUCTAS = [
   "competencia": "Empoderamiento (empowerment)",
   "conducta": "Elimina el micro-management; define el \"qué\" pero permite al equipo decidir el \"cómo\", demostrando confianza plena en sus capacidades.",
   "reto": {
-   "t": "Suelte el cómo",
-   "c": "En el tablero, coloque una ficha que nombre solo el resultado esperado ('qué') sobre la pieza del proyecto y retire cualquier conector que vincule directamente su avatar con las piezas operativas.",
-   "z": "Retire el conector entre su avatar y cada pieza de ejecución y acerque el avatar del responsable principal hasta unirlo con un conector activo a esas piezas.",
-   "p": "¿Qué indicador observable le permitirá confiar en su equipo sin volver a reconectar con las piezas operativas?"
+   "t": "Distancia de mando",
+   "c": "¿Qué conector muestra hoy el grado de control de su avatar sobre piezas operativas? Léalo en voz alta.",
+   "z": "Retire el conector que une su avatar con la pieza operativa que más le pesa en el tablero.",
+   "p": "¿Qué revela esa retirada sobre quién decide el 'cómo' aquí?"
   }
  },
  {
@@ -1058,10 +1058,10 @@ const CONDUCTAS = [
   "competencia": "Desafío para el crecimiento",
   "conducta": "Asigna proyectos desafiantes (stretch assignments) que obligan a los colaboradores a salir de su zona de confort para desarrollar nuevas habilidades.",
   "reto": {
-   "t": "Reto que estira",
-   "c": "En el tablero, añada una pieza puente desafiante en Beyond fuera de la zona de confort y únala con un conector 'tenso' al avatar que no suele liderar proyectos grandes.",
-   "z": "Una pieza puente en Beyond está conectada por un conector 'tenso' al avatar que ahora lidera un proyecto fuera de su zona habitual.",
-   "p": "¿Qué apoyo mínimo pactará para que ese reto sea formativo y no perjudicial?"
+   "t": "Desafío visible",
+   "c": "¿Qué avatar en Beyond raramente lidera proyectos grandes y qué puente le falta en el tablero para empujar su estirón?",
+   "z": "Coloque una pieza puente en Beyond junto al avatar.",
+   "p": "Si ese puente existiera, ¿qué se abriría o se cerraría en la red de conectores?"
   }
  },
  {
@@ -1071,10 +1071,10 @@ const CONDUCTAS = [
   "competencia": "Desafío para el crecimiento",
   "conducta": "Utiliza el coaching para ayudar a los colaboradores a encontrar sus propias soluciones en lugar de dárselas resueltas.",
   "reto": {
-   "t": "Preguntas que empoderan",
-   "c": "En el tablero, ante la ficha de tensión que representa el problema, coloque una ficha foco frente al avatar del colaborador y cambie su conector hacia él a 'en revisión' sin mover ninguna pieza que resuelva por él.",
-   "z": "Su conector hacia el colaborador está en 'en revisión', hay una ficha foco frente a ese avatar y ninguna pieza solución ha sido desplazada por su avatar.",
-   "p": "¿Qué pregunta hará para que encuentre su propia solución?"
+   "t": "Guía lateral",
+   "c": "¿Qué frase se repite entre su avatar y el colaborador junto a la ficha de tensión en su tablero?",
+   "z": "En el tablero, acerque una ficha foco al avatar del colaborador y marque el conector entre ambos como 'en revisión'.",
+   "p": "¿Qué conversación o postura esa modificación pone a prueba para usted?"
   }
  },
  {
@@ -1084,10 +1084,10 @@ const CONDUCTAS = [
   "competencia": "Ética y responsabilidad social",
   "conducta": "Integra consideraciones éticas y de impacto comunitario en la toma de decisiones financieras y estratégicas, priorizando el bien común sobre la ganancia a corto plazo.",
   "reto": {
-   "t": "Saldo humano",
-   "c": "En el tablero, coloque una ficha de recurso que represente al bien común sobre la pieza que financia esta opción.",
-   "z": "Aleje la pieza de ganancia a corto plazo un paso y cambie su conector a 'en revisión' hacia Beyond.",
-   "p": "¿Qué perdería hoy si prioriza ese bien común y qué ganaría dentro de un año?"
+   "t": "Bien común",
+   "c": "¿Qué ausencia ética identifica junto a la pieza que financia esta opción?",
+   "z": "Coloque junto a esa pieza una ficha que nombre el impacto comunitario que falta.",
+   "p": "¿Cómo cambiaría su decisión si esa ficha tuviera la misma prioridad que la pieza financiera?"
   }
  },
  {
@@ -1123,10 +1123,10 @@ const CONDUCTAS = [
   "competencia": "Liderazgo de servicio (stewardship)",
   "conducta": "Fomenta un clima de seguridad psicológica donde el bienestar emocional y físico del equipo es una prioridad tangible.",
   "reto": {
-   "t": "Lugar seguro",
-   "c": "En el tablero, añada una barrera alrededor del grupo para señalar protección y coloque una ficha de tensión donde exista miedo a hablar.",
-   "z": "Gire su avatar hacia el equipo y coloque una pieza 'puente' entre usted y la ficha de tensión.",
-   "p": "¿Qué hará la próxima semana para que alguien deje de sentir miedo a expresar desacuerdo?"
+   "t": "Protección real",
+   "c": "¿Qué pieza en Beyond indica quién vela por la seguridad física y emocional en su escena? Dígala tal como la ve.",
+   "z": "Marque con una ficha la pieza que identifica esa custodia.",
+   "p": "¿Qué le dice esa señal sobre lo que usted ya sostiene o deja sin sostener?"
   }
  },
  {
@@ -1136,10 +1136,10 @@ const CONDUCTAS = [
   "competencia": "Inclusión y equidad",
   "conducta": "Promueve activamente la diversidad y crea un entorno inclusivo donde se valoran diferentes perspectivas y antecedentes.",
   "reto": {
-   "t": "Voces en cuadro",
-   "c": "En el tablero, añada una pieza que represente una perspectiva distinta y únala con un conector al proyecto central.",
-   "z": "Marque con una ficha de recurso esa nueva pieza y cambie cualquier conector 'tenso' hacia ella por 'en revisión'.",
-   "p": "¿Qué haría para que esa nueva voz tenga espacio real en la próxima decisión?"
+   "t": "Perspectiva faltante",
+   "c": "¿Qué voz o perspectiva falta en esta escena y cómo cambia lo que ocurre?",
+   "z": "Coloque una ficha de recurso en la casilla Beyond que señale esa ausencia.",
+   "p": "¿Quién podría traer esa voz y cómo lo invitaría a participar?"
   }
  },
  {
@@ -1149,10 +1149,10 @@ const CONDUCTAS = [
   "competencia": "Inclusión y equidad",
   "conducta": "Trata a todos con justicia e imparcialidad, asegurando equidad en oportunidades y reconocimiento.",
   "reto": {
-   "t": "Reparto justo",
-   "c": "En el tablero, inspeccione las oportunidades y mueva una ficha de recurso desde quien ya tiene mucho hacia quien tiene menos.",
-   "z": "Cambie el conector entre su avatar y la persona beneficiada a 'acuerdo' y marque la redistribución con una ficha de tensión si prevé resistencia.",
-   "p": "¿Qué regla sencilla establecería para que este reparto no dependa solo de su criterio?"
+   "t": "Equidad visible",
+   "c": "¿Dónde en el tablero se concentran las fichas de recurso y quién queda claramente más alejado? Señale esas piezas.",
+   "z": "Coloque una ficha de tensión en el lugar que muestre la falta de equidad.",
+   "p": "Si esa distancia no se modifica, ¿qué efecto tendrá en la escena dentro de un mes?"
   }
  },
  {
@@ -1162,10 +1162,10 @@ const CONDUCTAS = [
   "competencia": "Institucionalización de cultura",
   "conducta": "Establece rituales, historias y prácticas que anclan los valores y la visión en el ADN de la organización, asegurando que perduren más allá de su rol temporal como líder.",
   "reto": {
-   "t": "Ritual en marcha",
-   "c": "En el tablero, cree una pieza 'ritual' y colóquela en la intersección entre valores y operaciones.",
-   "z": "Añada un conector 'acuerdo' entre esa pieza ritual y al menos dos avatares distintos y deje una ficha de recurso como semilla.",
-   "p": "¿Qué frecuencia y quiénes serían responsables de sostener este ritual?"
+   "t": "Ritual colectivo",
+   "c": "¿Qué ausencia impide que los valores del tablero crucen hacia las operaciones para usted?",
+   "z": "En el tablero, retire una pieza 'valor' de su agrupación actual y acerque una pieza 'práctica' hacia la zona de operaciones.",
+   "p": "¿Qué indicio le da ese movimiento sobre cuánto pueden sostener otros esos valores sin usted?"
   }
  },
  {
@@ -1175,10 +1175,10 @@ const CONDUCTAS = [
   "competencia": "Institucionalización de cultura",
   "conducta": "Documenta lecciones aprendidas y crea sistemas para que el conocimiento crítico (know-how) permanezca en la empresa.",
   "reto": {
-   "t": "Archivo vivo",
-   "c": "En el tablero, retire una ficha de tensión que represente un fallo y colóquela sobre una nueva pieza 'documento'.",
-   "z": "Conecte esa pieza 'documento' al pilar Beyond con un conector 'activo' y deje una ficha de recurso para su mantenimiento.",
-   "p": "¿Cómo comprobará que ese conocimiento se usa dentro de seis meses?"
+   "t": "Saber permanente",
+   "c": "¿Qué lección o know‑how en el tablero no está documentada y corre riesgo de desaparecer?",
+   "z": "Coloque una ficha de recurso junto a la pieza que representa ese saber.",
+   "p": "¿Qué señal le indicará que ese conocimiento ya no depende de una sola persona?"
   }
  },
  {
@@ -1188,10 +1188,10 @@ const CONDUCTAS = [
   "competencia": "Reconocimiento y humildad",
   "conducta": "Pone los focos sobre su equipo: cuando hay éxito, se aparta para que su equipo brille (\"stand back\"); cuando hay fracaso, asume la responsabilidad.",
   "reto": {
-   "t": "Ceda el foco",
-   "c": "En la próxima celebración regale el protagonismo a un miembro del equipo y, frente a un fallo, póngase al frente y acéptelo como suyo.",
-   "z": "Retire su avatar hacia el borde de Beyond, acerque la pieza foco al avatar elegido, coloque sobre ese avatar una ficha de recurso; en la escena del fallo mueva su avatar al centro y cambie el conector entre usted y el resultado a 'activo' colocando una ficha de tensión sobre usted.",
-   "p": "¿Qué gesto repetible hará la próxima vez para que el equipo note la entrega del protagonismo y su asunción?"
+   "t": "Luz compartida",
+   "c": "¿Qué avatar de su equipo está más cercano a la pieza de logro y cuál queda más apartado en su tablero?",
+   "z": "En el tablero, acerque la pieza foco al avatar del miembro más alejado del logro y aleje su propio avatar un paso.",
+   "p": "¿Qué percepción sobre el reconocimiento cambia para usted al ver esas posiciones alteradas?"
   }
  },
  {
@@ -1201,10 +1201,10 @@ const CONDUCTAS = [
   "competencia": "Reconocimiento y humildad",
   "conducta": "Celebra genuinamente los hitos personales y profesionales de los demás, construyendo una cultura de gratitud y apreciación.",
   "reto": {
-   "t": "Alabanza concreta",
-   "c": "Elija a una persona del equipo y exprese públicamente qué logro suyo valora y por qué, sin comparaciones ni atenuaciones.",
-   "z": "Coloque una ficha de recurso sobre el logro de esa persona, acerque su avatar a su lado y añada un conector de 'acuerdo' entre usted y ese logro.",
-   "p": "¿Cómo incorporará ese reconocimiento en la rutina del equipo para que no quede aislado?"
+   "t": "Valor visible",
+   "c": "¿Qué pieza en Beyond muestra que el equipo recibe reconocimiento sincero? Nómbrela y diga qué le falta en su presencia.",
+   "z": "Marque con una ficha la pieza que representa gratitud o reconocimiento.",
+   "p": "¿Qué cambia en su liderazgo si esa pieza estuviera más presente?"
   }
  },
  {
@@ -1214,10 +1214,10 @@ const CONDUCTAS = [
   "competencia": "Conexión con el propósito (meaning)",
   "conducta": "Ayuda a cada miembro del equipo a descubrir su propio propósito y a conectarlo con la misión de la organización (alineación de propósito).",
   "reto": {
-   "t": "Mapee el sentido",
-   "c": "Pregunte a un miembro qué actividad le da sentido y vincule ese relato con una tarea de la organización.",
-   "z": "Sitúe a esa persona en Beyond, coloque su pieza foco junto a su avatar y trace un puente entre ese foco y la pieza que representa la misión del pilar Beyond.",
-   "p": "¿Qué paso concreto dará para que ese puente entre su propósito y la misión exista la próxima semana?"
+   "t": "Sentido visible",
+   "c": "¿Qué conexiones en Beyond vinculan a cada avatar con la misión? Señale las piezas o avatares que no tienen puente al propósito.",
+   "z": "Marque con una ficha de tensión los avatares o piezas sin puente al propósito.",
+   "p": "¿Qué le pide eso sobre dónde concentrar su atención para dar más sentido a la escena?"
   }
  },
  {
@@ -1240,10 +1240,10 @@ const CONDUCTAS = [
   "competencia": "Gestión de la diversidad cognitiva",
   "conducta": "Forma deliberadamente equipos con diversidad de pensamiento y antecedentes.",
   "reto": {
-   "t": "Diversidad intencional",
-   "c": "Recombíne hoy al equipo: elija tres personas con enfoques distintos y asígneles una tarea conjunta concreta.",
-   "z": "Agrupe esos tres avatares en Up, coloque puentes entre ellos y cambie sus conectores a 'acuerdo' para visualizar la colaboración diversa.",
-   "p": "¿Qué criterio objetivo usó para elegirlos y cómo evaluará si la diversidad de pensamiento aportó valor?"
+   "t": "Voces ausentes",
+   "c": "¿Qué perspectiva falta en Beyond para el desafío que muestra su escena? Nómbrela claramente.",
+   "z": "Acerque al borde de Beyond la pieza o avatar que represente esa voz ausente.",
+   "p": "¿Qué nueva tensión o recurso aparece al acercar esa voz?"
   }
  },
  {
@@ -1266,10 +1266,10 @@ const CONDUCTAS = [
   "competencia": "Conciencia sistémica y comunitaria",
   "conducta": "Conecta los objetivos de negocio con necesidades reales de la comunidad o el medio ambiente.",
   "reto": {
-   "t": "Negocio con impacto",
-   "c": "Escoja un objetivo comercial y señale una necesidad real de la comunidad que ese objetivo podría comenzar a satisfacer con una acción concreta.",
-   "z": "Coloque la pieza base que represente el objetivo, ubique en Out la pieza que represente la necesidad comunitaria y trace un puente entre ambas marcado con una ficha de recurso.",
-   "p": "¿Cómo verificará que la acción satisface la necesidad comunitaria además de los resultados del negocio?"
+   "t": "Fuera del tablero",
+   "c": "Todo lo que puso aquí ocurre dentro de su organización. ¿A quién de afuera le llega, sin que esté en esta escena?",
+   "z": "Añada esa pieza en el borde del tablero y únala con lo que la afecta.",
+   "p": "¿Qué cambia en su decisión ahora que esa pieza está a la vista?"
   }
  },
  {

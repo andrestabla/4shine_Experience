@@ -227,6 +227,34 @@ const DV = (() => {
       </div>
       ${st.listoParaAvanzar ? `<p class="hint" style="margin-top:12px;color:#8fd6a5">El Advisor considera que ya hay material suficiente. Puede seguir conversando o avanzar.</p>` : ""}`;
   }
+  /* ---------- la carta física ---------- */
+  function cartaHTML(c, opts={}){
+    const p = PIL_META[c.pilar] || {};
+    const r = c.reto || {};
+    return `<article class="jcarta ${opts.volteada?"volteada":""} ${opts.entrando?"entrando":""}"
+        style="--cc:${p.color}" ${opts.onclick?`onclick="${opts.onclick}"`:""}>
+      <div class="jcara recto">
+        <div class="jc-top"><b>${esc((p.nombre||"").replace("Shine ",""))} · ${esc(p.verbo||"")}</b><span>${c.id}</span></div>
+        <div class="jc-body">
+          <h4>${esc(r.t||"")}</h4>
+          <p class="jc-cons">${esc(r.c||"")}</p>
+          <p class="jc-zona"><b>En el tablero</b>${esc(r.z||"")}</p>
+        </div>
+        <div class="jc-foot"><span>Recto · el reto</span><b>4SHINE®</b></div>
+      </div>
+      <div class="jcara reverso">
+        <div class="jc-top"><b>${esc((p.nombre||"").replace("Shine ",""))}</b><span>${c.id}</span></div>
+        <div class="jrev">
+          <span class="jrombo"></span>
+          <span class="jcomp">${esc(c.componente||"")}</span>
+          <h4>${esc(c.competencia||"")}</h4>
+          <p>${esc(c.conducta||"")}</p>
+        </div>
+        <div class="jc-foot"><span>Reverso · la conducta</span><b>4SHINE®</b></div>
+      </div>
+    </article>`;
+  }
+
   function panelCrea(){
     if(!st.reto){
       $("fase-panel").innerHTML = `<h3>Robe una carta</h3>
@@ -236,35 +264,33 @@ const DV = (() => {
         <div class="btn-row" style="margin-top:14px"><button class="btn" onclick="DV.robarReto()">▲ Robar del mazo completo</button></div>`;
       return;
     }
-    const r = st.reto, col = (PIL_META[r.campo]||{}).color || "#d9b54a";
-    const pilNombre = (PIL_META[r.campo]||{}).nombre || "";
-    $("fase-panel").innerHTML = `<h3>Su tarjeta</h3>
-      <div class="reto-card" style="--rc:${col}">
-        <div class="reto-head" style="background:${col}"><b>${esc(pilNombre.replace("Shine ",""))} · ${esc((PIL_META[r.campo]||{}).verbo||"")}</b><span>${r.id}</span></div>
-        <div class="reto-body"><h4>${esc(r.t)}</h4><p class="consigna">${esc(r.c)}</p>
-          <div class="zona"><b>En el tablero</b>${esc(r.z)}</div></div>
-        <div class="reto-foot">${esc(r.o)} · el reverso se revela al cierre</div></div>
-      <div class="field" style="margin:0 0 12px"><label>¿Qué movió y por qué?</label>
-        <textarea id="in-explicacion" placeholder="Explique cada movimiento que hizo sobre el tablero."></textarea></div>
+    const r = st.reto;
+    $("fase-panel").innerHTML = `<h3>Su carta</h3>
+      <div class="carta-mesa">${cartaHTML(st.carta, {entrando:true})}</div>
+      <p class="jc-pregunta"><b>Para cerrar</b>${esc(r.p||"")}</p>
+      <div class="field" style="margin:14px 0 12px"><label>¿Qué movió y por qué?</label>
+        <textarea id="in-explicacion" placeholder="Explique cada movimiento que hizo sobre el tablero.">${esc(st.explicacion||"")}</textarea></div>
       <div id="alerta-mov"></div>
       <div class="btn-row" style="margin-top:0;gap:10px">
         <button class="btn" id="btn-fase" onclick="DV.enviarReconfiguracion()">Presentar al Advisor →</button>
         ${st.listoParaAvanzar ? `<button class="btn ghost" onclick="DV.avanzar()">Pasar al cierre ▸</button>` : ""}
       </div>`;
+    setTimeout(() => document.querySelector(".jcarta")?.classList.remove("entrando"), 60);
   }
+
   function panelConsolida(){
     const jugada = st.carta;
     const pil = st.pilarConducta || (jugada ? jugada.pilar : "within");
     const sel = st.conducta ? mazoCompleto().find(c => c.id === st.conducta) : null;
     $("fase-panel").innerHTML = `<h3>Una sola conducta</h3>
-      ${jugada ? `<div class="reverso-jugada ${st.conducta===jugada.id?"tomada":""}">
-        <b>El reverso de la carta que jugó · ${jugada.id}</b>
-        <h4>${esc(jugada.competencia)}</h4>
-        <p>${esc(jugada.conducta)}</p>
+      ${jugada ? `<p class="hint" style="margin:0 0 10px">Voltee la carta que jugó: al otro lado está la conducta que ese reto entrenaba.</p>
+      <div class="carta-mesa">${cartaHTML(jugada, {volteada:st.volteoCierre !== false, onclick:"DV.voltearJugada()"})}</div>
+      <div class="btn-row" style="margin-top:10px;gap:8px;justify-content:center">
+        <button class="ctrl-mini" onclick="DV.voltearJugada()">⟲ Voltear</button>
         <button class="ctrl-mini ${st.conducta===jugada.id?"":"fuerte"}" onclick="DV.tomarJugada()">
-          ${st.conducta===jugada.id ? "✓ Es su compromiso" : "Comprometerme con esta"}</button>
+          ${st.conducta===jugada.id ? "✓ Es su compromiso" : "Comprometerme con esta conducta"}</button>
       </div>
-      <p class="hint" style="margin:14px 0 10px">O busque otra en el mazo:</p>` : ""}
+      <p class="hint" style="margin:18px 0 10px;padding-top:16px;border-top:1px solid var(--line)">O busque otra en el mazo:</p>` : ""}
       <div class="pilar-tabs">${Object.entries(PIL_META).map(([id,p]) =>
         `<button class="ptab ${id===pil?"on":""}" style="--pc:${p.color}" onclick="DV.elegirPilarConducta('${id}')">
           ${esc(p.nombre.replace("Shine ",""))}<small>${mazoCompleto().filter(c=>c.pilar===id).length}</small></button>`).join("")}</div>
@@ -284,6 +310,7 @@ const DV = (() => {
       <div class="btn-row"><button class="btn" id="btn-fase" onclick="DV.cerrar()">Cerrar la sesión →</button></div>`;
     pintarMiniAbanico();
   }
+  function voltearJugada(){ st.volteoCierre = st.volteoCierre === false; panelConsolida(); }
   function tomarJugada(){
     if(!st.carta) return;
     st.conducta = st.carta.id;
@@ -629,6 +656,6 @@ const DV = (() => {
 
   return {iniciar, usarEjemplo, avanzar, robarReto, enviarNarracion, responderAdvisor,
           enviarReconfiguracion, cerrar, renombrarSel, eliminarSel,
-          elegirPilarConducta, pasarConducta, barajarConductas, tomarConducta, tomarJugada,
+          elegirPilarConducta, pasarConducta, barajarConductas, tomarConducta, tomarJugada, voltearJugada,
           rotarSel, duplicarSel, deshacer, quitarVinc, retomar, descartarSesion};
 })();
