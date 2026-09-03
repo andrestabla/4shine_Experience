@@ -26,5 +26,13 @@
         }
       ]
     }
-  ]
+  ],
+  "framework": null,
+  "buildCommand": null,
+  "outputDirectory": "public",
+  "functions": {
+    "api/index.py": {
+      "maxDuration": 60
+    }
+  }
 }
