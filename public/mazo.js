@@ -2,7 +2,7 @@
 const MAZO = (() => {
   const $ = id => document.getElementById(id);
   const esc = s => (s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  const st = {pilar:"within", cartas:[], i:0, elegida:null, animando:false};
+  const st = {pilar:"within", cartas:[], i:0, elegida:null, animando:false, volteada:false};
 
   /* ---------- el diamante selector ---------- */
   const GEO = {
@@ -62,16 +62,31 @@ const MAZO = (() => {
   const VISIBLES = 7;
   function cartaHTML(c, extra=""){
     const p = PILARES.find(x => x.id === c.pilar);
-    return `<article class="carta ${extra}" style="--cc:${p.color}" onclick="MAZO.elegir('${c.id}')">
-      <div class="c-top"><b>${esc(p.nombre.replace("Shine ",""))}</b><span>${c.id}</span></div>
-      <div class="c-body">
-        <span class="c-comp">${esc(c.componente)}</span>
-        <h3>${esc(c.competencia)}</h3>
-        <p class="c-cond">${esc(c.conducta)}</p>
+    const r = c.reto || {};
+    return `<article class="carta ${extra}" style="--cc:${p.color}" data-id="${c.id}" onclick="MAZO.clicCarta('${c.id}')">
+      <div class="cara recto">
+        <div class="c-top"><b>${esc(p.nombre.replace("Shine ",""))} · ${esc(p.verbo)}</b><span>${c.id}</span></div>
+        <div class="c-body">
+          <h3>${esc(r.t || c.competencia)}</h3>
+          <p class="c-cons">${esc(r.c || "")}</p>
+          <p class="c-zona"><b>En el tablero</b>${esc(r.z || "")}</p>
+          <p class="c-zona"><b>Para cerrar</b>${esc(r.p || "")}</p>
+        </div>
+        <div class="c-foot"><span>Reto</span><b>4SHINE®</b></div>
       </div>
-      <div class="c-foot"><span>Conducta observable</span><b>4SHINE®</b></div>
+      <div class="cara reverso">
+        <div class="c-top"><b>${esc(p.nombre.replace("Shine ",""))}</b><span>${c.id}</span></div>
+        <div class="rev-body">
+          <span class="rombo-min"></span>
+          <span class="comp">${esc(c.componente)}</span>
+          <h4>${esc(c.competencia)}</h4>
+          <p>${esc(c.conducta)}</p>
+        </div>
+        <div class="c-foot"><span>Conducta observable</span><b>4SHINE®</b></div>
+      </div>
     </article>`;
   }
+
   function pintarMesa(){
     const p = PILARES.find(x => x.id === st.pilar);
     $("mesa-cual").textContent = `${p.nombre} · ${p.verbo}`;
@@ -85,12 +100,25 @@ const MAZO = (() => {
       const idx = (st.i + k) % n, c = st.cartas[idx];
       const front = k === 0;
       const ang = k * 5.5 - 14, dx = k * 21 - 56, dy = k * 8, sc = 1 - k * 0.042, z = VISIBLES - k;
-      html += cartaHTML(c, front ? "frente" : "") .replace('class="carta',
+      html += cartaHTML(c, (front ? "frente " : "") + (front && st.volteada ? "volteada" : "")).replace('class="carta',
         `style="transform:translate(${dx}px,${dy}px) rotate(${ang}deg) scale(${sc});z-index:${z};opacity:${1 - k*0.07}" class="carta`);
     }
     $("abanico").innerHTML = html;
-    $("posicion").innerHTML = `Carta <b>${st.i + 1}</b> de <b>${n}</b> · ${esc(st.cartas[st.i].competencia)}`;
+    const act = st.cartas[st.i];
+    $("posicion").innerHTML = `Carta <b>${st.i + 1}</b> de <b>${n}</b> · ${esc(st.volteada ? act.competencia : (act.reto?.t || act.competencia))}`;
+    $("abanico").insertAdjacentHTML("beforeend",
+      `<span class="volteo-hint">${st.volteada ? "Reverso · conducta observable" : "Recto · el reto"} — toque la carta para voltearla</span>`);
     $("barra").style.width = ((st.i + 1) / n * 100) + "%";
+  }
+  function voltear(){
+    st.volteada = !st.volteada;
+    const frente = $("abanico").querySelector(".carta.frente");
+    if(frente) frente.classList.toggle("volteada", st.volteada);
+    render();
+  }
+  function clicCarta(id){
+    const act = st.cartas[st.i];
+    if(act && act.id === id) voltear(); else elegir(id);
   }
   function siguiente(){ if(!st.cartas.length) return; st.i = (st.i + 1) % st.cartas.length; render(); }
   function anterior(){ if(!st.cartas.length) return; st.i = (st.i - 1 + st.cartas.length) % st.cartas.length; render(); }
@@ -128,12 +156,16 @@ const MAZO = (() => {
   function elegir(id){
     const c = st.cartas.find(x => x.id === id) || CONDUCTAS.find(x => x.id === id);
     if(!c) return;
+    const r = c.reto || {};
     st.elegida = c; st.i = st.cartas.findIndex(x => x.id === id); render();
     const p = PILARES.find(x => x.id === c.pilar);
     $("elegida").innerHTML = `<div class="elegida-box">
       <b>Carta elegida · ${c.id}</b>
-      <h3>${esc(c.competencia)}</h3>
-      <p>${esc(c.conducta)}</p>
+      <h3>${esc(r.t || c.competencia)}</h3>
+      <p><b style="color:#f0d488">Recto · el reto:</b> ${esc(r.c || "")}</p>
+      <p style="margin-top:8px"><b style="color:#f0d488">En el tablero:</b> ${esc(r.z || "")}</p>
+      <p style="margin-top:14px;padding-top:14px;border-top:1px solid #ffffff1a">
+        <b style="color:#f0d488">Reverso · la conducta:</b> ${esc(c.conducta)}</p>
       <div class="ruta">${esc(p.nombre)} · ${esc(p.verbo)} → ${esc(c.componente)} → ${esc(c.competencia)}</div>
     </div>`;
     $("elegida").scrollIntoView({block:"nearest", behavior:"smooth"});
@@ -149,7 +181,10 @@ const MAZO = (() => {
         <h3>${esc(p.nombre)} · ${esc(p.verbo)}</h3>
         <p class="sub">${cs.length} conductas en ${Object.keys(porComp).length} competencias</p>
         <div class="mini-cartas">${cs.map(c => `<div class="mini">
-          <b>${esc(c.competencia)}</b><p>${esc(c.conducta)}</p><span>${c.id} · ${esc(c.componente)}</span></div>`).join("")}</div>
+          <b>${esc(c.reto?.t || c.competencia)}</b>
+          <p><i style="color:#8c6e15">Reto:</i> ${esc(c.reto?.c || "—")}</p>
+          <p style="margin-top:7px;padding-top:7px;border-top:1px dashed var(--line)"><i style="color:#8c6e15">Conducta:</i> ${esc(c.conducta)}</p>
+          <span>${c.id} · ${esc(c.competencia)}</span></div>`).join("")}</div>
       </div>`;
     }).join("");
   }
@@ -159,11 +194,12 @@ const MAZO = (() => {
     if(e.key === "ArrowRight"){ e.preventDefault(); siguiente(); }
     if(e.key === "ArrowLeft"){ e.preventDefault(); anterior(); }
     if(e.key === " "){ e.preventDefault(); barajar(); }
+    if(e.key.toLowerCase() === "v"){ e.preventDefault(); voltear(); }
   });
 
   document.addEventListener("DOMContentLoaded", () => {
     pintarDiamante(); elegirPilar("within"); pintarIndice();
   });
 
-  return {elegirPilar, siguiente, anterior, barajar, robar, elegir};
+  return {elegirPilar, siguiente, anterior, barajar, robar, elegir, voltear, clicCarta};
 })();

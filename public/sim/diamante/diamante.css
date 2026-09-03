@@ -169,3 +169,11 @@
 .conducta-elegida h4{font-size:1.05rem;margin:0 0 6px}
 .conducta-elegida p{margin:0;font-size:.85rem;color:#d5dce7}
 .conducta-elegida span{display:block;margin-top:10px;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#7f8ea6}
+
+/* reverso de la carta jugada, en el cierre */
+.reverso-jugada{border:1px solid #d9b54a66;border-radius:12px;padding:18px;background:linear-gradient(180deg,#16294a,#101f34)}
+.reverso-jugada.tomada{border-color:#5aa06e;background:linear-gradient(180deg,#14291f,#101f34)}
+.reverso-jugada b{display:block;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.reverso-jugada.tomada b{color:#8fd6a5}
+.reverso-jugada h4{font-size:1.08rem;margin:0 0 7px}
+.reverso-jugada p{margin:0 0 14px;font-size:.85rem;color:#d5dce7}

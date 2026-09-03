@@ -42,27 +42,38 @@
 .ctrl.primary{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:900}
 .ctrl.primary:hover{background:#e6c45b;color:var(--ink)}
 
-.abanico{position:relative;height:430px;display:grid;place-items:center;perspective:1400px;margin-bottom:26px}
-.carta{position:absolute;width:250px;height:352px;border-radius:16px;background:white;color:var(--ink);
-  box-shadow:0 20px 44px #00000070;transform-origin:50% 130%;
-  transition:transform .55s cubic-bezier(.22,.8,.26,1),opacity .4s,box-shadow .3s;
-  display:flex;flex-direction:column;overflow:hidden;cursor:pointer;backface-visibility:hidden}
-.carta .c-top{background:var(--cc);color:white;padding:12px 16px;display:flex;justify-content:space-between;align-items:baseline}
-.carta .c-top b{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase}
-.carta .c-top span{font-size:.62rem;font-weight:900;opacity:.85}
-.carta .c-body{padding:18px 18px 14px;display:flex;flex-direction:column;gap:11px;flex:1;min-height:0}
-.carta .c-comp{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:#8c6e15;font-weight:900}
-.carta h3{font-size:1.12rem;margin:0;line-height:1.2}
-.carta .c-cond{font-size:.86rem;color:#38465a;margin:0;overflow:hidden;flex:1}
-.carta .c-foot{background:var(--ink);color:#cfd7e4;font-size:.55rem;letter-spacing:.09em;text-transform:uppercase;
-  padding:9px 16px;display:flex;justify-content:space-between;gap:8px}
-.carta .c-foot b{color:var(--gold);white-space:nowrap}
-.carta.elegida{box-shadow:0 0 0 3px var(--gold),0 24px 54px #00000080}
-.carta.dorso{background:linear-gradient(150deg,#0d1c31,#071326);border:1px solid #d9b54a55}
-.carta.dorso .marca{position:absolute;inset:0;display:grid;place-items:center}
-.carta.dorso .rombo{width:56px;height:56px;background:linear-gradient(145deg,#f0d488,#a8842c);transform:rotate(45deg);
-  box-shadow:0 0 0 8px #071326,0 0 0 9px #d9b54a44}
-
+.abanico{position:relative;height:430px;display:grid;place-items:center;perspective:1600px;margin-bottom:46px}
+.carta{transform-style:preserve-3d}
+.carta{position:absolute;width:250px;height:352px;transform-origin:50% 130%;cursor:pointer;
+  transition:transform .55s cubic-bezier(.22,.8,.26,1),opacity .4s}
+.cara{position:absolute;inset:0;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 20px 44px #00000070;backface-visibility:hidden;transition:transform .6s cubic-bezier(.3,.8,.3,1)}
+.cara.recto{background:white;color:var(--ink);transform:rotateY(0deg)}
+.cara.reverso{background:var(--ink);color:white;border:1px solid #d9b54a55;transform:rotateY(180deg)}
+.carta.volteada .cara.recto{transform:rotateY(-180deg)}
+.carta.volteada .cara.reverso{transform:rotateY(0deg)}
+.c-top{background:var(--cc);color:white;padding:12px 16px;display:flex;justify-content:space-between;align-items:baseline;flex:none}
+.c-top b{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase}
+.c-top span{font-size:.62rem;font-weight:900;opacity:.85}
+.c-body{padding:16px 18px 12px;display:flex;flex-direction:column;gap:9px;flex:1;min-height:0;overflow:hidden}
+.c-body h3{font-size:1.1rem;margin:0;line-height:1.2}
+.c-cons{font-size:.83rem;color:#38465a;margin:0}
+.c-zona{font-size:.74rem;color:#536075;padding-top:8px;border-top:1px dashed var(--line);margin:0}
+.c-zona b{display:block;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cc);margin-bottom:2px}
+.c-foot{background:var(--ink);color:#cfd7e4;font-size:.53rem;letter-spacing:.09em;text-transform:uppercase;
+  padding:9px 16px;display:flex;justify-content:space-between;gap:8px;flex:none;margin-top:auto}
+.c-foot b{color:var(--gold);white-space:nowrap}
+/* reverso */
+.cara.reverso .c-top{background:#ffffff10;border-bottom:1px solid #ffffff1a}
+.cara.reverso .c-top b{color:var(--cc)}
+.rev-body{padding:20px 18px;display:flex;flex-direction:column;gap:10px;flex:1;min-height:0}
+.rev-body .rombo-min{width:15px;height:15px;background:var(--gold);transform:rotate(45deg);margin-bottom:3px}
+.rev-body h4{font-size:1.05rem;margin:0;color:white}
+.rev-body p{margin:0;font-size:.79rem;color:#d5dce7;flex:1;overflow:hidden}
+.rev-body .comp{font-size:.55rem;letter-spacing:.11em;text-transform:uppercase;color:#8fa0bc}
+.cara.reverso .c-foot{background:#ffffff0d;color:#8fa0bc}
+.volteo-hint{position:absolute;bottom:-26px;left:0;right:0;text-align:center;font-size:.72rem;color:#93a2b8}
+.carta.elegida .cara{box-shadow:0 0 0 3px var(--gold),0 24px 54px #00000080}
 .pie-mesa{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
   border-top:1px solid #ffffff1a;padding-top:22px}
 .posicion{font-size:.85rem;color:#93a2b8}
@@ -102,12 +113,12 @@
 </div></nav>
 
 <header class="mz-hero"><div class="wrap">
-  <span class="eyebrow">Mazo de Conductas Observables · completo</span>
-  <h1>Las <em>96</em> conductas,<br>repartidas en cuatro mazos.</h1>
-  <p class="lead">El mapa de competencias 4Shine entero, convertido en cartas. Un mazo por pilar: elija el cuadrante del diamante, baraje y saque la conducta que su situación necesita.</p>
+  <span class="eyebrow">El mazo del Diamante Vivo · recto y reverso</span>
+  <h1>Un mazo.<br><em>96</em> cartas. Dos caras.</h1>
+  <p class="lead">Cada carta tiene un <b>Reto</b> en el recto —lo que hay que mover sobre el tablero— y su <b>Conducta Observable</b> en el reverso: lo que esa persona podrá sostener fuera de la mesa. El mapa de competencias entero, en un solo mazo repartido por pilar.</p>
   <div class="conteo">
     <span><b>4</b> pilares</span><span><b>22</b> componentes</span>
-    <span><b>47</b> competencias</span><span><b>96</b> conductas observables</span>
+    <span><b>47</b> competencias</span><span><b>96</b> cartas de dos caras</span>
   </div>
 </div></header>
 
@@ -128,6 +139,7 @@
       <button class="ctrl" onclick="MAZO.barajar()">⤮ Barajar</button>
       <button class="ctrl" onclick="MAZO.anterior()">‹ Anterior</button>
       <button class="ctrl" onclick="MAZO.siguiente()">Siguiente ›</button>
+      <button class="ctrl" onclick="MAZO.voltear()">⟲ Voltear</button>
       <button class="ctrl primary" onclick="MAZO.robar()">▲ Sacar una al azar</button>
     </div>
   </div>
@@ -135,7 +147,7 @@
   <div class="pie-mesa">
     <span class="posicion" id="posicion"></span>
     <span class="barra"><i id="barra"></i></span>
-    <span class="posicion" style="font-size:.78rem">Use ← → para pasar · Espacio para barajar</span>
+    <span class="posicion" style="font-size:.78rem">← → pasar · Espacio barajar · <b>V o clic</b> voltear</span>
   </div>
   <div id="elegida"></div>
 </div></section>
@@ -143,13 +155,13 @@
 <!-- ===== ÍNDICE COMPLETO ===== -->
 <section class="indice"><div class="wrap">
   <div class="intro"><span class="eyebrow">El mazo entero</span>
-    <h2>Las 96, agrupadas por competencia.</h2>
-    <p>Cada carta lleva impresa su ruta: pilar, componente y competencia de origen. Esta página se imprime como catálogo de referencia del facilitador.</p></div>
+    <h2>El mazo entero, carta por carta.</h2>
+    <p>Recto y reverso de las 96. Cada carta lleva impresa su ruta: pilar, componente y competencia de origen. Esta página se imprime como catálogo de referencia del facilitador.</p></div>
   <div id="indice-completo"></div>
 </div></section>
 </main>
 
-<footer><div class="wrap footer-row"><span>4Shine Experience® · Mazo de Conductas Observables</span>
+<footer><div class="wrap footer-row"><span>4Shine Experience® · El mazo completo</span>
 <span>96 conductas · Mapa de competencias V3</span></div></footer>
 
 <script src="data/conductas.js"></script>

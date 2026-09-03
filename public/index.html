@@ -38,6 +38,13 @@
 .campo p{margin:0;color:var(--muted);font-size:.92rem}
 .campo .verbo{display:block;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:.82rem;color:#8c6e15;font-style:italic}
 
+.dos-caras{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:center}
+.cara-exp{background:white;border:1px solid var(--line);border-top:4px solid var(--ce);border-radius:14px;padding:30px}
+.cara-exp b{display:block;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ce);margin-bottom:10px}
+.cara-exp h3{font-size:1.5rem;margin-bottom:12px}
+.cara-exp p{margin:0;color:var(--muted);font-size:.95rem}
+.giro-exp{font-size:2rem;color:var(--gold)}
+@media(max-width:820px){.dos-caras{grid-template-columns:1fr}.giro-exp{text-align:center;transform:rotate(90deg)}}
 .evid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .evid-card{background:white;border-top:3px solid var(--gold);padding:26px}
 .evid-card .stat{font-size:2.5rem;font-weight:900;line-height:1;color:var(--ink)}
@@ -174,7 +181,7 @@
     <article class="kit-card"><img src="img/kit-piezas.jpg" alt="Piezas símbolo"><div><h3>Piezas símbolo</h3><p>Base, foco, puente, energía y barrera: metas, obstáculos y estructuras.</p></div></article>
     <article class="kit-card"><img src="img/kit-conectores.jpg" alt="Conectores"><div><h3>Conectores</h3><p>Cualifican el vínculo: activo, acuerdo claro, tenso, en revisión o roto.</p></div></article>
     <article class="kit-card"><img src="img/kit-recurso.jpg" alt="Fichas de recurso"><div><h3>Fichas de tensión y recurso</h3><p>Dónde duele y dónde hay apoyo, con un vocabulario visual compartido.</p></div></article>
-    <article class="kit-card"><img src="img/kit-cartas-reto.jpg" alt="Tarjetas de reto"><div><h3>Tarjetas de Reto</h3><p>Doce consignas que perturban la escena y exigen moverla.</p></div></article>
+    <article class="kit-card"><img src="img/kit-cartas-reto.jpg" alt="El mazo de dos caras"><div><h3>El mazo · 96 cartas</h3><p>Recto: un reto que perturba la escena. Reverso: la conducta observable que entrena. Una sola carta, dos momentos de la sesión.</p></div></article>
   </div>
   <p style="margin-top:26px"><a class="cta solid" href="cartas.html" style="background:var(--ink);color:white">Ver el contenido real de las cartas <span style="color:#d9b54a">→</span></a></p>
 </div></section>
@@ -196,6 +203,21 @@
       <p style="margin-top:20px"><a class="cta solid" href="sim/diamante/">▶ Abrir el simulador</a></p>
     </div>
   </div>
+</div></section>
+
+<!-- ===== LA CARTA ===== -->
+<section class="alt"><div class="wrap">
+  <div class="intro"><span class="eyebrow">El corazón del sistema</span>
+    <h2>Una carta, dos caras, dos momentos.</h2>
+    <p>El mazo entero es el mapa de competencias 4Shine: 96 cartas repartidas en los cuatro pilares. Cada una vive dos veces en la misma sesión.</p></div>
+  <div class="dos-caras">
+    <div class="cara-exp" style="--ce:#ed8124"><b>Recto · en la fase Crea</b><h3>El reto perturba</h3>
+      <p>Se roba una carta y la escena deja de estar cómoda: «¿Qué frase se repite sobre esta situación? Si fuera un muro, constrúyalo». Hay que mover el tablero, no comentarlo.</p></div>
+    <div class="giro-exp">⟲</div>
+    <div class="cara-exp" style="--ce:#3988ca"><b>Reverso · en la fase Consolida</b><h3>La conducta compromete</h3>
+      <p>La misma carta se voltea y aparece la conducta observable que ese reto entrenaba: «Identifica sus creencias limitantes y las reescribe». Ahí se decide si se sostiene fuera de la mesa.</p></div>
+  </div>
+  <p style="margin-top:26px;text-align:center"><a class="cta solid" href="mazo.html" style="background:var(--ink);color:white">Barajar el mazo completo <span style="color:#d9b54a">→</span></a></p>
 </div></section>
 
 <!-- ===== EVIDENCIA ===== -->
