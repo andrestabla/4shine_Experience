@@ -4,9 +4,9 @@ reutilizando exactamente el mismo núcleo que la función serverless de Vercel."
 import json, os, sys
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
-BASE = os.path.dirname(os.path.abspath(__file__))
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE, "api"))
-from advisor import responder  # noqa: E402
+from index import responder  # noqa: E402
 
 WEB = os.path.join(BASE, "web")
 PORT = int(os.environ.get("PORT", "8765"))
