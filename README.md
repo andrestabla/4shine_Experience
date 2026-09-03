@@ -1,32 +1,28 @@
 # 4Shine Experience®
 
-Sistema de experiencias de liderazgo del framework 4Shine: sitio de presentación,
-demo de cartas y **dos simuladores interactivos** con Advisor digital.
+**El Diamante Vivo**: experiencia de liderazgo del framework 4Shine. Sitio de
+presentación, demo de cartas imprimible y **simulador interactivo** con Advisor digital.
 
-> Las experiencias son **físicas y presenciales**. Los simuladores existen para
-> tomar decisiones de diseño, calibrar la exigencia del Advisor y mostrar la
-> metodología en vivo antes de producir un solo componente.
+> La experiencia es **física y presencial**. El simulador existe para tomar decisiones
+> de diseño, calibrar la exigencia del Advisor y mostrar la metodología en vivo antes
+> de producir un solo componente.
 
-## Las dos experiencias
+## La experiencia
 
-| | **A · El Diamante Vivo** | **B · Cruza el Umbral** |
-|---|---|---|
-| Naturaleza | Espejo reflexivo individual | Simulación por equipos bajo presión |
-| Mecánica | Construcción simbólica sobre tablero de 4 campos | 3 rondas de presión creciente |
-| Cierre | Conducta observable + Canvas de Acción | Veredicto sobre 4 criterios |
+Una situación real de liderazgo se construye con piezas sobre un tablero de cuatro
+campos, se perturba con una Tarjeta de Reto y se transforma delante de quien la vive.
+La sesión recorre **Conecta → Comprende → Crea → Consolida** y termina en una conducta
+observable con responsable, fecha y evidencia.
 
-## Los simuladores
+## El simulador
 
-**`/sim/diamante/`** — Tablero de cuatro campos (CONECTA · COMPRENDE · CREA · CONSOLIDA)
+`/sim/diamante/` — Tablero de cuatro campos (CONECTA · COMPRENDE · CREA · CONSOLIDA)
 renderizado con Konva: piezas 3D arrastrables (avatares, piezas símbolo, fichas de tensión
 y recurso) y conectores que cualifican vínculos. Cuatro fases: Construyo → Narro →
 Reconfiguro → Actúo. El sistema **verifica que el tablero realmente cambió** antes de
 aceptar una reconfiguración, y el Advisor lee la escena construida para preguntar sobre
 lo visible sin interpretar jamás por el participante.
 
-**`/sim/umbral/`** — Seis situaciones con tres revelaciones ocultas, cuatro Movimientos
-4Shine jugables, medidor de presión, cronómetro y bitácora. El Advisor devuelve las
-jugadas cuya evidencia no sea observable y emite un veredicto final razonado.
 
 ## El Advisor digital
 
@@ -44,15 +40,15 @@ básico y lo indican en pantalla: nunca fingen una evaluación de IA.
 ## Estructura
 
 ```
-web/            sitio estático desplegable
-  index.html      portada · las dos experiencias
-  opcion-a.html   El Diamante Vivo
-  opcion-c.html   Cruza el Umbral
-  cartas.html     demo de 30 cartas (imprimible a tamaño real)
-  sim/            los dos simuladores
-api/index.py    Advisor digital · función serverless y núcleo compartido
-tools/dev_server.py  servidor local que reutiliza ese mismo núcleo
-docs/           investigación (16 referentes analizados)
+public/               sitio estático desplegable
+  index.html            la propuesta: qué es, la sesión, el kit, la evidencia
+  opcion-a.html         la sesión completa + manual de facilitación
+  cartas.html           20 cartas imprimibles a tamaño real
+  sim/diamante/         el simulador (tablero Konva + Advisor)
+  archivo/              alternativa explorada y no producida (Cruza el Umbral)
+api/index.py          Advisor digital · función serverless y núcleo compartido
+tools/dev_server.py   servidor local que reutiliza ese mismo núcleo
+docs/                 investigación (16 referentes analizados)
 ```
 
 ## Desarrollo local
