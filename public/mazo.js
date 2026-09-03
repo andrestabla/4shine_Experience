@@ -90,8 +90,20 @@ const MAZO = (() => {
   function pintarMesa(){
     const p = PILARES.find(x => x.id === st.pilar);
     $("mesa-cual").textContent = `${p.nombre} · ${p.verbo}`;
-    $("mesa-titulo").textContent = `${st.cartas.length} conductas en la mano`;
+    $("mesa-titulo").textContent = `${st.cartas.length} cartas en la mano`;
+    pintarTabs();
     render();
+  }
+
+  function pintarTabs(){
+    const cont = $("tabs-pilar"); if(!cont) return;
+    cont.innerHTML = PILARES.map(p => {
+      const n = CONDUCTAS.filter(c => c.pilar === p.id).length;
+      return `<button class="tab ${p.id === st.pilar ? "on" : ""}" style="--tc:${p.color}"
+        onclick="MAZO.elegirPilar('${p.id}')">
+        <b>${esc(p.nombre.replace("Shine ",""))}</b>
+        <span>${esc(p.verbo)}</span><i>${n}</i></button>`;
+    }).join("");
   }
   function render(){
     const n = st.cartas.length; if(!n) return;
@@ -99,9 +111,9 @@ const MAZO = (() => {
     for(let k = VISIBLES - 1; k >= 0; k--){
       const idx = (st.i + k) % n, c = st.cartas[idx];
       const front = k === 0;
-      const ang = k * 5.5 - 14, dx = k * 21 - 56, dy = k * 8, sc = 1 - k * 0.042, z = VISIBLES - k;
+      const ang = k * 4.5, dx = k * 17, dy = k * 5, sc = 1 - k * 0.035, z = VISIBLES - k;
       html += cartaHTML(c, (front ? "frente " : "") + (front && st.volteada ? "volteada" : "")).replace('class="carta',
-        `style="transform:translate(${dx}px,${dy}px) rotate(${ang}deg) scale(${sc});z-index:${z};opacity:${1 - k*0.07}" class="carta`);
+        `style="transform:translate(${dx}px,${dy}px) rotate(${ang}deg) scale(${sc});z-index:${z};opacity:${k === 0 ? 1 : Math.max(.18, .5 - k*0.07)}" class="carta`);
     }
     $("abanico").innerHTML = html;
     const act = st.cartas[st.i];
