@@ -581,7 +581,7 @@ const DV = (() => {
     m.className = "modal modal-ayuda";
     m.innerHTML = `<div class="modal-caja ancha" style="--mc:#ed8124">
       <span class="m-tag">Fase 03 · Crea</span>
-      <h3>¿Cómo aparecen las cartas?</h3>
+      <div class="m-cabeza"><h3>¿Cómo aparecen las cartas?</h3>${botonVoz("cartas")}</div>
       <p class="m-idea">Una carta no es un premio ni un castigo: es una <b>perturbación</b>. Por eso importa
         de dónde viene. El mazo admite tres formas de sacarla y ${T("la sesión cambia según cuál use","la sesión cambia según cuál uses")}.</p>
       <div class="turno-lista">
@@ -916,6 +916,53 @@ const DV = (() => {
     });
   }
 
+  /* ---------- voz del Advisor ---------- */
+  const VOZ_PREF = "4shine.diamante.voz";
+  let audioActual = null;
+  const vozActiva = () => { try{ return localStorage.getItem(VOZ_PREF) !== "off"; }catch(e){ return true; } };
+
+  function detenerVoz(){
+    if(audioActual){ audioActual.pause(); audioActual.currentTime = 0; audioActual = null; }
+    document.querySelectorAll(".voz-btn.sonando").forEach(b => {
+      b.classList.remove("sonando"); b.querySelector("i").textContent = "▶";
+      b.querySelector("span").textContent = "Escuchar";
+    });
+  }
+
+  function reproducir(slug, boton){
+    detenerVoz();
+    const a = new Audio(`../../voz/${slug}.mp3`);
+    audioActual = a;
+    if(boton){
+      boton.classList.add("sonando");
+      boton.querySelector("i").textContent = "⏸";
+      boton.querySelector("span").textContent = "Detener";
+    }
+    a.onended = detenerVoz;
+    a.onerror = () => { detenerVoz(); if(boton) boton.querySelector("span").textContent = "Audio no disponible"; };
+    // si el navegador bloquea el arranque automático, dejamos el botón listo para el clic
+    a.play().catch(() => { if(audioActual === a) detenerVoz(); });
+  }
+
+  function botonVoz(slug){
+    return `<button class="voz-btn" data-slug="${slug}" onclick="DV.alternarVoz('${slug}', this)">
+      <i>▶</i><span>Escuchar</span></button>`;
+  }
+  function alternarVoz(slug, boton){
+    if(boton.classList.contains("sonando")) detenerVoz();
+    else reproducir(slug, boton);
+  }
+  function pintarPrefVoz(){
+    document.querySelectorAll(".voz-pref").forEach(b =>
+      b.textContent = vozActiva() ? "🔊 Voz activada" : "🔇 Voz desactivada");
+  }
+  function alternarPrefVoz(){
+    const nueva = vozActiva() ? "off" : "on";
+    try{ localStorage.setItem(VOZ_PREF, nueva); }catch(e){}
+    if(nueva === "off") detenerVoz();
+    pintarPrefVoz();
+  }
+
   /* ---------- modales de ayuda ---------- */
   const VISTAS = "4shine.diamante.ayudaVista";
   function yaVista(id){
@@ -925,7 +972,7 @@ const DV = (() => {
     try{ const v = JSON.parse(localStorage.getItem(VISTAS)||"[]");
       if(!v.includes(id)){ v.push(id); localStorage.setItem(VISTAS, JSON.stringify(v)); } }catch(e){}
   }
-  function cerrarModal(){ document.querySelector(".modal-ayuda")?.remove(); }
+  function cerrarModal(){ detenerVoz(); document.querySelector(".modal-ayuda")?.remove(); }
 
   function ayudaDe(faseId){
     const set = (typeof AYUDAS !== "undefined" && AYUDAS[st.ctx?.id]) || (typeof AYUDAS !== "undefined" ? AYUDAS.gerencial : null);
@@ -941,7 +988,7 @@ const DV = (() => {
     m.className = "modal modal-ayuda";
     m.innerHTML = `<div class="modal-caja ancha" style="--mc:${f.color}">
       <span class="m-tag">${esc(f.tag)} · ${esc(st.ctx?.nombre || "")}</span>
-      <h3>${esc(a.titulo)}</h3>
+      <div class="m-cabeza"><h3>${esc(a.titulo)}</h3>${botonVoz(`${st.ctx?.id}-${f.id}`)}</div>
       ${st.situacion ? `<p class="m-sit"><b>${T("Su situación","Tu situación")}</b>${esc(st.situacion)}</p>` : ""}
       <p class="m-idea">${a.idea}</p>
       <ol class="m-pasos">${a.pasos.map(p=>`<li>${p}</li>`).join("")}</ol>
@@ -950,10 +997,13 @@ const DV = (() => {
       <div class="btn-row" style="margin-top:20px"><button class="btn" id="m-ok">${T("Entendido, a la mesa →","Listo, a la mesa →")}</button></div>
     </div>`;
     document.body.appendChild(m);
-    m.querySelector("#m-ok").onclick = () => { marcarVista(clave); cerrarModal(); };
-    m.onclick = e => { if(e.target === m){ marcarVista(clave); cerrarModal(); } };
+    if(vozActiva()) setTimeout(() => {
+      if(document.body.contains(m)) reproducir(`${st.ctx?.id}-${f.id}`, m.querySelector(".voz-btn"));
+    }, 420);
+    m.querySelector("#m-ok").onclick = () => { marcarVista(clave); detenerVoz(); cerrarModal(); };
+    m.onclick = e => { if(e.target === m){ marcarVista(clave); detenerVoz(); cerrarModal(); } };
     document.addEventListener("keydown", function esc_(e){
-      if(e.key === "Escape"){ marcarVista(clave); cerrarModal(); document.removeEventListener("keydown", esc_); }
+      if(e.key === "Escape"){ marcarVista(clave); detenerVoz(); cerrarModal(); document.removeEventListener("keydown", esc_); }
     });
   }
 
@@ -964,7 +1014,7 @@ const DV = (() => {
     m.className = "modal modal-ayuda";
     m.innerHTML = `<div class="modal-caja ancha" style="--mc:${st.ctx?.color || "#d9b54a"}">
       <span class="m-tag">Mesa de trabajo · ${esc(st.ctx?.nombre || "")}</span>
-      <h3>${esc(g.asignacion.titulo)}</h3>
+      <div class="m-cabeza"><h3>${esc(g.asignacion.titulo)}</h3>${botonVoz("mesa")}</div>
       <p class="m-idea">${esc(g.asignacion.idea)}</p>
 
       <div class="roles-grid">${g.asignacion.tipos.map(r=>`
@@ -1017,7 +1067,7 @@ const DV = (() => {
     m.className = "modal modal-ayuda";
     m.innerHTML = `<div class="modal-caja ancha" style="--mc:#d9b54a">
       <span class="m-tag">El facilitador</span>
-      <h3>¿Qué hace el Advisor?</h3>
+      <div class="m-cabeza"><h3>¿Qué hace el Advisor?</h3>${botonVoz("advisor")}</div>
       <p class="m-idea">El Advisor es el facilitador certificado 4Shine. Aquí es digital, pero se comporta
         igual que en la mesa real: <b>acompaña sin interpretar</b>.</p>
       <div class="m-dos">
@@ -1079,7 +1129,9 @@ const DV = (() => {
     $("in-situacion").addEventListener("input", revisar);
   });
 
-  return {abrirAyudaFase, abrirAyudaAdvisor, cerrarModal, elegirEscenario, volverEscenario, volverModo,
+  pintarPrefVoz();
+
+  return {abrirAyudaFase, abrirAyudaAdvisor, cerrarModal, alternarVoz, alternarPrefVoz, detenerVoz, elegirEscenario, volverEscenario, volverModo,
           elegirModo, elegirSituacion, agregarParticipante, quitarParticipante, setParticipante,
           abrirPilares, pedirCartaAdvisor, aceptarCarta, abrirComoCartas, setTipoRol,
           abrirReglasMesa, avanzarTurno,
