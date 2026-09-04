@@ -7,7 +7,7 @@
 <div class="topbar"><div class="wrap">
   <a class="brand" href="../index.html">4SHINE EXPERIENCE®<span>Simulador · El Diamante Vivo</span></a>
   <div class="hud"><span class="chip hide-sm" id="hud-quien"></span><span class="chip" id="hud-fase"></span>
-  <button class="voz-pref" onclick="DV.alternarPrefVoz()">🔊 Voz activada</button>
+  <button class="voz-pref" onclick="DV.alternarPrefVoz()" aria-label="Voz del Advisor"><b>🔊</b><span>Voz activada</span></button>
   <a class="linkout" href="../../index.html">Salir</a></div>
 </div></div>
 <div class="pressure"><i id="fase-bar"></i></div>
@@ -70,6 +70,7 @@
   <div class="mesa-grid">
     <!-- bandeja -->
     <aside class="bandeja" id="bandeja">
+      <p class="band-modo">Arrastre una pieza hasta el tablero, o tóquela y aparecerá en el centro.</p>
       <div class="band-group"><h4>Avatares</h4><div class="band-items" id="pal-avatares"></div></div>
       <div class="band-group"><h4>Piezas símbolo</h4><div class="band-items" id="pal-piezas"></div></div>
       <div class="band-group"><h4>Fichas de tensión</h4><div class="band-items" id="pal-tension"></div></div>
@@ -85,6 +86,11 @@
       <div class="tablero-tools">
         <div class="sel-info" id="sel-info">Toque una pieza para nombrarla, girarla o retirarla.</div>
         <div class="sel-acciones">
+          <span class="zoom-ctrl">
+            <button class="mini" onclick="DV.zoom(-.25)" title="Alejar" aria-label="Alejar">−</button>
+            <button class="mini zoom-val" onclick="DV.encuadrar()" title="Ver el tablero entero">100%</button>
+            <button class="mini" onclick="DV.zoom(.25)" title="Acercar" aria-label="Acercar">+</button>
+          </span>
           <button class="mini" onclick="DV.deshacer()" title="Ctrl+Z">↶ Deshacer</button>
           <span class="sel-solo hidden">
             <button class="mini" onclick="DV.renombrarSel()">✎ Nombrar</button>

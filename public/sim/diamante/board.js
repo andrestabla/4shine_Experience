@@ -336,11 +336,34 @@ const BOARD = (() => {
     ajustar(); window.addEventListener("resize", ajustar);
     return stage;
   }
-  function ajustar(){
-    const cont = stage.container(), ancho = cont.offsetWidth;
-    const esc = Math.min(1, ancho / W);
-    stage.width(W*esc); stage.height(H*esc); stage.scale({x:esc,y:esc}); stage.draw();
+  let zoom = 1, onZoom = () => {};
+
+  function escalaBase(){
+    const cont = stage.container(), ancho = cont.clientWidth;
+    if(!ancho) return 0;                     // el tablero está oculto: no medimos nada
+    let esc = Math.min(1, ancho / W);
+
+    // Cuando el CSS le fija el alto al contenedor —la disposición de carriles—
+    // el tablero también tiene que caber a lo alto, o la columna abre un scroll
+    // propio encima del de la página.
+    const fijo = getComputedStyle(cont).getPropertyValue("--alto-fijo").trim() === "1";
+    if(fijo && cont.clientHeight > 80) esc = Math.min(esc, cont.clientHeight / H);
+    return esc;
   }
+  function ajustar(){
+    const base = escalaBase(); if(!base) return;
+    const esc = base * zoom;
+    stage.width(W*esc); stage.height(H*esc); stage.scale({x:esc,y:esc}); stage.draw();
+    onZoom(Math.round(esc*100), zoom > 1.001, base < 0.995);
+  }
+  // En pantallas estrechas el diamante entero cabe pero no se lee: el zoom es la
+  // única forma de trabajar de cerca sin romper la disposición.
+  function acercar(paso){
+    const base = escalaBase() || 1;
+    zoom = Math.min(2.4 / base, Math.max(1, zoom + paso));
+    ajustar();
+  }
+  function encuadrar(){ zoom = 1; ajustar(); }
   function posPuntero(){
     const p = stage.getPointerPosition(); if(!p) return null;
     const e = stage.scaleX(); return {x:p.x/e, y:p.y/e};
@@ -349,7 +372,7 @@ const BOARD = (() => {
   function serializar(){ return instantanea(); }
   function cargar(json){ try{ restaurar(JSON.parse(json)); historial = [instantanea()]; return true; }catch(e){ return false; } }
 
-  return {init, agregarPieza, renombrar, eliminar, rotar, duplicar, deshacer,
+  return {init, ajustar, acercar, encuadrar, set alZoom(f){onZoom = f}, agregarPieza, renombrar, eliminar, rotar, duplicar, deshacer,
           iniciarConexion, cancelarConexion, conectar, quitarVinculo,
           estado, describir, huella, exportarPNG, limpiar, posPuntero, serializar, cargar,
           campoDe, TIPOS_VINC, CAMPOS, PALETA, W, H, CX, CY,

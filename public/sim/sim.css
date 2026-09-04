@@ -17,11 +17,12 @@ button{font-family:inherit}
 
 /* ===== barra superior ===== */
 .topbar{position:sticky;top:0;z-index:30;background:#050d19f2;backdrop-filter:blur(9px);border-bottom:1px solid #d9b54a44}
-.topbar .wrap{height:60px;display:flex;align-items:center;gap:18px}
-.brand{font-weight:800;letter-spacing:.09em;font-size:.86rem;color:var(--gold);text-decoration:none;margin-right:auto}
+.topbar .wrap{min-height:60px;padding:9px 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-weight:800;letter-spacing:.09em;font-size:.86rem;color:var(--gold);text-decoration:none;
+  margin-right:auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .brand span{color:var(--text);opacity:.65;font-weight:400;letter-spacing:.02em;margin-left:10px}
-.hud{display:flex;align-items:center;gap:14px;font-size:.76rem}
-.hud .chip{border:1px solid var(--line);border-radius:999px;padding:5px 13px;color:var(--muted)}
+.hud{display:flex;align-items:center;gap:12px;font-size:.76rem;flex-wrap:wrap;justify-content:flex-end}
+.hud .chip{border:1px solid var(--line);border-radius:999px;padding:5px 13px;color:var(--muted);white-space:nowrap}
 .hud .chip b{color:var(--gold-b)}
 .linkout{color:var(--muted);text-decoration:none;font-size:.78rem}
 .linkout:hover{color:var(--gold-b)}
@@ -170,10 +171,17 @@ textarea{min-height:96px;resize:vertical}
 .step.on{color:var(--ink);background:var(--gold);border-color:var(--gold)}
 .step.done{color:#8fd6a5;border-color:#5aa06e66}
 
+@media(max-width:1080px){ .brand span{display:none} }
 @media(max-width:900px){
   .play-grid,.canvas-grid,.crit-grid,.insight-grid,.sit-grid,.mov-grid{grid-template-columns:1fr}
   .advisor{position:static}
   .tr-round dl{grid-template-columns:1fr}
   .hud .chip.hide-sm{display:none}
+}
+@media(max-width:560px){
+  .topbar .wrap{gap:10px}
+  .brand{font-size:.76rem}
+  .hud{gap:8px;font-size:.7rem}
+  .hud .chip{padding:4px 10px}
 }
 @media print{body{background:white;color:#071326}.topbar,.btn-row,.pressure{display:none}.panel,.transcript,.verdict{border-color:#ccc}}

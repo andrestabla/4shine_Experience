@@ -223,10 +223,24 @@ const DV = (() => {
     if(!BOARD._listo){ BOARD.init("tablero", onCambioTablero, onSeleccion); BOARD._listo = true; pintarBandeja(); }
     montarFase();
   }
-  const pantalla = id => ["scr-escenario","scr-modo","scr-setup","scr-mesa","scr-cierre"].forEach(s=>$(s).classList.toggle("hidden", s!==id));
+  function zoom(paso){ BOARD.acercar(paso); }
+  function encuadrar(){ BOARD.encuadrar(); }
+  function pintarZoom(pct, acercado, reducido){
+    const b = document.querySelector(".zoom-val"); if(!b) return;
+    b.textContent = pct + "%";
+    b.classList.toggle("aviso", !acercado && reducido);   // el tablero va reducido para caber
+    document.getElementById("tablero")?.classList.toggle("acercado", acercado);
+  }
+  const pantalla = id => {
+    ["scr-escenario","scr-modo","scr-setup","scr-mesa","scr-cierre"]
+      .forEach(s => $(s).classList.toggle("hidden", s !== id));
+    // en la mesa la ventana entera es el tablero: cada carril lleva su propio scroll
+    document.body.classList.toggle("en-mesa", id === "scr-mesa");
+    if(id === "scr-mesa" && BOARD._listo) requestAnimationFrame(() => BOARD.ajustar());
+  };
 
   /* ---------- bandeja + arrastre ---------- */
-  let ghost = null, arrastrando = null;
+  let ghost = null, arrastrando = null, origenPuntero = null;
   function palHTML(def, extra=""){
     const ic = def.tipo==="ficha"
       ? `<i style="background:${def.color};color:#fff;border-radius:${def.sub==="tension"?"3px":"50%"}">${def.glifo}</i>`
@@ -245,6 +259,7 @@ const DV = (() => {
       b.addEventListener("pointerdown", e => {
         const grupos = {"pal-avatares":PAL_AVATARES,"pal-piezas":PAL_PIEZAS,"pal-tension":PAL_TENSION,"pal-recurso":PAL_RECURSO};
         arrastrando = {...grupos[b.dataset.grupo][+b.dataset.i]};
+        origenPuntero = {x:e.clientX, y:e.clientY};
         ghost = document.createElement("div");
         ghost.style.cssText = "position:fixed;z-index:99;pointer-events:none;padding:7px 11px;border-radius:8px;background:#101f34;border:1px solid #d9b54a;color:#e8eef7;font-size:.75rem;display:flex;gap:7px;align-items:center;box-shadow:0 8px 20px #000a";
         ghost.innerHTML = palHTML(arrastrando);
@@ -271,9 +286,18 @@ const DV = (() => {
     if(ghost){ ghost.remove(); ghost = null; }
     if(!arrastrando) return;
     const cont = $("tablero"), r = cont.getBoundingClientRect();
-    if(e.clientX>=r.left && e.clientX<=r.right && e.clientY>=r.top && e.clientY<=r.bottom){
+    const dentro = e.clientX>=r.left && e.clientX<=r.right && e.clientY>=r.top && e.clientY<=r.bottom;
+    const recorrido = origenPuntero
+      ? Math.hypot(e.clientX-origenPuntero.x, e.clientY-origenPuntero.y) : 99;
+    origenPuntero = null;
+
+    if(dentro || recorrido < 9){
       const escala = r.width / BOARD.W;
-      const x = (e.clientX-r.left)/escala, y = (e.clientY-r.top)/escala;
+      // un toque sin arrastre deja la pieza cerca del centro, con un desvío
+      // para que dos toques seguidos no la apilen en el mismo punto
+      const x = dentro ? (e.clientX-r.left)/escala : BOARD.CX + (Math.random()*150-75);
+      const y = dentro ? (e.clientY-r.top)/escala  : BOARD.CY + (Math.random()*120-60);
+      if(!dentro) cont.scrollIntoView({behavior:"smooth", block:"center"});
       const def = {...arrastrando};
       if(def.tipo==="ficha") def.label = "";
       const id = BOARD.agregarPieza(def, x, y);
@@ -953,8 +977,12 @@ const DV = (() => {
     else reproducir(slug, boton);
   }
   function pintarPrefVoz(){
-    document.querySelectorAll(".voz-pref").forEach(b =>
-      b.textContent = vozActiva() ? "🔊 Voz activada" : "🔇 Voz desactivada");
+    const on = vozActiva();
+    document.querySelectorAll(".voz-pref").forEach(b => {
+      b.classList.toggle("muda", !on);
+      b.querySelector("b").textContent = on ? "🔊" : "🔇";
+      b.querySelector("span").textContent = on ? "Voz activada" : "Voz desactivada";
+    });
   }
   function alternarPrefVoz(){
     const nueva = vozActiva() ? "off" : "on";
@@ -1130,8 +1158,9 @@ const DV = (() => {
   });
 
   pintarPrefVoz();
+  BOARD.alZoom = pintarZoom;
 
-  return {abrirAyudaFase, abrirAyudaAdvisor, cerrarModal, alternarVoz, alternarPrefVoz, detenerVoz, elegirEscenario, volverEscenario, volverModo,
+  return {zoom, encuadrar, abrirAyudaFase, abrirAyudaAdvisor, cerrarModal, alternarVoz, alternarPrefVoz, detenerVoz, elegirEscenario, volverEscenario, volverModo,
           elegirModo, elegirSituacion, agregarParticipante, quitarParticipante, setParticipante,
           abrirPilares, pedirCartaAdvisor, aceptarCarta, abrirComoCartas, setTipoRol,
           abrirReglasMesa, avanzarTurno,
